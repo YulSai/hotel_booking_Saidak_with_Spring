@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+}
+
+.navbar li {
+    margin: 8px;
+    padding: 5px;
+    border: thin solid;
+    border-radius: 7px;
+    background: rgba(225, 185, 65, 0.53);
+}
+
+body {
+    padding-left: 50px;
+    background: rgba(2, 2, 2, 0.17);
+}
