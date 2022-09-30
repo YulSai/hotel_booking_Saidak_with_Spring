@@ -14,7 +14,6 @@ import java.security.spec.KeySpec;
  */
 @Component
 public class DigestUtil {
-
     /**
      * Method hashes the user's password
      *

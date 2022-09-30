@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.filters;
 
 import com.company.hotel_booking.controller.command.api.SecurityLevel;
-import com.company.hotel_booking.controller.command.factory.CommandFactory;
+import com.company.hotel_booking.controller.command.CommandResolver;
 import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.dto.UserDto;
@@ -47,7 +47,7 @@ public class UserRoleFilter extends HttpFilter {
     private void verifyAccessLevel(HttpServletRequest req, HttpServletResponse res, String command,
                                    String role) throws ServletException, IOException {
         SecurityLevel levelUser = SecurityLevel.valueOf(role);
-        SecurityLevel levelCommand = CommandFactory.getINSTANCE().getSecurityLevel(command);
+        SecurityLevel levelCommand = CommandResolver.getINSTANCE().getSecurityLevel(command);
         if (levelUser.ordinal() < levelCommand.ordinal()) {
             log.error("Insufficient access rights");
             req.setAttribute("status", 404);
