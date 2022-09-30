@@ -2,7 +2,6 @@ package com.company.hotel_booking.dao.api;
 
 import com.company.hotel_booking.exceptions.DaoException;
 
-import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -17,15 +16,6 @@ public interface IAbstractDao<K, T> {
      * @return Entity object
      */
     T findById(K id);
-
-    /**
-     * Method finds Entity object in the data source by id
-     *
-     * @param id         Object id
-     * @param connection Connection
-     * @return Entity object
-     */
-    T findById(K id, Connection connection);
 
     /**
      * Method finds all Entity object in the data source
@@ -73,5 +63,5 @@ public interface IAbstractDao<K, T> {
      *
      * @return number of records in the table
      */
-    long countRow() throws DaoException;
+    Long countRow() throws DaoException;
 }
