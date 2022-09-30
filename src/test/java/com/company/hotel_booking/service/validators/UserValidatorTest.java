@@ -13,11 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UserValidatorTest {
 
     private final MessageManger messageManger = new MessageManger(Locale.UK);
+    private final UserValidator userValidator = new UserValidator();
 
     @Test
     public void isValidCorrect() {
         try {
-            UserValidator.getINSTANCE().isValid(getUserCorrect());
+            userValidator.isValid(getUserCorrect());
         } catch (RegistrationException e) {
             assertFalse(false);
         }
@@ -28,7 +29,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("Maxim123");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -39,7 +40,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -50,7 +51,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setLastName("");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -61,7 +62,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("4Agh");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -72,7 +73,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -83,7 +84,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("maxim.com");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -94,7 +95,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -105,7 +106,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("Какой-то пароль");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -116,7 +117,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("123");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }
@@ -127,7 +128,7 @@ public class UserValidatorTest {
         UserDto user = getUserCorrect();
         user.setFirstName("");
         try {
-            UserValidator.getINSTANCE().isValid(user);
+            userValidator.isValid(user);
         } catch (RegistrationException e) {
             assertTrue(true);
         }

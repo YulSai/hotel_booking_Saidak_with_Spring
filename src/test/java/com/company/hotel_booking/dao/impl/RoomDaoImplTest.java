@@ -3,6 +3,7 @@ package com.company.hotel_booking.dao.impl;
 import com.company.hotel_booking.dao.api.IRoomDao;
 import com.company.hotel_booking.dao.connection.DataSource;
 import com.company.hotel_booking.dao.entity.Room;
+import com.company.hotel_booking.managers.ConfigurationManager;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RoomDaoImplTest {
-    private final IRoomDao roomDao = new RoomDaoImpl(DataSource.getINSTANCE());
+    private final IRoomDao roomDao = new RoomDaoImpl(new DataSource(new ConfigurationManager()));
 
     @Test
     public void findById() {
