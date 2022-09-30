@@ -10,7 +10,9 @@ import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.utils.DigestUtil;
 import com.company.hotel_booking.service.validators.UserValidator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,12 +20,12 @@ import java.util.List;
  * Class object UserDTO with implementation of CRUD operation operations
  */
 @Log4j2
+@Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final IUserDao userDao;
-
-    public UserServiceImpl(IUserDao userDao) {
-        this.userDao = userDao;
-    }
+    private final DigestUtil digestUtil;
+    private final UserValidator userValidator;
 
     @Override
     public UserDto findById(Long id) {
@@ -51,8 +53,8 @@ public class UserServiceImpl implements IUserService {
             log.error("User with email = {} already exists", userDto.getEmail());
             throw new ServiceException(MessageManger.getMessage("msg.error.exists"));
         }
-        UserValidator.getINSTANCE().isValid(userDto);
-        String hashPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
+        userValidator.isValid(userDto);
+        String hashPassword = digestUtil.hash(userDto.getPassword());
         userDto.setPassword(hashPassword);
         return toDto(userDao.save(toEntity(userDto)));
     }
@@ -65,16 +67,16 @@ public class UserServiceImpl implements IUserService {
             log.error("User with email = {} already exists", userDto.getEmail());
             throw new ServiceException(MessageManger.getMessage("msg.error.exists"));
         }
-        UserValidator.getINSTANCE().isValid(userDto);
+        userValidator.isValid(userDto);
         return toDto(userDao.update(toEntity(userDto)));
     }
 
     @Override
     public UserDto changePassword(UserDto userDto) {
         log.debug("Calling a service method changePassword. UserDto = {}", userDto);
-        UserValidator.getINSTANCE().isValid(userDto);
+        userValidator.isValid(userDto);
         String existPassword = userDao.findById(userDto.getId()).getPassword();
-        String hashPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
+        String hashPassword = digestUtil.hash(userDto.getPassword());
         if (hashPassword.equals(existPassword)) {
             throw new ServiceException(MessageManger.getMessage("msg.error.new.password"));
         }
@@ -109,7 +111,7 @@ public class UserServiceImpl implements IUserService {
             throw new LoginUserException();
         } else {
             UserDto userDto = toDto(user);
-            String hashPassword = DigestUtil.INSTANCE.hash(password);
+            String hashPassword = digestUtil.hash(password);
             if (!userDto.getPassword().equals(hashPassword)) {
                 log.error("SQLUserService login error. Wrong password");
                 throw new LoginUserException();

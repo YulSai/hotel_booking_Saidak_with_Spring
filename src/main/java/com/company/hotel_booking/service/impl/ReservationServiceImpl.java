@@ -14,7 +14,9 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.service.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,14 +27,12 @@ import java.util.*;
  * Class object ReservationDTO with implementation of CRUD operation operations
  */
 @Log4j2
+@Service
+@RequiredArgsConstructor
 public class ReservationServiceImpl implements IReservationService {
+
     private final IReservationDao reservationDao;
     private final IRoomDao roomDao;
-
-    public ReservationServiceImpl(IReservationDao reservationDao, IRoomDao roomDao) {
-        this.reservationDao = reservationDao;
-        this.roomDao = roomDao;
-    }
 
     @Override
     public ReservationDto findById(Long id) {

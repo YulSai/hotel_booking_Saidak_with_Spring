@@ -10,7 +10,9 @@ import com.company.hotel_booking.service.api.IReservationInfoService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,12 +22,10 @@ import java.util.Map;
  * Class object ReservationInfoDTO with implementation of CRUD operation operations
  */
 @Log4j2
+@Service
+@RequiredArgsConstructor
 public class ReservationInfoServiceImpl implements IReservationInfoService {
     private final IReservationInfoDao reservationInfoDao;
-
-    public ReservationInfoServiceImpl(IReservationInfoDao reservationInfoDao) {
-        this.reservationInfoDao = reservationInfoDao;
-    }
 
     @Override
     public ReservationInfoDto findById(Long id) {
