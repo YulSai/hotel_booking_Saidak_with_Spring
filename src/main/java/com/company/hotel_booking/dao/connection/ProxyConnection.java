@@ -13,15 +13,17 @@ import java.util.concurrent.Executor;
 @Log4j2
 public class ProxyConnection implements Connection {
     private final Connection connection;
+    private final DataSource dataSource;
 
-    ProxyConnection(Connection connection) {
+    ProxyConnection(Connection connection, DataSource dataSource) {
         this.connection = connection;
+        this.dataSource = dataSource;
     }
 
     @Override
     public void close() {
         log.debug("Connection 'close' used 'releaseConnection'");
-        DataSource.getINSTANCE().getConnectionPool().releaseConnection(this);
+        dataSource.getConnectionPool().releaseConnection(this);
     }
 
     void reallyClose() throws SQLException {

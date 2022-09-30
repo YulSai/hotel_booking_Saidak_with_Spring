@@ -6,20 +6,20 @@ import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 
 import java.util.regex.Pattern;
 
 /**
  * Class for processing HttpServletRequest "reservation"
  */
+@Controller
+@RequiredArgsConstructor
 @Log4j2
 public class ReservationCommand implements ICommand {
     private final IReservationService service;
-
-    public ReservationCommand(IReservationService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

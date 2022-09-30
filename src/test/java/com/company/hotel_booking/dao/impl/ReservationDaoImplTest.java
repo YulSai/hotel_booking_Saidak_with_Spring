@@ -8,6 +8,7 @@ import com.company.hotel_booking.dao.entity.Reservation;
 import com.company.hotel_booking.dao.entity.ReservationInfo;
 import com.company.hotel_booking.dao.entity.Room;
 import com.company.hotel_booking.dao.entity.User;
+import com.company.hotel_booking.managers.ConfigurationManager;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReservationDaoImplTest {
-    private final DataSource dataSource = DataSource.getINSTANCE();
+    private final DataSource dataSource = new DataSource(new ConfigurationManager());
     private final IUserDao userDao = new UserDaoImpl(dataSource);
     private final IReservationInfoDao reservationInfoDao = new ReservationInfoDaoImpl(dataSource,
             new RoomDaoImpl(dataSource));
@@ -42,7 +43,7 @@ public class ReservationDaoImplTest {
     @Test
     public void countRow() {
         Long actual = reservationDao.countRow();
-        Long expected = 8L;
+        Long expected = 10L;
         assertEquals(expected, actual);
     }
 

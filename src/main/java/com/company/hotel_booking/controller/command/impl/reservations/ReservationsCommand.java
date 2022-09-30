@@ -10,7 +10,9 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
@@ -18,14 +20,11 @@ import java.util.List;
  * Class for processing HttpServletRequest "reservations"
  */
 @Log4j2
+@Controller
+@RequiredArgsConstructor
 public class ReservationsCommand implements ICommand {
     private final IReservationService reservationService;
     private final PagingUtil pagingUtil;
-
-    public ReservationsCommand(IReservationService service, PagingUtil pagingUtil) {
-        this.reservationService = service;
-        this.pagingUtil = pagingUtil;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

@@ -35,12 +35,6 @@ import com.company.hotel_booking.controller.command.impl.users.UpdateUserCommand
 import com.company.hotel_booking.controller.command.impl.users.UpdateUserFormCommand;
 import com.company.hotel_booking.controller.command.impl.users.UserCommand;
 import com.company.hotel_booking.controller.command.impl.users.UsersCommand;
-import com.company.hotel_booking.controller.command.util.PagingUtil;
-import com.company.hotel_booking.service.api.IReservationInfoService;
-import com.company.hotel_booking.service.api.IReservationService;
-import com.company.hotel_booking.service.api.IRoomService;
-import com.company.hotel_booking.service.api.IUserService;
-import com.company.hotel_booking.service.factory.ServiceFactory;
 
 /**
  * Enum with commands
@@ -48,75 +42,53 @@ import com.company.hotel_booking.service.factory.ServiceFactory;
 public enum CommandName {
 
     //Authorizations
-    LOGIN_FORM(new LoginFormCommand(), SecurityLevel.GUEST),
-    LOGIN(new LoginCommand(ServiceFactory.getINSTANCE().getService(IUserService.class)), SecurityLevel.GUEST),
-    LOGOUT(new LogoutCommand(), SecurityLevel.CLIENT),
+    LOGIN_FORM(LoginFormCommand.class, SecurityLevel.GUEST),
+    LOGIN(LoginCommand.class, SecurityLevel.GUEST),
+    LOGOUT(LogoutCommand.class, SecurityLevel.CLIENT),
 
     // Users
-    USER(new UserCommand(ServiceFactory.getINSTANCE().getService(IUserService.class)), SecurityLevel.CLIENT),
-    USERS(new UsersCommand(ServiceFactory.getINSTANCE().getService(IUserService.class), PagingUtil.INSTANCE),
-            SecurityLevel.ADMIN),
-    CREATE_USER_FORM(new CreateUserFormCommand(), SecurityLevel.GUEST),
-    CREATE_USER(new CreateUserCommand(ServiceFactory.getINSTANCE().getService(IUserService.class)),
-            SecurityLevel.GUEST),
-    UPDATE_USER_FORM(new UpdateUserFormCommand(ServiceFactory.getINSTANCE().getService(IUserService.class)),
-            SecurityLevel.CLIENT),
-    UPDATE_USER(new UpdateUserCommand(ServiceFactory.getINSTANCE().getService(IUserService.class)),
-            SecurityLevel.CLIENT),
-    DELETE_USER(new DeleteUserCommand(ServiceFactory.getINSTANCE().getService(IUserService.class),
-            ServiceFactory.getINSTANCE().getService(IReservationService.class)),
-            SecurityLevel.ADMIN),
-    CHANGE_PASSWORD_FORM(new ChangePasswordFormCommand(ServiceFactory.getINSTANCE().getService(IUserService.class)),
-            SecurityLevel.CLIENT),
-    CHANGE_PASSWORD(new ChangePasswordCommand(ServiceFactory.getINSTANCE().getService(IUserService.class)),
-            SecurityLevel.CLIENT),
+    USER(UserCommand.class, SecurityLevel.CLIENT),
+    USERS(UsersCommand.class, SecurityLevel.ADMIN),
+    CREATE_USER_FORM(CreateUserFormCommand.class, SecurityLevel.GUEST),
+    CREATE_USER(CreateUserCommand.class, SecurityLevel.GUEST),
+    UPDATE_USER_FORM(UpdateUserFormCommand.class, SecurityLevel.CLIENT),
+    UPDATE_USER(UpdateUserCommand.class, SecurityLevel.CLIENT),
+    DELETE_USER(DeleteUserCommand.class, SecurityLevel.ADMIN),
+    CHANGE_PASSWORD_FORM(ChangePasswordFormCommand.class, SecurityLevel.CLIENT),
+    CHANGE_PASSWORD(ChangePasswordCommand.class, SecurityLevel.CLIENT),
 
     //Rooms
-    ROOM(new RoomCommand(ServiceFactory.getINSTANCE().getService(IRoomService.class)), SecurityLevel.ADMIN),
-    ROOMS(new RoomsCommand(ServiceFactory.getINSTANCE().getService(IRoomService.class), PagingUtil.INSTANCE),
-            SecurityLevel.ADMIN),
-    CREATE_ROOM_FORM(new CreateRoomFormCommand(), SecurityLevel.ADMIN),
-    CREATE_ROOM(new CreateRoomCommand(ServiceFactory.getINSTANCE().getService(IRoomService.class)),
-            SecurityLevel.ADMIN),
-    UPDATE_ROOM_FORM(new UpdateRoomFormCommand(ServiceFactory.getINSTANCE().getService(IRoomService.class)),
-            SecurityLevel.ADMIN),
-    UPDATE_ROOM(new UpdateRoomCommand(ServiceFactory.getINSTANCE().getService(IRoomService.class)),
-            SecurityLevel.ADMIN),
+    ROOM(RoomCommand.class, SecurityLevel.ADMIN),
+    ROOMS(RoomsCommand.class, SecurityLevel.ADMIN),
+    CREATE_ROOM_FORM(CreateRoomFormCommand.class, SecurityLevel.ADMIN),
+    CREATE_ROOM(CreateRoomCommand.class, SecurityLevel.ADMIN),
+    UPDATE_ROOM_FORM(UpdateRoomFormCommand.class, SecurityLevel.ADMIN),
+    UPDATE_ROOM(UpdateRoomCommand.class, SecurityLevel.ADMIN),
 
     //Reservations
-    RESERVATION(new ReservationCommand(ServiceFactory.getINSTANCE().getService(IReservationService.class)),
-            SecurityLevel.CLIENT),
-    RESERVATIONS(new ReservationsCommand(ServiceFactory.getINSTANCE().getService(IReservationService.class),
-            PagingUtil.INSTANCE), SecurityLevel.ADMIN),
-    SEARCH_AVAILABLE_ROOMS_FORM(new RoomsSearchAvailableFormCommand(), SecurityLevel.GUEST),
-    SEARCH_AVAILABLE_ROOMS(
-            new RoomsSearchAvailableCommand((ServiceFactory.getINSTANCE().getService(IRoomService.class))),
-            SecurityLevel.GUEST),
-    ROOMS_AVAILABLE(new RoomsAvailableCommand(), SecurityLevel.GUEST),
-    ADD_BOOKING(new AddBookingCommand(), SecurityLevel.GUEST),
-    CLEAN_BOOKING(new CleanBookingCommand(), SecurityLevel.GUEST),
-    DELETE_BOOKING(new DeleteBookingCommand(), SecurityLevel.GUEST),
-    BOOKING(new BookingCommand(ServiceFactory.getINSTANCE().getService(IReservationService.class)),
-            SecurityLevel.GUEST),
-    CREATE_RESERVATION(new CreateReservationCommand(ServiceFactory.getINSTANCE().getService(IReservationService.class),
-            ServiceFactory.getINSTANCE().getService(IReservationInfoService.class)), SecurityLevel.CLIENT),
-    UPDATE_RESERVATION_FORM(new UpdateReservationFormCommand(ServiceFactory.getINSTANCE()
-            .getService(IReservationService.class)), SecurityLevel.ADMIN),
-    UPDATE_RESERVATION(new UpdateReservationCommand(ServiceFactory.getINSTANCE().getService(IReservationService.class)),
-            SecurityLevel.ADMIN),
-    CANCEL_RESERVATION(new CancelReservationCommand(ServiceFactory.getINSTANCE().getService(IReservationService.class)),
-            SecurityLevel.CLIENT),
-    USER_RESERVATIONS(new UserReservationsCommand(ServiceFactory.getINSTANCE().getService(IReservationService.class),
-            PagingUtil.INSTANCE), SecurityLevel.CLIENT),
+    RESERVATION(ReservationCommand.class, SecurityLevel.CLIENT),
+    RESERVATIONS(ReservationsCommand.class, SecurityLevel.ADMIN),
+    SEARCH_AVAILABLE_ROOMS_FORM(RoomsSearchAvailableFormCommand.class, SecurityLevel.GUEST),
+    SEARCH_AVAILABLE_ROOMS(RoomsSearchAvailableCommand.class, SecurityLevel.GUEST),
+    ROOMS_AVAILABLE(RoomsAvailableCommand.class, SecurityLevel.GUEST),
+    ADD_BOOKING(AddBookingCommand.class, SecurityLevel.GUEST),
+    CLEAN_BOOKING(CleanBookingCommand.class, SecurityLevel.GUEST),
+    DELETE_BOOKING(DeleteBookingCommand.class, SecurityLevel.GUEST),
+    BOOKING(BookingCommand.class, SecurityLevel.GUEST),
+    CREATE_RESERVATION(CreateReservationCommand.class, SecurityLevel.CLIENT),
+    UPDATE_RESERVATION_FORM(UpdateReservationFormCommand.class, SecurityLevel.ADMIN),
+    UPDATE_RESERVATION(UpdateReservationCommand.class, SecurityLevel.ADMIN),
+    CANCEL_RESERVATION(CancelReservationCommand.class, SecurityLevel.CLIENT),
+    USER_RESERVATIONS(UserReservationsCommand.class, SecurityLevel.CLIENT),
 
     //Other
-    ERROR(new ErrorCommand(), SecurityLevel.GUEST),
-    LANGUAGE_SELECT(new LanguageSelectionCommand(), SecurityLevel.GUEST);
+    ERROR(ErrorCommand.class, SecurityLevel.GUEST),
+    LANGUAGE_SELECT(LanguageSelectionCommand.class, SecurityLevel.GUEST);
 
-    private final ICommand command;
+    private final Class<? extends ICommand> command;
     private final SecurityLevel level;
 
-    CommandName(ICommand command, SecurityLevel level) {
+    CommandName(Class<? extends ICommand> command, SecurityLevel level) {
         this.command = command;
         this.level = level;
     }
@@ -136,7 +108,7 @@ public enum CommandName {
         }
     }
 
-    public ICommand getCommand() {
+    public Class<? extends ICommand> getCommand() {
         return command;
     }
 

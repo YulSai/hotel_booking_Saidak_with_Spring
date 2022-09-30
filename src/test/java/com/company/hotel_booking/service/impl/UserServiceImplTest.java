@@ -3,14 +3,18 @@ package com.company.hotel_booking.service.impl;
 import com.company.hotel_booking.dao.connection.DataSource;
 import com.company.hotel_booking.dao.impl.UserDaoImpl;
 import com.company.hotel_booking.exceptions.LoginUserException;
+import com.company.hotel_booking.managers.ConfigurationManager;
 import com.company.hotel_booking.service.api.IUserService;
+import com.company.hotel_booking.service.utils.DigestUtil;
+import com.company.hotel_booking.service.validators.UserValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserServiceImplTest {
-    private final IUserService userService = new UserServiceImpl(new UserDaoImpl(DataSource.getINSTANCE()));
+    private final IUserService userService = new UserServiceImpl(
+            new UserDaoImpl(new DataSource(new ConfigurationManager())), new DigestUtil(), new UserValidator());
 
     @Test
     public void loginCorrect() {

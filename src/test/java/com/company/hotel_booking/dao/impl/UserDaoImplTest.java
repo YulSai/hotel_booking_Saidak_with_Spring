@@ -3,12 +3,13 @@ package com.company.hotel_booking.dao.impl;
 import com.company.hotel_booking.dao.api.IUserDao;
 import com.company.hotel_booking.dao.connection.DataSource;
 import com.company.hotel_booking.dao.entity.User;
+import com.company.hotel_booking.managers.ConfigurationManager;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserDaoImplTest {
-    private final IUserDao userDao = new UserDaoImpl(DataSource.getINSTANCE());
+    private final IUserDao userDao = new UserDaoImpl(new DataSource(new ConfigurationManager()));
 
     @Test
     public void findById() {

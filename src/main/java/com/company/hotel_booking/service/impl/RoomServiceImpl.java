@@ -7,7 +7,9 @@ import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,13 +18,11 @@ import java.util.List;
  * Class object RoomDTO with implementation of CRUD operation operations
  */
 @Log4j2
+@Service
+@RequiredArgsConstructor
 public class RoomServiceImpl implements IRoomService {
 
     private final IRoomDao roomDao;
-
-    public RoomServiceImpl(IRoomDao roomDao) {
-        this.roomDao = roomDao;
-    }
 
     @Override
     public RoomDto findById(Long id) {

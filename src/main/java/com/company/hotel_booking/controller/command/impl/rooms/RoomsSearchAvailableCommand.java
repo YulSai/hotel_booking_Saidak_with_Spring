@@ -7,6 +7,8 @@ import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,12 +16,10 @@ import java.util.List;
 /**
  * Class for processing HttpServletRequest "search_available_rooms"
  */
+@Controller
+@RequiredArgsConstructor
 public class RoomsSearchAvailableCommand implements ICommand {
     private final IRoomService roomService;
-
-    public RoomsSearchAvailableCommand(IRoomService roomService) {
-        this.roomService = roomService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

@@ -1,23 +1,25 @@
-package com.company.hotel_booking.controller.command.factory;
+package com.company.hotel_booking.controller.command;
 
 import com.company.hotel_booking.controller.command.api.CommandName;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.controller.command.api.SecurityLevel;
+import org.springframework.stereotype.Component;
 
 /**
  * Class with methods for processing commands
  */
-public class CommandFactory {
-    private static CommandFactory INSTANCE;
+@Component
+public class CommandResolver {
+    private static CommandResolver INSTANCE;
 
     /**
      * Method gets an instance of the class object
      *
      * @return an instance of the class object
      */
-    public static CommandFactory getINSTANCE() {
+    public static CommandResolver getINSTANCE() {
         if (INSTANCE == null) {
-            INSTANCE = new CommandFactory();
+            INSTANCE = new CommandResolver();
         }
         return INSTANCE;
     }
@@ -28,8 +30,8 @@ public class CommandFactory {
      * @param commandName passed command
      * @return command
      */
-    public ICommand getCommand(String commandName) {
-        ICommand command = CommandName.valueOf(commandName.toUpperCase()).getCommand();
+    public Class<? extends ICommand> getCommand(String commandName) {
+        Class<? extends ICommand> command = CommandName.valueOf(commandName.toUpperCase()).getCommand();
         if (command == null) {
             command = CommandName.valueOf("ERROR").getCommand();
         }

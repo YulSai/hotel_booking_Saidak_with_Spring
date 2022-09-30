@@ -2,7 +2,7 @@ package com.company.hotel_booking.controller.filters;
 
 import com.company.hotel_booking.controller.command.api.CommandName;
 import com.company.hotel_booking.controller.command.api.SecurityLevel;
-import com.company.hotel_booking.controller.command.factory.CommandFactory;
+import com.company.hotel_booking.controller.command.CommandResolver;
 import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.managers.PagesManager;
 import jakarta.servlet.FilterChain;
@@ -51,7 +51,7 @@ public class AuthorizationFilter extends HttpFilter {
      * @return true if authorization is required, otherwise - false
      */
     private boolean requiresAuthorization(String command) {
-        SecurityLevel levelCommand = CommandFactory.getINSTANCE().getSecurityLevel(command);
+        SecurityLevel levelCommand = CommandResolver.getINSTANCE().getSecurityLevel(command);
         return switch (levelCommand) {
             case GUEST -> false;
             default -> true;

@@ -1,5 +1,7 @@
 package com.company.hotel_booking.service.utils;
 
+import org.springframework.stereotype.Component;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
@@ -10,9 +12,8 @@ import java.security.spec.KeySpec;
 /**
  * Enum with method to hash user's password
  */
-public enum DigestUtil {
-    INSTANCE;
-
+@Component
+public class DigestUtil {
     /**
      * Method hashes the user's password
      *

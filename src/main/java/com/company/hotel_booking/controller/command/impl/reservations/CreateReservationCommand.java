@@ -9,6 +9,8 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -16,15 +18,11 @@ import java.util.Map;
 /**
  * Class for processing HttpServletRequest "create_reservation"
  */
+@Controller
+@RequiredArgsConstructor
 public class CreateReservationCommand implements ICommand {
     private final IReservationService reservationService;
     private final IReservationInfoService reservationInfoService;
-
-    public CreateReservationCommand(IReservationService reservationService,
-                                    IReservationInfoService reservationInfoService) {
-        this.reservationService = reservationService;
-        this.reservationInfoService = reservationInfoService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

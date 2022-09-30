@@ -6,7 +6,9 @@ import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 
 import java.util.regex.Pattern;
 
@@ -14,12 +16,10 @@ import java.util.regex.Pattern;
  * Class for processing HttpServletRequest "room"
  */
 @Log4j2
+@Controller
+@RequiredArgsConstructor
 public class RoomCommand implements ICommand {
     private final IRoomService service;
-
-    public RoomCommand(IRoomService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

@@ -7,18 +7,18 @@ import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 
 /**
  * Class for processing HttpServletRequest "login"
  */
 @Log4j2
+@Controller
+@RequiredArgsConstructor
 public class LoginCommand implements ICommand {
     private final IUserService userService;
-
-    public LoginCommand(IUserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

@@ -8,21 +8,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class ExceptionsHandler {
-    private static ExceptionsHandler INSTANCE;
-
-
-    /**
-     * Method gets an instance of the class object
-     *
-     * @return an instance of the class object
-     */
-    public static ExceptionsHandler getINSTANCE() {
-        if (INSTANCE == null) {
-            INSTANCE = new ExceptionsHandler();
-        }
-        return INSTANCE;
-    }
-
     public String handleException(HttpServletRequest req, HttpServletResponse res, Exception e) {
         String page;
         String message;

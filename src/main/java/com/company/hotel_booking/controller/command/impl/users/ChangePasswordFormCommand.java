@@ -5,16 +5,16 @@ import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 /**
  * Class executes the command "change_password_form"
  */
+@Controller
+@RequiredArgsConstructor
 public class ChangePasswordFormCommand implements ICommand {
     private final IUserService service;
-
-    public ChangePasswordFormCommand(IUserService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

@@ -4,25 +4,14 @@ import com.company.hotel_booking.exceptions.RegistrationException;
 import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.service.dto.UserDto;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Component;
 
 /**
  * Class with method for validating user's email and password
  */
 @Log4j2
+@Component
 public class UserValidator {
-    private static UserValidator INSTANCE;
-
-    /**
-     * Method gets an instance of the class object
-     *
-     * @return an instance of the class object
-     */
-    public static UserValidator getINSTANCE() {
-        if (INSTANCE == null) {
-            INSTANCE = new UserValidator();
-        }
-        return INSTANCE;
-    }
 
     /**
      * Method checks if the email and password is valid
