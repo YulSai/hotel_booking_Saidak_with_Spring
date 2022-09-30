@@ -10,7 +10,9 @@ import com.company.hotel_booking.exceptions.DaoException;
 import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.managers.SqlManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,14 +29,11 @@ import java.util.Map;
  * Class object ReservationInfoDao with implementation of CRUD operation operations
  */
 @Log4j2
+@Repository
+@RequiredArgsConstructor
 public class ReservationInfoDaoImpl implements IReservationInfoDao {
     private final DataSource dataSource;
     private final IRoomDao roomDao;
-
-    public ReservationInfoDaoImpl(DataSource dataSource, IRoomDao roomDao) {
-        this.dataSource = dataSource;
-        this.roomDao = roomDao;
-    }
 
     @Override
     public ReservationInfo findById(Long id) {
