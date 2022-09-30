@@ -2,12 +2,13 @@ package com.company.hotel_booking.controller.command.util;
 
 import com.company.hotel_booking.service.api.IAbstractService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
 /**
  * Class with methods for object Paging
  */
-public enum PagingUtil {
-    INSTANCE;
+@Component
+public class PagingUtil {
 
     /**
      * Method gets Paging

@@ -1,6 +1,5 @@
 package com.company.hotel_booking.dao.connection;
 
-import com.company.hotel_booking.managers.ConfigurationManager;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
@@ -16,27 +15,25 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 @Log4j2
 public class ConnectionPool {
-    private static final Integer POOL_SIZE = Integer.valueOf(
-            ConfigurationManager.getInstance().getString(ConfigurationManager.POOL_SIZE));
     private final BlockingQueue<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> givenAwayConnections;
 
     /**
      * Constructor creates connection with database
      *
-     * @param driver   database driver
-     * @param url      path to database
-     * @param login    login for database
-     * @param password password for database
+     * @param driver               database driver
+     * @param url                  path to database
+     * @param login                login for database
+     * @param password             password for database
      */
-    ConnectionPool(String driver, String url, String login, String password) {
-        freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
+    ConnectionPool(String driver, String url, String login, String password, DataSource dataSource) {
+        freeConnections = new LinkedBlockingDeque<>(3);
         givenAwayConnections = new ArrayDeque<>();
         try {
             Class.forName(driver);
-            for (int i = 0; i < POOL_SIZE; i++) {
+            for (int i = 0; i < 3; i++) {
                 Connection connection = DriverManager.getConnection(url, login, password);
-                freeConnections.offer(new ProxyConnection(connection));
+                freeConnections.offer(new ProxyConnection(connection, dataSource));
                 log.info("Database connection created");
             }
         } catch (ClassNotFoundException | SQLException var7) {
@@ -79,7 +76,7 @@ public class ConnectionPool {
      * Method destroys pool connection
      */
     public void destroyPool() {
-        for (int i = 0; i < POOL_SIZE; i++) {
+        for (int i = 0; i < 3; i++) {
             try {
                 freeConnections.take().reallyClose();
                 log.info("Connection closed");
