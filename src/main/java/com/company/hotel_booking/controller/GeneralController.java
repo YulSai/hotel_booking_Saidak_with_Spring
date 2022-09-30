@@ -2,8 +2,7 @@ package com.company.hotel_booking.controller;
 
 import com.company.hotel_booking.controller.command.api.CommandName;
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.controller.command.factory.CommandFactory;
-import com.company.hotel_booking.dao.connection.DataSource;
+import com.company.hotel_booking.controller.command.CommandResolver;
 import com.company.hotel_booking.exceptions.ExceptionsHandler;
 import com.company.hotel_booking.exceptions.NotFoundException;
 import com.company.hotel_booking.managers.MessageManger;
@@ -14,7 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -23,25 +24,39 @@ import java.util.Locale;
  * Class for processing HttpServletRequest "/controller"
  */
 @WebServlet("/controller")
-@MultipartConfig(maxFileSize = Controller.MB * 10, maxRequestSize = Controller.MB * 100)
+@MultipartConfig(maxFileSize = GeneralController.MB * 10, maxRequestSize = GeneralController.MB * 100)
 @Log4j2
-public class Controller extends HttpServlet {
+@Controller
+@RequiredArgsConstructor
+public class GeneralController extends HttpServlet {
     public static final int MB = 1024 * 1024;
     public static final String REDIRECT = "redirect:";
+    private CommandResolver commandResolver;
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processDo(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processDo(req, resp);
+    }
+
+    private void processDo(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         MessageManger messageManger = getLocale(req);
         String commandName = req.getParameter("command");
         validateCommandName(commandName);
-        ICommand command = CommandFactory.getINSTANCE().getCommand(commandName);
+        Class<? extends ICommand> commandDefinition = commandResolver.getCommand(commandName);
+        ICommand command = ContextListener.context.getBean(commandDefinition);
         String page;
         try {
             page = command.execute(req);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            page = ExceptionsHandler.getINSTANCE().handleException(req, resp, e);
+            ExceptionsHandler exceptionsHandler = new ExceptionsHandler();
+            page = exceptionsHandler.handleException(req, resp, e);
         }
         if (page.startsWith(REDIRECT)) {
             setMessageSession(req);
@@ -76,10 +91,6 @@ public class Controller extends HttpServlet {
         return new MessageManger(new Locale(language));
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
-    }
-
     /**
      * Method validates command names
      *
@@ -93,7 +104,13 @@ public class Controller extends HttpServlet {
     }
 
     @Override
+    public void init() {
+        log.info("Servlet init");
+        commandResolver = ContextListener.context.getBean(CommandResolver.class);
+    }
+
+    @Override
     public void destroy() {
-        DataSource.getINSTANCE().close();
+        log.info("Servlet destroy");
     }
 }
