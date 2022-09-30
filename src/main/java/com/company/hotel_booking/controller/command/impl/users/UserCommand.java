@@ -7,7 +7,9 @@ import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 
 import java.util.regex.Pattern;
 
@@ -15,12 +17,10 @@ import java.util.regex.Pattern;
  * Class for processing HttpServletRequest "user"
  */
 @Log4j2
+@Controller
+@RequiredArgsConstructor
 public class UserCommand implements ICommand {
     private final IUserService service;
-
-    public UserCommand(IUserService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

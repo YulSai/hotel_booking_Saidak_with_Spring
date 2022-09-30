@@ -3,6 +3,8 @@ package com.company.hotel_booking.controller.command.impl.reservations;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -12,6 +14,8 @@ import java.util.Map;
 /**
  * Class for processing HttpServletRequest "add_booking"
  */
+@Controller
+@RequiredArgsConstructor
 public class AddBookingCommand implements ICommand {
 
     @Override

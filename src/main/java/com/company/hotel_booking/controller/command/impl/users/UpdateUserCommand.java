@@ -1,7 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.users;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.ConfigurationManager;
 import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
@@ -9,19 +8,21 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.UUID;
 
 /**
  * Class for processing HttpServletRequest "update_user"
  */
+@Controller
+@RequiredArgsConstructor
 public class UpdateUserCommand implements ICommand {
     private final IUserService service;
-
-    public UpdateUserCommand(IUserService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {
@@ -55,9 +56,13 @@ public class UpdateUserCommand implements ICommand {
         try {
             Part part = req.getPart("avatar");
             if (part.getSize() > 0) {
-                avatarName = UUID.randomUUID() + "_" + part.getSubmittedFileName();
-                String partFile = ConfigurationManager.getInstance().getString("part.avatar");
-                part.write(partFile + avatarName);
+                try (InputStream in = getClass().getResourceAsStream("/application.properties")) {
+                    avatarName = UUID.randomUUID() + "_" + part.getSubmittedFileName();
+                    Properties properties = new Properties();
+                    properties.load(in);
+                    String partFile = properties.getProperty("part.avatar");
+                    part.write(partFile + avatarName);
+                }
             } else {
                 avatarName = service.findById(Long.parseLong(req.getParameter("id"))).getAvatar();
             }

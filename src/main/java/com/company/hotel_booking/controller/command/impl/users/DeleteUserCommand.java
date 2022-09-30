@@ -7,20 +7,19 @@ import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 /**
  * Class for processing HttpServletRequest "delete_user"
  */
+@Controller
+@RequiredArgsConstructor
 public class DeleteUserCommand implements ICommand {
     private final IUserService service;
     private final IReservationService reservationService;
-
-    public DeleteUserCommand(IUserService service, IReservationService reservationService) {
-        this.service = service;
-        this.reservationService = reservationService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

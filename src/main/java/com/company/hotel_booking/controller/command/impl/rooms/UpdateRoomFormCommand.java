@@ -5,17 +5,17 @@ import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 /**
  * Class executes the command "update_room_form"
  */
+@Controller
+@RequiredArgsConstructor
 public class UpdateRoomFormCommand implements ICommand {
 
     private final IRoomService service;
-
-    public UpdateRoomFormCommand(IRoomService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

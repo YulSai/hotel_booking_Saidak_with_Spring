@@ -8,7 +8,9 @@ import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
@@ -16,14 +18,11 @@ import java.util.List;
  * Class for processing HttpServletRequest "users"
  */
 @Log4j2
+@Controller
+@RequiredArgsConstructor
 public class UsersCommand implements ICommand {
     private final IUserService userService;
     private final PagingUtil pagingUtil;
-
-    public UsersCommand(IUserService service, PagingUtil pagingUtil) {
-        this.userService = service;
-        this.pagingUtil = pagingUtil;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

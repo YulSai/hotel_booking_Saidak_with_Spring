@@ -5,16 +5,16 @@ import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 /**
  * Class for processing HttpServletRequest "cancel_reservation"
  */
+@Controller
+@RequiredArgsConstructor
 public class CancelReservationCommand implements ICommand {
     private final IReservationService service;
-
-    public CancelReservationCommand(IReservationService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

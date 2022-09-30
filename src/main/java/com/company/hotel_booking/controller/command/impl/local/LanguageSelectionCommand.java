@@ -3,10 +3,14 @@ package com.company.hotel_booking.controller.command.impl.local;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 /**
  * Class for processing HttpServletRequest "language_select"
  */
+@Controller
+@RequiredArgsConstructor
 public class LanguageSelectionCommand implements ICommand {
 
     @Override

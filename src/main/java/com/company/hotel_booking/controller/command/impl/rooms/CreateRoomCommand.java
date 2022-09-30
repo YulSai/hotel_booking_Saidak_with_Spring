@@ -5,18 +5,18 @@ import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 
 /**
  * Class for processing HttpServletRequest "create_room"
  */
+@Controller
+@RequiredArgsConstructor
 public class CreateRoomCommand implements ICommand {
     private final IRoomService service;
-
-    public CreateRoomCommand(IRoomService service) {
-        this.service = service;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {
