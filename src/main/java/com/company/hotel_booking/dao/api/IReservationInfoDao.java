@@ -3,7 +3,6 @@ package com.company.hotel_booking.dao.api;
 import com.company.hotel_booking.dao.entity.ReservationInfo;
 import com.company.hotel_booking.service.dto.ReservationDto;
 
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +18,6 @@ public interface IReservationInfoDao extends IAbstractDao<Long, ReservationInfo>
      * @param id reservation id
      */
     List<ReservationInfo> findByReservationId(Long id);
-
-    /**
-     * Method finds ReservationInfo object in the data source by reservation id
-     *
-     * @param reservationId reservation id
-     */
-    List<ReservationInfo> findByReservationId(Long reservationId, Connection connection);
 
     /**
      * Method processes information about booking
