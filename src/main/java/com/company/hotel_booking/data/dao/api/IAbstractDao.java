@@ -1,4 +1,4 @@
-package com.company.hotel_booking.dao.api;
+package com.company.hotel_booking.data.dao.api;
 
 import com.company.hotel_booking.exceptions.DaoException;
 

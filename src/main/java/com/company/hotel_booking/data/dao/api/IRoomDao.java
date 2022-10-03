@@ -1,6 +1,6 @@
-package com.company.hotel_booking.dao.api;
+package com.company.hotel_booking.data.dao.api;
 
-import com.company.hotel_booking.dao.entity.Room;
+import com.company.hotel_booking.data.entity.Room;
 
 import java.time.LocalDate;
 import java.util.List;

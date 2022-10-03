@@ -1,4 +1,4 @@
-package com.company.hotel_booking.dao.entity;
+package com.company.hotel_booking.data.entity;
 
 import lombok.Data;
 

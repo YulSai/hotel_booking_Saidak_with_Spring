@@ -1,6 +1,6 @@
-package com.company.hotel_booking.dao.api;
+package com.company.hotel_booking.data.dao.api;
 
-import com.company.hotel_booking.dao.entity.Reservation;
+import com.company.hotel_booking.data.entity.Reservation;
 
 import java.util.List;
 

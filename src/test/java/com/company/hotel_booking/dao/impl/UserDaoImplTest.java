@@ -1,8 +1,8 @@
 //package com.company.hotel_booking.dao.impl;
 //
-//import com.company.hotel_booking.dao.api.IUserDao;
+//import com.company.hotel_booking.data.api.dao.IUserDao;
 //import com.company.hotel_booking.dao.connection.DataSource;
-//import com.company.hotel_booking.dao.entity.User;
+//import com.company.hotel_booking.data.entity.dao.User;
 //import com.company.hotel_booking.managers.ConfigurationManager;
 //import com.zaxxer.hikari.HikariDataSource;
 //import org.junit.jupiter.api.Test;

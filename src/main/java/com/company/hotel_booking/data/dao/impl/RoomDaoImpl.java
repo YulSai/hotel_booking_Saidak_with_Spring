@@ -1,7 +1,7 @@
-package com.company.hotel_booking.dao.impl;
+package com.company.hotel_booking.data.dao.impl;
 
-import com.company.hotel_booking.dao.api.IRoomDao;
-import com.company.hotel_booking.dao.entity.Room;
+import com.company.hotel_booking.data.dao.api.IRoomDao;
+import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.exceptions.DaoException;
 import com.company.hotel_booking.managers.MessageManger;
 import com.company.hotel_booking.managers.SqlManager;

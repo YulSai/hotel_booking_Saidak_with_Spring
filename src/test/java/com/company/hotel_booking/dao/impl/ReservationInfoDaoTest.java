@@ -1,9 +1,9 @@
 //package com.company.hotel_booking.dao.impl;
 //
-//import com.company.hotel_booking.dao.api.IReservationInfoDao;
+//import com.company.hotel_booking.data.api.dao.IReservationInfoDao;
 //import com.company.hotel_booking.dao.connection.DataSource;
-//import com.company.hotel_booking.dao.entity.ReservationInfo;
-//import com.company.hotel_booking.dao.entity.Room;
+//import com.company.hotel_booking.data.entity.dao.ReservationInfo;
+//import com.company.hotel_booking.data.entity.dao.Room;
 //import com.company.hotel_booking.managers.ConfigurationManager;
 //import org.junit.jupiter.api.Test;
 //

@@ -1,7 +1,7 @@
-package com.company.hotel_booking.dao.impl;
+package com.company.hotel_booking.data.dao.impl;
 
-import com.company.hotel_booking.dao.api.IUserDao;
-import com.company.hotel_booking.dao.entity.User;
+import com.company.hotel_booking.data.dao.api.IUserDao;
+import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.exceptions.DaoException;
 import com.company.hotel_booking.exceptions.RegistrationException;
 import com.company.hotel_booking.managers.MessageManger;
