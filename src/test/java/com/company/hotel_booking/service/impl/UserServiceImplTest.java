@@ -1,6 +1,6 @@
 //package com.company.hotel_booking.service.impl;
 //
-//import com.company.hotel_booking.dao.impl.UserDaoImpl;
+//import com.company.hotel_booking.data.impl.dao.UserDaoImpl;
 //import com.company.hotel_booking.exceptions.LoginUserException;
 //import com.company.hotel_booking.service.api.IUserService;
 //import com.company.hotel_booking.service.utils.DigestUtil;

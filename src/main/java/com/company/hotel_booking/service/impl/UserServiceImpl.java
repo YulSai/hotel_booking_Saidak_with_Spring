@@ -1,8 +1,9 @@
 package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.controller.command.util.Paging;
-import com.company.hotel_booking.dao.api.IUserDao;
-import com.company.hotel_booking.dao.entity.User;
+import com.company.hotel_booking.data.dao.api.IUserDao;
+import com.company.hotel_booking.data.entity.User;
+import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.LoginUserException;
 import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManger;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements IUserService {
     private final IUserDao userDao;
     private final DigestUtil digestUtil;
     private final UserValidator userValidator;
+    private final ObjectMapper mapper;
 
     @Override
     public UserDto findById(Long id) {
@@ -35,14 +37,14 @@ public class UserServiceImpl implements IUserService {
             log.error("SQLUserService findById error. No user with id = {}", id);
             throw new ServiceException(MessageManger.getMessage("msg.error.find") + id);
         }
-        return toDto(user);
+        return mapper.toDto(user);
     }
 
     @Override
     public List<UserDto> findAll() {
         log.debug("Calling a service method findAll");
         return userDao.findAll().stream()
-                .map(this::toDto)
+                .map(mapper::toDto)
                 .toList();
     }
 
@@ -56,7 +58,7 @@ public class UserServiceImpl implements IUserService {
         userValidator.isValid(userDto);
         String hashPassword = digestUtil.hash(userDto.getPassword());
         userDto.setPassword(hashPassword);
-        return toDto(userDao.save(toEntity(userDto)));
+        return mapper.toDto(userDao.save(mapper.toEntity(userDto)));
     }
 
     @Override
@@ -68,7 +70,7 @@ public class UserServiceImpl implements IUserService {
             throw new ServiceException(MessageManger.getMessage("msg.error.exists"));
         }
         userValidator.isValid(userDto);
-        return toDto(userDao.update(toEntity(userDto)));
+        return mapper.toDto(userDao.update(mapper.toEntity(userDto)));
     }
 
     @Override
@@ -81,7 +83,7 @@ public class UserServiceImpl implements IUserService {
             throw new ServiceException(MessageManger.getMessage("msg.error.new.password"));
         }
         userDto.setPassword(hashPassword);
-        return toDto(userDao.update(toEntity(userDto)));
+        return mapper.toDto(userDao.update(mapper.toEntity(userDto)));
     }
 
     @Override
@@ -98,7 +100,7 @@ public class UserServiceImpl implements IUserService {
     public List<UserDto> findAllPages(Paging paging) {
         log.debug("Calling a service method findAll");
         return userDao.findAllPages(paging.getLimit(), paging.getOffset()).stream()
-                .map(this::toDto)
+                .map(mapper::toDto)
                 .toList();
     }
 
@@ -110,7 +112,7 @@ public class UserServiceImpl implements IUserService {
             log.error("SQLUserService login error. No user with email = {}", email);
             throw new LoginUserException();
         } else {
-            UserDto userDto = toDto(user);
+            UserDto userDto = mapper.toDto(user);
             String hashPassword = digestUtil.hash(password);
             if (!userDto.getPassword().equals(hashPassword)) {
                 log.error("SQLUserService login error. Wrong password");
@@ -124,55 +126,5 @@ public class UserServiceImpl implements IUserService {
     public long countRow() {
         log.debug("Calling a service method countRow");
         return userDao.countRow();
-    }
-
-    /**
-     * Method transforms object User into object UserDto
-     *
-     * @param entity object User
-     * @return object UserDto
-     */
-    private UserDto toDto(User entity) {
-        log.debug("Calling a service method toDto. User = {}", entity);
-        UserDto dto = new UserDto();
-        try {
-            dto.setId(entity.getId());
-            dto.setFirstName(entity.getFirstName());
-            dto.setLastName(entity.getLastName());
-            dto.setEmail(entity.getEmail());
-            dto.setPassword(entity.getPassword());
-            dto.setPhoneNumber(entity.getPhoneNumber());
-            dto.setRole(UserDto.RoleDto.valueOf(entity.getRole().toString()));
-            dto.setAvatar(entity.getAvatar());
-        } catch (NullPointerException e) {
-            log.error("This user is not in the catalog");
-            throw new ServiceException(MessageManger.getMessage("msg.error.find"));
-        }
-        return dto;
-    }
-
-    /**
-     * Method transforms object UserDto into object User
-     *
-     * @param dto UserDto
-     * @return object User
-     */
-    private User toEntity(UserDto dto) {
-        log.debug("Calling a service method toEntity. UserDto = {}", dto);
-        User entity = new User();
-        try {
-            entity.setId(dto.getId());
-            entity.setFirstName(dto.getFirstName());
-            entity.setLastName(dto.getLastName());
-            entity.setEmail(dto.getEmail());
-            entity.setPassword(dto.getPassword());
-            entity.setPhoneNumber(dto.getPhoneNumber());
-            entity.setRole(User.Role.valueOf(dto.getRole().toString()));
-            entity.setAvatar(dto.getAvatar());
-        } catch (NullPointerException e) {
-            log.error("This user is not in the catalog");
-            throw new ServiceException(MessageManger.getMessage("msg.error.find"));
-        }
-        return entity;
     }
 }
