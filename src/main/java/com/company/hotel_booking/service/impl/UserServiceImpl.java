@@ -6,7 +6,7 @@ import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.LoginUserException;
 import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.utils.DigestUtil;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements IUserService {
         User user = userDao.findById(id);
         if (user == null) {
             log.error("SQLUserService findById error. No user with id = {}", id);
-            throw new ServiceException(MessageManger.getMessage("msg.error.find") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
         }
         return mapper.toDto(user);
     }
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
         log.debug("Calling a service method create. UserDto = {}", userDto);
         if (userDao.findUserByEmail(userDto.getEmail()) != null) {
             log.error("User with email = {} already exists", userDto.getEmail());
-            throw new ServiceException(MessageManger.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
         }
         userValidator.isValid(userDto);
         String hashPassword = digestUtil.hash(userDto.getPassword());
@@ -67,7 +67,7 @@ public class UserServiceImpl implements IUserService {
         User existing = userDao.findUserByEmail(userDto.getEmail());
         if (existing != null && !existing.getId().equals(userDto.getId())) {
             log.error("User with email = {} already exists", userDto.getEmail());
-            throw new ServiceException(MessageManger.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
         }
         userValidator.isValid(userDto);
         return mapper.toDto(userDao.update(mapper.toEntity(userDto)));
@@ -80,7 +80,7 @@ public class UserServiceImpl implements IUserService {
         String existPassword = userDao.findById(userDto.getId()).getPassword();
         String hashPassword = digestUtil.hash(userDto.getPassword());
         if (hashPassword.equals(existPassword)) {
-            throw new ServiceException(MessageManger.getMessage("msg.error.new.password"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.new.password"));
         }
         userDto.setPassword(hashPassword);
         return mapper.toDto(userDao.update(mapper.toEntity(userDto)));
@@ -92,7 +92,7 @@ public class UserServiceImpl implements IUserService {
         userDao.delete(id);
         if (!userDao.delete(id)) {
             log.error("SQLUserService deleted error. Failed to delete user with id = {}", id);
-            throw new ServiceException(MessageManger.getMessage("msg.error.delete") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.command.impl.users;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.api.IUserService;
@@ -30,7 +30,7 @@ public class DeleteUserCommand implements ICommand {
             reservationService.update(reservation);
         }
         service.delete(id);
-        req.setAttribute("message", MessageManger.getMessage("msg.user.deleted"));
+        req.setAttribute("message", MessageManager.getMessage("msg.user.deleted"));
         return PagesManager.PAGE_DELETE_USER;
     }
 }

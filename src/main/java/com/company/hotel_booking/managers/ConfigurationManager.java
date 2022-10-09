@@ -17,18 +17,18 @@ public class ConfigurationManager {
     private static final Properties properties = new Properties();
     private final String RESOURCE_NAME = "/application.properties";
     // DataBase Connection Properties
-    public String PROFILE = "dev";
-    public String DB_URL = "db." + PROFILE + ".url";
-    public String DB_LOGIN = "db." + PROFILE + ".login";
-    public String DB_PASSWORD = "db." + PROFILE + ".password";
-    public String DB_DRIVER = "db.driver";
+    public final String PROFILE = "dev";
+    public final String DB_URL = "db." + PROFILE + ".url";
+    public final String DB_LOGIN = "db." + PROFILE + ".login";
+    public final String DB_PASSWORD = "db." + PROFILE + ".password";
+    public final String DB_DRIVER = "db.driver";
 
     public ConfigurationManager() {
         try (InputStream in = getClass().getResourceAsStream(RESOURCE_NAME)) {
             properties.load(in);
         } catch (IOException e) {
             log.error("Error with connection " + e);
-            throw new ConnectionPoolException(MessageManger.getMessage("msg.error.create"), e);
+            throw new ConnectionPoolException(MessageManager.getMessage("msg.error.create"), e);
         }
     }
 

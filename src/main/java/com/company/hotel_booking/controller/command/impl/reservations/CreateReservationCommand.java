@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.command.impl.reservations;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IReservationInfoService;
 import com.company.hotel_booking.service.api.IReservationService;
@@ -31,7 +31,7 @@ public class CreateReservationCommand implements ICommand {
         LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
         LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
         if (user == null) {
-            req.setAttribute("message", MessageManger.getMessage("msg.login"));
+            req.setAttribute("message", MessageManager.getMessage("msg.login"));
             return PagesManager.PAGE_LOGIN;
         } else {
             @SuppressWarnings("unchecked")
@@ -40,7 +40,7 @@ public class CreateReservationCommand implements ICommand {
             ReservationDto created = reservationService.create(processed);
             reservationInfoService.processBookingInfo(booking, checkIn, checkOut, created);
             req.getSession().removeAttribute("booking");
-            req.setAttribute("message", MessageManger.getMessage("msg.reservation.created"));
+            req.setAttribute("message", MessageManager.getMessage("msg.reservation.created"));
             return "redirect:controller?command=reservation&id=" + created.getId();
         }
     }

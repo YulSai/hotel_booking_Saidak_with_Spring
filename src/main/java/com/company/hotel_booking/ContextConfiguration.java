@@ -3,7 +3,7 @@ package com.company.hotel_booking;
 
 import com.company.hotel_booking.exceptions.ConnectionPoolException;
 import com.company.hotel_booking.managers.ConfigurationManager;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +34,7 @@ public class ContextConfiguration {
             return dataSource;
         } catch (ClassNotFoundException e) {
             log.error("Error connecting to database", e);
-            throw new ConnectionPoolException(MessageManger.getMessage("msg.error.driver"), e);
+            throw new ConnectionPoolException(MessageManager.getMessage("msg.error.driver"), e);
         }
     }
 

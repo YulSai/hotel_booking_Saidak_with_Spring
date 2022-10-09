@@ -3,7 +3,7 @@ package com.company.hotel_booking.controller.command.impl.reservations;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.controller.command.util.PagingUtil;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
@@ -32,7 +32,7 @@ public class UserReservationsCommand implements ICommand {
         Long id = Long.valueOf(req.getParameter("id"));
         List<ReservationDto> reservations = reservationService.findAllPagesByUsers(paging, id);
         if (reservations.isEmpty()) {
-            req.setAttribute("message", MessageManger.getMessage("msg.reservations.no"));
+            req.setAttribute("message", MessageManager.getMessage("msg.reservations.no"));
             return PagesManager.PAGE_RESERVATIONS;
         } else {
             HttpSession session = req.getSession();

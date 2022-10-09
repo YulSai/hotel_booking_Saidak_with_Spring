@@ -5,7 +5,7 @@ import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
@@ -40,7 +40,7 @@ public class ObjectMapper {
             dto.setAvatar(entity.getAvatar());
         } catch (NullPointerException e) {
             log.error("This user is not in the catalog");
-            throw new ServiceException(MessageManger.getMessage("msg.error.find"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.find"));
         }
         return dto;
     }
@@ -65,7 +65,7 @@ public class ObjectMapper {
             entity.setAvatar(dto.getAvatar());
         } catch (NullPointerException e) {
             log.error("This user is not in the catalog");
-            throw new ServiceException(MessageManger.getMessage("msg.error.find"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.find"));
         }
         return entity;
     }
@@ -88,7 +88,7 @@ public class ObjectMapper {
             dto.setNumber(entity.getNumber());
         } catch (NullPointerException e) {
             log.error("This room is not in the catalog.");
-            throw new ServiceException(MessageManger.getMessage("msg.error.find"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.find"));
         }
         return dto;
     }
@@ -134,7 +134,7 @@ public class ObjectMapper {
             dto.setDetails(reservationInfoDto);
         } catch (NullPointerException e) {
             log.error("This reservation is not in the catalog.");
-            throw new ServiceException(MessageManger.getMessage("msg.empty"));
+            throw new ServiceException(MessageManager.getMessage("msg.empty"));
         }
         return dto;
     }
@@ -155,7 +155,7 @@ public class ObjectMapper {
             entity.setStatus(Reservation.Status.valueOf(dto.getStatus().toString()));
         } catch (NullPointerException e) {
             log.error("This reservation is not in the catalog.");
-            throw new ServiceException(MessageManger.getMessage("msg.empty"));
+            throw new ServiceException(MessageManager.getMessage("msg.empty"));
         }
         return entity;
     }
@@ -179,7 +179,7 @@ public class ObjectMapper {
             dto.setRoomPrice(entity.getRoomPrice());
         } catch (NullPointerException e) {
             log.error("This reservation info is not in the catalog.");
-            throw new ServiceException(MessageManger.getMessage("msg.empty"));
+            throw new ServiceException(MessageManager.getMessage("msg.empty"));
         }
         return dto;
     }
@@ -203,7 +203,7 @@ public class ObjectMapper {
             entity.setRoomPrice(dto.getRoomPrice());
         } catch (NullPointerException e) {
             log.error("This reservation info is not in the catalog.");
-            throw new ServiceException(MessageManger.getMessage("msg.empty"));
+            throw new ServiceException(MessageManager.getMessage("msg.empty"));
         }
         return entity;
     }

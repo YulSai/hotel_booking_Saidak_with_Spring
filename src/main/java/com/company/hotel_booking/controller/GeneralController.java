@@ -5,7 +5,7 @@ import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.controller.command.CommandResolver;
 import com.company.hotel_booking.exceptions.ExceptionsHandler;
 import com.company.hotel_booking.exceptions.NotFoundException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -45,7 +45,7 @@ public class GeneralController extends HttpServlet {
     }
 
     private void processDo(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        MessageManger messageManger = getLocale(req);
+        MessageManager messageManger = getLocale(req);
         String commandName = req.getParameter("command");
         validateCommandName(commandName);
         Class<? extends ICommand> commandDefinition = commandResolver.getCommand(commandName);
@@ -85,10 +85,10 @@ public class GeneralController extends HttpServlet {
      * @param req HttpServletRequest
      * @return object MessageManger
      */
-    private MessageManger getLocale(HttpServletRequest req) {
+    private MessageManager getLocale(HttpServletRequest req) {
         HttpSession session = req.getSession();
         String language = (String) session.getAttribute("language");
-        return new MessageManger(new Locale(language));
+        return new MessageManager(new Locale(language));
     }
 
     /**

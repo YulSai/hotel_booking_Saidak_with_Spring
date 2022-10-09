@@ -3,7 +3,7 @@ package com.company.hotel_booking.controller.command.impl.reservations;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.controller.command.util.PagingUtil;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
@@ -39,7 +39,7 @@ public class ReservationsCommand implements ICommand {
         }
         if (reservations.isEmpty()) {
             log.error("No reservations yet");
-            req.setAttribute("message", MessageManger.getMessage("msg.empty"));
+            req.setAttribute("message", MessageManager.getMessage("msg.empty"));
             return PagesManager.PAGE_RESERVATIONS;
         }
         pagingUtil.setTotalPages(req, paging, reservationService);

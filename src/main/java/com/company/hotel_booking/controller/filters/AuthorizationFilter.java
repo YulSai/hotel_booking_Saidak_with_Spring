@@ -3,7 +3,7 @@ package com.company.hotel_booking.controller.filters;
 import com.company.hotel_booking.controller.command.api.CommandName;
 import com.company.hotel_booking.controller.command.api.SecurityLevel;
 import com.company.hotel_booking.controller.command.CommandResolver;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,7 +35,7 @@ public class AuthorizationFilter extends HttpFilter {
             if (requiresAuthorization(command)) {
                 HttpSession session = req.getSession(false);
                 if (session == null || session.getAttribute("user") == null) {
-                    req.setAttribute("message", MessageManger.getMessage("msg.login"));
+                    req.setAttribute("message", MessageManager.getMessage("msg.login"));
                     req.getRequestDispatcher(PagesManager.PAGE_LOGIN).forward(req, res);
                     return;
                 }

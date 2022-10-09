@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.command.impl.authorizations;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
@@ -26,7 +26,7 @@ public class LoginCommand implements ICommand {
         String password = req.getParameter("password");
 
         if (email == null || ("").equals(email) || password == null || ("").equals(password)) {
-            req.setAttribute("massage", MessageManger.getMessage("msg.login.details"));
+            req.setAttribute("massage", MessageManager.getMessage("msg.login.details"));
             return PagesManager.PAGE_LOGIN;
         }
         UserDto userDto = userService.login(email, password);

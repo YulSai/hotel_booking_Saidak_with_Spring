@@ -1,6 +1,6 @@
 package com.company.hotel_booking.exceptions;
 
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class ExceptionsHandler {
         } else if (e instanceof LoginUserException) {
             log.error("LoginUserException");
             status = 400;
-            message = MessageManger.getMessage("msg.incorrect.email.password");
+            message = MessageManager.getMessage("msg.incorrect.email.password");
             page = PagesManager.PAGE_LOGIN;
         } else if (e instanceof RegistrationException) {
             log.error("RegistrationException");
@@ -46,7 +46,7 @@ public class ExceptionsHandler {
         } else if (e instanceof NotFoundException) {
             log.error("NotFoundException");
             status = 404;
-            message = MessageManger.getMessage("msg.not.found");
+            message = MessageManager.getMessage("msg.not.found");
             page = PagesManager.PAGE_404;
         } else if (e instanceof ConnectionPoolException) {
             log.error("ConnectionPoolException");
@@ -56,7 +56,7 @@ public class ExceptionsHandler {
         } else {
             log.error("OtherException");
             status = 500;
-            message = MessageManger.getMessage("msg.internal.error");
+            message = MessageManager.getMessage("msg.internal.error");
             page = PagesManager.PAGE_ERROR;
         }
         req.setAttribute("status", status);

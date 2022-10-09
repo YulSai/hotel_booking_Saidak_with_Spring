@@ -6,7 +6,7 @@ import com.company.hotel_booking.data.dao.api.IUserDao;
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.exceptions.DaoException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.SqlManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -42,7 +42,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_RESERVATION_FIND_BY_ID, this::mapRow, id);
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findById error id = {}", id, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.by.id") + id);
+            throw new DaoException(MessageManager.getMessage("msg.error.find.by.id") + id);
         }
     }
 
@@ -53,7 +53,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return jdbcTemplate.query(SqlManager.SQL_RESERVATION_FIND_ALL, this::mapRow);
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findAll", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.all"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find.all"));
         }
     }
 
@@ -74,7 +74,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return findById(id);
         } catch (DataAccessException | NullPointerException e) {
             log.error("SQLReservationDAO save error: " + reservation, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.create") + reservation);
+            throw new DaoException(MessageManager.getMessage("msg.error.create") + reservation);
         }
     }
 
@@ -91,7 +91,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return findById(reservation.getId());
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO update error. Failed to update reservation = {}", reservation, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.update") + reservation);
+            throw new DaoException(MessageManager.getMessage("msg.error.update") + reservation);
         }
     }
 
@@ -102,7 +102,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return jdbcTemplate.update(SqlManager.SQL_RESERVATION_DELETE, id) == 1;
         } catch (DataAccessException e) {
             log.error("SQLReservationDAO delete error id  = {}", id, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.delete") + id);
+            throw new DaoException(MessageManager.getMessage("msg.error.delete") + id);
         }
     }
 
@@ -113,7 +113,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return jdbcTemplate.query(SqlManager.SQL_RESERVATION_PAGE, this::mapRow, limit, offset);
         } catch (DataAccessException e) {
             log.error("SQLReservationDAO findAllPages error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find"));
         }
     }
 
@@ -124,7 +124,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return jdbcTemplate.query(SqlManager.SQL_RESERVATION_PAGE_BY_USER, this::mapRow, id, limit, offset);
         } catch (DataAccessException e) {
             log.error("SQLReservationDAO findAllPages error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find"));
         }
     }
 
@@ -135,7 +135,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_RESERVATION_COUNT_RESERVATIONS, Long.class);
         } catch (DataAccessException e) {
             log.error("SQLReservationDAO findRowCount error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.count"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find.count"));
         }
     }
 
@@ -145,7 +145,7 @@ public class ReservationDaoImpl implements IReservationDao {
             return jdbcTemplate.query(SqlManager.SQL_RESERVATION_BY_USER, this::mapRow, id);
         } catch (DataAccessException e) {
             log.error("SQLReservationDAO findAllPages error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find"));
         }
     }
 

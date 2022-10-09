@@ -6,11 +6,11 @@ import java.util.ResourceBundle;
 /**
  * Class for receiving text messages
  */
-public class MessageManger {
+public class MessageManager {
     private static final String RESOURCE_NAME = "pageMessage";
     private static ResourceBundle resourceBundle;
 
-    public MessageManger(Locale locale) {
+    public MessageManager(Locale locale) {
         resourceBundle = ResourceBundle.getBundle(RESOURCE_NAME, locale);
     }
 

@@ -4,7 +4,7 @@ import com.company.hotel_booking.data.dao.api.IUserDao;
 import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.exceptions.DaoException;
 import com.company.hotel_booking.exceptions.RegistrationException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.SqlManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,7 +41,7 @@ public class UserDaoImpl implements IUserDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_USER_FIND_BY_ID, this::mapRow, id);
         } catch (DataAccessException e) {
             log.error("SQLUserDAO findById error {}", id, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.by.id") + id);
+            throw new DaoException(MessageManager.getMessage("msg.error.find.by.id") + id);
         }
     }
 
@@ -52,7 +52,7 @@ public class UserDaoImpl implements IUserDao {
             return jdbcTemplate.query(SqlManager.SQL_USER_FIND_ALL, this::mapRow);
         } catch (DataAccessException e) {
             log.error("SQLUserDAO findAll", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.all"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find.all"));
         }
     }
 
@@ -77,7 +77,7 @@ public class UserDaoImpl implements IUserDao {
             return findById(id);
         } catch (DataAccessException | NullPointerException e) {
             log.error("SQLUserDAO create error ", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.create") + user);
+            throw new DaoException(MessageManager.getMessage("msg.error.create") + user);
         }
     }
 
@@ -98,7 +98,7 @@ public class UserDaoImpl implements IUserDao {
             return findById(user.getId());
         } catch (DataAccessException e) {
             log.error("SQLUserDAO update error. Failed to update user {}", user);
-            throw new DaoException(MessageManger.getMessage("msg.error.update") + user);
+            throw new DaoException(MessageManager.getMessage("msg.error.update") + user);
         }
     }
 
@@ -109,7 +109,7 @@ public class UserDaoImpl implements IUserDao {
             return jdbcTemplate.update(SqlManager.SQL_USER_DELETE, id) == 1;
         } catch (DataAccessException e) {
             log.error("SQLUserDAO delete error {}", id, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.delete") + id);
+            throw new DaoException(MessageManager.getMessage("msg.error.delete") + id);
         }
     }
 
@@ -120,7 +120,7 @@ public class UserDaoImpl implements IUserDao {
             return jdbcTemplate.query(SqlManager.SQL_USER_PAGE, this::mapRow, limit, offset);
         } catch (DataAccessException e) {
             log.error("SQLUserDAO findAllPages error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find"));
         }
     }
 
@@ -131,7 +131,7 @@ public class UserDaoImpl implements IUserDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_USER_COUNT_USERS, Long.class);
         } catch (DataAccessException e) {
             log.error("SQLUserDAO findRowCount error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.count"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find.count"));
         }
     }
 
@@ -142,7 +142,7 @@ public class UserDaoImpl implements IUserDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_USER_FIND_BY_EMAIL, this::mapRow, email);
         } catch (DataAccessException e) {
             log.error("SQLUserDAO findUserByEmail error {}", email, e);
-            throw new RegistrationException(MessageManger.getMessage("msg.error.find"));
+            throw new RegistrationException(MessageManager.getMessage("msg.error.find"));
         }
     }
 

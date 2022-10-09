@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.command.impl.reservations;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class UpdateReservationCommand implements ICommand {
         String status = req.getParameter("status").toUpperCase();
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status));
         ReservationDto updated = service.update(reservation);
-        req.setAttribute("message", MessageManger.getMessage("msg.reservation.updated"));
+        req.setAttribute("message", MessageManager.getMessage("msg.reservation.updated"));
         return "redirect:controller?command=reservation&id=" + updated.getId();
     }
 }

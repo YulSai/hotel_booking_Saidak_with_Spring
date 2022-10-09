@@ -6,7 +6,7 @@ import com.company.hotel_booking.data.dao.api.IRoomDao;
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.IReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
@@ -39,7 +39,7 @@ public class ReservationServiceImpl implements IReservationService {
         Reservation reservation = reservationDao.findById(id);
         if (reservation == null) {
             log.error("SQLReservationService findById error. id = {}", id);
-            throw new ServiceException(MessageManger.getMessage("msg.empty") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.empty") + id);
         }
         return mapper.toDto(reservation);
     }
@@ -104,7 +104,7 @@ public class ReservationServiceImpl implements IReservationService {
         reservationDao.delete(id);
         if (!reservationDao.delete(id)) {
             log.error("SQLReservationService deleted error. Failed to delete reservation with id = {}", id);
-            throw new ServiceException(MessageManger.getMessage("msg.error.delete") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
         }
     }
 

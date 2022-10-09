@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.command.impl.rooms;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
@@ -27,14 +27,14 @@ public class RoomsSearchAvailableCommand implements ICommand {
         LocalDate checkIn = LocalDate.parse(req.getParameter("check_in"));
         LocalDate checkOut = LocalDate.parse(req.getParameter("check_out"));
         if (checkOut.equals(checkIn) | checkOut.isBefore(checkIn)) {
-            req.setAttribute("message", MessageManger.getMessage("msg.incorrect.date"));
+            req.setAttribute("message", MessageManager.getMessage("msg.incorrect.date"));
             return PagesManager.PAGE_SEARCH_AVAILABLE_ROOMS;
         } else {
             String type = req.getParameter("type");
             String capacity = req.getParameter("capacity");
             List<RoomDto> roomsAvailable = roomService.findAvailableRooms(checkIn, checkOut, type, capacity);
             if (roomsAvailable.isEmpty()) {
-                req.setAttribute("message", MessageManger.getMessage("msg.search.no.available.rooms"));
+                req.setAttribute("message", MessageManager.getMessage("msg.search.no.available.rooms"));
             }
             session.setAttribute("rooms_available", roomsAvailable);
             session.setAttribute("check_in", checkIn);

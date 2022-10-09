@@ -1,7 +1,7 @@
 package com.company.hotel_booking.service.validators;
 
 import com.company.hotel_booking.exceptions.RegistrationException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.dto.UserDto;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserValidatorTest {
 
-    private final MessageManger messageManger = new MessageManger(Locale.UK);
+    private final MessageManager messageManger = new MessageManager(Locale.UK);
     private final UserValidator userValidator = new UserValidator();
 
     @Test

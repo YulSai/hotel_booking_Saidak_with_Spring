@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.command.impl.rooms;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class UpdateRoomCommand implements ICommand {
     public String execute(HttpServletRequest req) {
         RoomDto room = getRoomFromInput(req);
         RoomDto updated = service.update(room);
-        req.setAttribute("message", MessageManger.getMessage("msg.room.updated"));
+        req.setAttribute("message", MessageManager.getMessage("msg.room.updated"));
         return "redirect:controller?command=room&id=" + updated.getId();
     }
 

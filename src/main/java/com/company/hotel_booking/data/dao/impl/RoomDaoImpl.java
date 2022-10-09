@@ -3,7 +3,7 @@ package com.company.hotel_booking.data.dao.impl;
 import com.company.hotel_booking.data.dao.api.IRoomDao;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.exceptions.DaoException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.SqlManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,7 +41,7 @@ public class RoomDaoImpl implements IRoomDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_ROOM_FIND_BY_ID, this::mapRow, id);
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findById error id = {}", id, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.by.id") + id);
+            throw new DaoException(MessageManager.getMessage("msg.error.find.by.id") + id);
         }
     }
 
@@ -51,7 +51,7 @@ public class RoomDaoImpl implements IRoomDao {
             return jdbcTemplate.query(SqlManager.SQL_ROOM_FIND_ALL, this::mapRow);
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findAll", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.all"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find.all"));
         }
     }
 
@@ -74,7 +74,7 @@ public class RoomDaoImpl implements IRoomDao {
             return findById(id);
         } catch (DataAccessException | NullPointerException e) {
             log.error("SQLRoomDAO create error new room = {}", room, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.create") + room);
+            throw new DaoException(MessageManager.getMessage("msg.error.create") + room);
         }
     }
 
@@ -93,7 +93,7 @@ public class RoomDaoImpl implements IRoomDao {
             return findById(room.getId());
         } catch (DataAccessException e) {
             log.error("Command update can't be executed");
-            throw new DaoException(MessageManger.getMessage("msg.error.command") + room);
+            throw new DaoException(MessageManager.getMessage("msg.error.command") + room);
         }
 
     }
@@ -105,7 +105,7 @@ public class RoomDaoImpl implements IRoomDao {
             return jdbcTemplate.update(SqlManager.SQL_ROOM_DELETE, id) == 1;
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO delete error id  = {}", id, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.delete") + id);
+            throw new DaoException(MessageManager.getMessage("msg.error.delete") + id);
         }
     }
 
@@ -116,7 +116,7 @@ public class RoomDaoImpl implements IRoomDao {
             return jdbcTemplate.query(SqlManager.SQL_ROOM_PAGE, this::mapRow, limit, offset);
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findAllPages error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find"));
         }
     }
 
@@ -127,7 +127,7 @@ public class RoomDaoImpl implements IRoomDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_ROOM_COUNT_ROOMS, Long.class);
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findRowCount error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find.count"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find.count"));
         }
     }
 
@@ -137,7 +137,7 @@ public class RoomDaoImpl implements IRoomDao {
             return jdbcTemplate.queryForObject(SqlManager.SQL_ROOM_FIND_BY_NUMBER, this::mapRow, number);
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findRoomByNumber error number = {}", number, e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find") + number);
+            throw new DaoException(MessageManager.getMessage("msg.error.find") + number);
         }
     }
 
@@ -150,7 +150,7 @@ public class RoomDaoImpl implements IRoomDao {
                     java.sql.Date.valueOf(check_in), java.sql.Date.valueOf(check_out));
         } catch (DataAccessException e) {
             log.error("SQLRoomDAO findAllAvailableRooms error", e);
-            throw new DaoException(MessageManger.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.error.find"));
         }
     }
 

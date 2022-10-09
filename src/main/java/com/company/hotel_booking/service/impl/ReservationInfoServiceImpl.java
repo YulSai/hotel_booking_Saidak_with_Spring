@@ -5,7 +5,7 @@ import com.company.hotel_booking.data.dao.api.IReservationInfoDao;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.IReservationInfoService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
@@ -33,7 +33,7 @@ public class ReservationInfoServiceImpl implements IReservationInfoService {
         ReservationInfo reservationInfo = reservationInfoDao.findById(id);
         if (reservationInfo == null) {
             log.error("SQLUserService findById error. No with id = {}", id);
-            throw new ServiceException(MessageManger.getMessage("msg.error.find") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
         }
         return mapper.toDto(reservationInfo);
     }

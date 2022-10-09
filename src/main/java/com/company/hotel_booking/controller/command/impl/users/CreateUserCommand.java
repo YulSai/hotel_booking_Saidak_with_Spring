@@ -1,7 +1,7 @@
 package com.company.hotel_booking.controller.command.impl.users;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.IUserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.ServletException;
@@ -30,7 +30,7 @@ public class CreateUserCommand implements ICommand {
         UserDto created = service.create(user);
         HttpSession session = req.getSession();
         session.setAttribute("user", created);
-        req.setAttribute("message", MessageManger.getMessage("msg.user.created"));
+        req.setAttribute("message", MessageManager.getMessage("msg.user.created"));
         return "redirect:controller?command=user&id=" + created.getId();
     }
 

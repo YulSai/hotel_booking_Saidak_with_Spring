@@ -5,7 +5,7 @@ import com.company.hotel_booking.data.dao.api.IRoomDao;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManger;
+import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.IRoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class RoomServiceImpl implements IRoomService {
         Room room = roomDao.findById(id);
         if (room == null) {
             log.error("SQLUserService findById error. No room with id = {}", id);
-            throw new ServiceException(MessageManger.getMessage("msg.error.find") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
         }
         return mapper.toDto(room);
     }
@@ -50,7 +50,7 @@ public class RoomServiceImpl implements IRoomService {
         Room existing = roomDao.findRoomByNumber(roomDto.getNumber());
         if (existing != null) {
             log.error("Room with number = {} already exists", roomDto.getNumber());
-            throw new ServiceException(MessageManger.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
         }
         return mapper.toDto(roomDao.save(mapper.toEntity(roomDto)));
     }
@@ -61,7 +61,7 @@ public class RoomServiceImpl implements IRoomService {
         Room existing = roomDao.findRoomByNumber((roomDto.getNumber()));
         if (existing != null && !existing.getId().equals(roomDto.getId())) {
             log.error("Room with number = {} already exists", roomDto.getNumber());
-            throw new ServiceException(MessageManger.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
         }
         return mapper.toDto(roomDao.update(mapper.toEntity(roomDto)));
     }
@@ -72,7 +72,7 @@ public class RoomServiceImpl implements IRoomService {
         roomDao.delete(id);
         if (!roomDao.delete(id)) {
             log.error("SQLRoomService deleted error. Failed to delete room with id = {}", id);
-            throw new ServiceException(MessageManger.getMessage("msg.error.delete") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
         }
     }
 
