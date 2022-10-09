@@ -12,14 +12,31 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan
 @PropertySource("classpath:application.properties")
+@EnableTransactionManagement
 @Log4j2
 public class ContextConfiguration {
+
+    @Bean
+    public EntityManagerFactory entityManagerFactory(){
+        return Persistence.createEntityManagerFactory("hotelBooking");
+    }
+
+    @Bean
+    public TransactionManager transactionManager(){
+        return new JpaTransactionManager(entityManagerFactory());
+    }
+
     @Bean
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
