@@ -1,7 +1,7 @@
 package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.controller.command.util.Paging;
-import com.company.hotel_booking.data.dao.api.IUserDao;
+import com.company.hotel_booking.data.repository.api.UserRepository;
 import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.LoginUserException;
@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
-    private final IUserDao userDao;
+    private final UserRepository userDao;
     private final DigestUtil digestUtil;
     private final UserValidator userValidator;
     private final ObjectMapper mapper;
@@ -58,13 +58,13 @@ public class UserServiceImpl implements IUserService {
         userValidator.isValid(userDto);
         String hashPassword = digestUtil.hash(userDto.getPassword());
         userDto.setPassword(hashPassword);
-        return mapper.toDto(userDao.save(mapper.toEntity(userDto)));
+        return mapper.toDto(userDao.create(mapper.toEntity(userDto)));
     }
 
     @Override
     public UserDto update(UserDto userDto) {
         log.debug("Calling a service method update. UserDto = {}", userDto);
-        User existing = userDao.findUserByEmail(userDto.getEmail());
+        User existing = (User) userDao.findUserByEmail(userDto.getEmail());
         if (existing != null && !existing.getId().equals(userDto.getId())) {
             log.error("User with email = {} already exists", userDto.getEmail());
             throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
@@ -89,8 +89,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void delete(Long id) {
         log.debug("Calling a service method delete. UserDto id = {}", id);
-        userDao.delete(id);
-        if (!userDao.delete(id)) {
+        userDao.delete2(id);
+        if (userDao.delete2(id) != 1) {
             log.error("SQLUserService deleted error. Failed to delete user with id = {}", id);
             throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
         }
@@ -107,7 +107,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDto login(String email, String password) {
         log.debug("Calling a service method login. UserDto email = {}", email);
-        User user = userDao.findUserByEmail(email);
+        User user = (User) userDao.findUserByEmail(email);
         if (user == null) {
             log.error("SQLUserService login error. No user with email = {}", email);
             throw new LoginUserException();

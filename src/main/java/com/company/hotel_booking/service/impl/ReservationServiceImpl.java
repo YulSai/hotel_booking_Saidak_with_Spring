@@ -1,8 +1,8 @@
 package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.controller.command.util.Paging;
-import com.company.hotel_booking.data.dao.api.IReservationDao;
-import com.company.hotel_booking.data.dao.api.IRoomDao;
+import com.company.hotel_booking.data.repository.api.ReservationRepository;
+import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
@@ -29,8 +29,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements IReservationService {
 
-    private final IReservationDao reservationDao;
-    private final IRoomDao roomDao;
+    private final ReservationRepository reservationDao;
+    private final RoomRepository roomDao;
     private final ObjectMapper mapper;
 
     @Override
@@ -56,7 +56,7 @@ public class ReservationServiceImpl implements IReservationService {
         log.debug("Calling a service method create. Reservation = {}", entity);
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
 
-        return mapper.toDto(reservationDao.save(mapper.toEntity(entity)));
+        return mapper.toDto(reservationDao.create(mapper.toEntity(entity)));
     }
 
     @Override

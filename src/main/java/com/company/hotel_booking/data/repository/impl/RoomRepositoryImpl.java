@@ -1,6 +1,6 @@
-package com.company.hotel_booking.data.dao.impl;
+package com.company.hotel_booking.data.repository.impl;
 
-import com.company.hotel_booking.data.dao.api.IRoomDao;
+import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.exceptions.DaoException;
 import com.company.hotel_booking.managers.MessageManager;
@@ -30,7 +30,7 @@ import java.util.Objects;
 @Log4j2
 @Repository
 @RequiredArgsConstructor
-public class RoomDaoImpl implements IRoomDao {
+public class RoomRepositoryImpl implements RoomRepository {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -56,7 +56,7 @@ public class RoomDaoImpl implements IRoomDao {
     }
 
     @Override
-    public Room save(Room room) {
+    public Room create(Room room) {
         log.debug("Accessing the database using the create command. Room = {}", room);
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();

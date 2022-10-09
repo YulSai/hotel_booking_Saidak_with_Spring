@@ -1,7 +1,7 @@
-package com.company.hotel_booking.data.dao.impl;
+package com.company.hotel_booking.data.repository.impl;
 
-import com.company.hotel_booking.data.dao.api.IReservationInfoDao;
-import com.company.hotel_booking.data.dao.api.IRoomDao;
+import com.company.hotel_booking.data.repository.api.ReservationInfoRepository;
+import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.exceptions.DaoException;
@@ -33,9 +33,9 @@ import java.util.Objects;
 @Log4j2
 @Repository
 @RequiredArgsConstructor
-public class ReservationInfoDaoImpl implements IReservationInfoDao {
+public class ReservationInfoRepositoryImpl implements ReservationInfoRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final IRoomDao roomDao;
+    private final RoomRepository roomDao;
 
     @Override
     public ReservationInfo findById(Long id) {
@@ -60,7 +60,7 @@ public class ReservationInfoDaoImpl implements IReservationInfoDao {
     }
 
     @Override
-    public ReservationInfo save(ReservationInfo reservationInfo) {
+    public ReservationInfo create(ReservationInfo reservationInfo) {
         log.debug("Accessing the database using the save command");
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -98,7 +98,7 @@ public class ReservationInfoDaoImpl implements IReservationInfoDao {
             info.setNights(ChronoUnit.DAYS.between(checkIn, checkOut));
             info.setRoomPrice(room.getPrice());
             reservationsInfo.add(info);
-            save(info);
+            create(info);
         });
         return reservationsInfo;
     }

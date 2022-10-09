@@ -1,7 +1,7 @@
 package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.controller.command.util.Paging;
-import com.company.hotel_booking.data.dao.api.IReservationInfoDao;
+import com.company.hotel_booking.data.repository.api.ReservationInfoRepository;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
@@ -24,7 +24,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class ReservationInfoServiceImpl implements IReservationInfoService {
-    private final IReservationInfoDao reservationInfoDao;
+    private final ReservationInfoRepository reservationInfoDao;
     private final ObjectMapper mapper;
 
     @Override
@@ -49,7 +49,7 @@ public class ReservationInfoServiceImpl implements IReservationInfoService {
     @Override
     public ReservationInfoDto create(ReservationInfoDto entity) {
         log.debug("Calling a service method reate. ReservationInfo = {}", entity);
-        return mapper.toDto(reservationInfoDao.save(mapper.toEntity(entity)));
+        return mapper.toDto(reservationInfoDao.create(mapper.toEntity(entity)));
     }
 
     @Override

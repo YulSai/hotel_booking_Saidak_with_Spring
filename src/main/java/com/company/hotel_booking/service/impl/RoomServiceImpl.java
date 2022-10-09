@@ -1,7 +1,7 @@
 package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.controller.command.util.Paging;
-import com.company.hotel_booking.data.dao.api.IRoomDao;
+import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomServiceImpl implements IRoomService {
 
-    private final IRoomDao roomDao;
+    private final RoomRepository roomDao;
     private final ObjectMapper mapper;
 
     @Override
@@ -52,7 +52,7 @@ public class RoomServiceImpl implements IRoomService {
             log.error("Room with number = {} already exists", roomDto.getNumber());
             throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
         }
-        return mapper.toDto(roomDao.save(mapper.toEntity(roomDto)));
+        return mapper.toDto(roomDao.create(mapper.toEntity(roomDto)));
     }
 
     @Override

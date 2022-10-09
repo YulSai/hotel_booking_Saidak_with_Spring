@@ -1,8 +1,8 @@
-package com.company.hotel_booking.data.dao.impl;
+package com.company.hotel_booking.data.repository.impl;
 
-import com.company.hotel_booking.data.dao.api.IReservationDao;
-import com.company.hotel_booking.data.dao.api.IReservationInfoDao;
-import com.company.hotel_booking.data.dao.api.IUserDao;
+import com.company.hotel_booking.data.repository.api.ReservationRepository;
+import com.company.hotel_booking.data.repository.api.ReservationInfoRepository;
+import com.company.hotel_booking.data.repository.api.UserRepository;
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.exceptions.DaoException;
@@ -29,11 +29,11 @@ import java.util.Objects;
 @Log4j2
 @Repository
 @RequiredArgsConstructor
-public class ReservationDaoImpl implements IReservationDao {
+public class ReservationRepositoryImpl implements ReservationRepository {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final IUserDao userDao;
-    private final IReservationInfoDao reservationInfoDao;
+    private final UserRepository userDao;
+    private final ReservationInfoRepository reservationInfoDao;
 
     @Override
     public Reservation findById(Long id) {
@@ -58,7 +58,7 @@ public class ReservationDaoImpl implements IReservationDao {
     }
 
     @Override
-    public Reservation save(Reservation reservation) {
+    public Reservation create(Reservation reservation) {
         log.debug("Accessing the database using the save command");
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();

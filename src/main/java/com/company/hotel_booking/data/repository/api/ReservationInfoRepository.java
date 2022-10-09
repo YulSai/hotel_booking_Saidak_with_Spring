@@ -1,4 +1,4 @@
-package com.company.hotel_booking.data.dao.api;
+package com.company.hotel_booking.data.repository.api;
 
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.service.dto.ReservationDto;
@@ -10,7 +10,7 @@ import java.util.Map;
 /*
  * Interface extends IAbstractDao interface for managing ReservationInfo entities
  */
-public interface IReservationInfoDao extends IAbstractDao<Long, ReservationInfo> {
+public interface ReservationInfoRepository extends AbstractRepository<Long, ReservationInfo> {
 
     /**
      * Method finds ReservationInfo object in the data source by reservation id
