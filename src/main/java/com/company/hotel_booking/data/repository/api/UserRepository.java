@@ -1,4 +1,4 @@
-package com.company.hotel_booking.data.dao.api;
+package com.company.hotel_booking.data.repository.api;
 
 import com.company.hotel_booking.data.entity.User;
 
@@ -6,7 +6,7 @@ import com.company.hotel_booking.data.entity.User;
 /**
  * Interface extends IAbstractDao interface for managing User entities
  */
-public interface IUserDao extends IAbstractDao<Long, User> {
+public interface UserRepository extends AbstractRepository<Long, User> {
 
     /**
      * Method finds user in the data source by email
@@ -14,5 +14,7 @@ public interface IUserDao extends IAbstractDao<Long, User> {
      * @param email for search
      * @return user
      */
-    User findUserByEmail(String email);
+    Object findUserByEmail(String email);
+
+    int delete2(Long id);
 }

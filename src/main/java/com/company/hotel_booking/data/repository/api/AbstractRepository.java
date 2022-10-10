@@ -1,4 +1,4 @@
-package com.company.hotel_booking.data.dao.api;
+package com.company.hotel_booking.data.repository.api;
 
 import com.company.hotel_booking.exceptions.DaoException;
 
@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Interface
  */
-public interface IAbstractDao<K, T> {
+public interface AbstractRepository<K, T> {
 
     /**
      * Method finds Entity object in the data source by id
@@ -30,7 +30,7 @@ public interface IAbstractDao<K, T> {
      * @param entity Entity object to be saved
      * @return saved entity object
      */
-    T save(T entity);
+    T create(T entity);
 
 
     /**

@@ -81,22 +81,9 @@ public class SqlManager {
             "ORDER BY r.room_number LIMIT ? OFFSET ?";
 
     // User
-    public static final String SQL_USER_FIND_BY_ID = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, " +
-            "u.phone_number, r.name AS role, u.avatar FROM users u JOIN roles r ON u.role_id = r.id WHERE u.id = ? " +
-            "AND u.deleted = false";
-    public static final String SQL_USER_FIND_ALL = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, " +
-            "u.phone_number, r.name AS role, u.avatar FROM users u JOIN roles r ON u.role_id = r.id WHERE u.deleted = false";
-    public static final String SQL_USER_CREATE = "INSERT INTO users (first_name, last_name, email, password, " +
-            "phone_number, role_id, avatar) VALUES (?, ?, ?, ?, ?, (SELECT id FROM roles r WHERE r.name = ?), ?)";
-    public static final String SQL_USER_UPDATE = "UPDATE users u SET first_name = ?, last_name = ?, email = ?, " +
-            "password = ?, phone_number = ?, role_id = (SELECT id FROM roles r WHERE r.name = ?) , avatar = ?" +
-            "WHERE u.id = ? AND u.deleted = false";
-    public static final String SQL_USER_DELETE = "UPDATE users SET deleted = true WHERE id = ?";
-    public static final String SQL_USER_FIND_BY_EMAIL = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, " +
-            "u.phone_number, r.name AS role, u.avatar FROM users u JOIN roles r ON u.role_id = r.id WHERE u.email = ? " +
-            "AND u.deleted = false";
-    public static final String SQL_USER_COUNT_USERS = "SELECT COUNT(*) AS total FROM users WHERE deleted = false";
-    public static final String SQL_USER_PAGE = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, " +
-            "u.phone_number, r.name AS role, u.avatar FROM users u JOIN roles r ON u.role_id = r.id WHERE u.deleted = false " +
-            "ORDER BY last_name LIMIT ? OFFSET ?";
+    public static final String SQL_USER_FIND_ALL = "from User";
+    public static final String SQL_USER_DELETE = "update User SET deleted = true where id = :id";
+    public static final String SQL_USER_FIND_BY_EMAIL = "from User where email = :email";
+    public static final String SQL_USER_COUNT_USERS = "select count(*) from User";
+    public static final String SQL_USER_PAGE = "from User ORDER BY last_name";
 }
