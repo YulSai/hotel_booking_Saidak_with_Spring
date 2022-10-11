@@ -3,7 +3,6 @@ package com.company.hotel_booking.data.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Where;
 
@@ -23,7 +22,6 @@ import java.util.Objects;
  */
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Entity
 @Table(name = "rooms")
@@ -101,18 +99,6 @@ public class Room {
         }
     }
 
-//    public Room() {
-//    }
-//
-//    public Room(Long id, String number, RoomType type, Capacity capacity, BigDecimal price, RoomStatus status) {
-//        this.id = id;
-//        this.number = number;
-//        this.type = type;
-//        this.capacity = capacity;
-//        this.price = price;
-//        this.status = status;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -124,5 +110,18 @@ public class Room {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", type=" + type +
+                ", capacity=" + capacity +
+                ", price=" + price +
+                ", status=" + status +
+                ", reservationInfo=" + reservationInfo.getId() +
+                '}';
     }
 }
