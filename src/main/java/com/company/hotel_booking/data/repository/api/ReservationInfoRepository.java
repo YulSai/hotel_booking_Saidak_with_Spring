@@ -13,13 +13,6 @@ import java.util.Map;
 public interface ReservationInfoRepository extends AbstractRepository<Long, ReservationInfo> {
 
     /**
-     * Method finds ReservationInfo object in the data source by reservation id
-     *
-     * @param id reservation id
-     */
-    List<ReservationInfo> findByReservationId(Long id);
-
-    /**
      * Method processes information about booking
      *
      * @param booking     Map collection with booking data
