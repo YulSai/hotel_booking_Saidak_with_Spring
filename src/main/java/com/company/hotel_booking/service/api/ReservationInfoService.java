@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Interface for serving reservationInfo objects according to the business logics of reservation
  */
-public interface IReservationInfoService extends IAbstractService<Long, ReservationInfoDto> {
+public interface ReservationInfoService extends AbstractService<Long, ReservationInfoDto> {
 
     /**
      * Method processes information about booking

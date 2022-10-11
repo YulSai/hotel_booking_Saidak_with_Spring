@@ -3,7 +3,7 @@ package com.company.hotel_booking.controller.command.impl.rooms;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
-import com.company.hotel_booking.service.api.IRoomService;
+import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,7 +19,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class RoomsSearchAvailableCommand implements ICommand {
-    private final IRoomService roomService;
+    private final RoomService roomService;
 
     @Override
     public String execute(HttpServletRequest req) {

@@ -2,7 +2,7 @@ package com.company.hotel_booking.controller.command.impl.rooms;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
-import com.company.hotel_booking.service.api.IRoomService;
+import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Controller
 @RequiredArgsConstructor
 public class UpdateRoomCommand implements ICommand {
-    private final IRoomService service;
+    private final RoomService service;
 
     @Override
     public String execute(HttpServletRequest req) {

@@ -3,7 +3,7 @@ package com.company.hotel_booking.controller.command.impl.rooms;
 import com.company.hotel_booking.exceptions.NotFoundException;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.PagesManager;
-import com.company.hotel_booking.service.api.IRoomService;
+import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 @Controller
 @RequiredArgsConstructor
 public class RoomCommand implements ICommand {
-    private final IRoomService service;
+    private final RoomService service;
 
     @Override
     public String execute(HttpServletRequest req) {

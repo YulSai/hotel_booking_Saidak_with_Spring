@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Interface
  */
-public interface IAbstractService<K, T> {
+public interface AbstractService<K, T> {
     /**
      * Method finds Dto object by id
      *
