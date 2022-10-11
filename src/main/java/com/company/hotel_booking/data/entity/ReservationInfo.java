@@ -34,8 +34,7 @@ public class ReservationInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
     @OneToOne(cascade = CascadeType.REFRESH)

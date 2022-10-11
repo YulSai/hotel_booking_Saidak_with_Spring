@@ -1,6 +1,6 @@
 package com.company.hotel_booking.data.repository.impl;
 
-import com.company.hotel_booking.data.mapper.ObjectMapper;
+import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.data.repository.api.ReservationInfoRepository;
 import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.ReservationInfo;
@@ -73,7 +73,6 @@ public class ReservationInfoRepositoryImpl implements ReservationInfoRepository 
     }
 
     @Override
-    @Transactional
     public List<ReservationInfo> processBookingInfo(Map<Long, Long> booking, LocalDate checkIn,
                                                     LocalDate checkOut, ReservationDto reservation) {
         log.debug("Accessing the database using the processBookingInfo command");
@@ -91,6 +90,19 @@ public class ReservationInfoRepositoryImpl implements ReservationInfoRepository 
             create(info);
         });
         return reservationsInfo;
+    }
+
+    @Override
+    public List<ReservationInfo> findByReservationId(Long id) {
+        log.debug("Accessing the database using the findByReservationId command");
+        try {
+            return entityManager.createQuery(SqlManager.SQL_RESERVATION_INFO_FIND_BY_RESERVATION_ID, ReservationInfo.class)
+                    .setParameter("id", id)
+                    .getResultList();
+        } catch (HibernateException e) {
+            log.error("SQLReservationInfoDAO findByReservationId", e);
+            throw new DaoException(MessageManager.getMessage("msg.error.find"));
+        }
     }
 
 

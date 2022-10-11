@@ -3,7 +3,7 @@ package com.company.hotel_booking.service.impl;
 import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.data.repository.api.ReservationInfoRepository;
 import com.company.hotel_booking.data.entity.ReservationInfo;
-import com.company.hotel_booking.data.mapper.ObjectMapper;
+import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationInfoService;
@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -47,12 +48,14 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     }
 
     @Override
+    @Transactional
     public ReservationInfoDto create(ReservationInfoDto entity) {
         log.debug("Calling a service method create. ReservationInfo = {}", entity);
         return mapper.toDto(reservationInfoRepository.create(mapper.toEntity(entity)));
     }
 
     @Override
+    @Transactional
     public List<ReservationInfoDto> processBookingInfo(Map<Long, Long> booking, LocalDate checkIn,
                                                        LocalDate checkOut, ReservationDto reservation) {
         log.debug("Calling a service method processBookingInfo");

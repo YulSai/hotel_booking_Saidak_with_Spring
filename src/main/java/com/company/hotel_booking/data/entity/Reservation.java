@@ -46,7 +46,8 @@ public class Reservation {
     @Column(name = "status_id")
     private Status status;
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "reservation", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
+            fetch = FetchType.EAGER)
     List<ReservationInfo> details;
 
     public enum Status {

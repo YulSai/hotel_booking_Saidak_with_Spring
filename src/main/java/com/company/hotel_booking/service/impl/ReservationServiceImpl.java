@@ -4,7 +4,7 @@ import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.data.repository.api.ReservationRepository;
 import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.Reservation;
-import com.company.hotel_booking.data.mapper.ObjectMapper;
+import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationService;
@@ -53,15 +53,15 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
     public ReservationDto create(ReservationDto entity) {
         log.debug("Calling a service method create. Reservation = {}", entity);
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
-
         return mapper.toDto(reservationRepository.create(mapper.toEntity(entity)));
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ReservationDto processBooking(Map<Long, Long> booking, UserDto user, LocalDate checkIn,
                                          LocalDate checkOut) {
         ReservationDto reservation = new ReservationDto();

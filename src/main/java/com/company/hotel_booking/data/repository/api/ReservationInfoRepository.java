@@ -23,4 +23,11 @@ public interface ReservationInfoRepository extends AbstractRepository<Long, Rese
      */
     List<ReservationInfo> processBookingInfo(Map<Long, Long> booking, LocalDate checkIn,
                                              LocalDate checkOut, ReservationDto reservation);
+
+    /**
+     * Method finds ReservationInfo object in the data source by reservation id
+     *
+     * @param id reservation id
+     */
+    List<ReservationInfo> findByReservationId(Long id);
 }

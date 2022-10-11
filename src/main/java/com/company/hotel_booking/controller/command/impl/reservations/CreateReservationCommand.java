@@ -3,7 +3,6 @@ package com.company.hotel_booking.controller.command.impl.reservations;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
-import com.company.hotel_booking.service.api.ReservationInfoService;
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
@@ -22,7 +21,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CreateReservationCommand implements ICommand {
     private final ReservationService reservationService;
-    private final ReservationInfoService reservationInfoService;
 
     @Override
     public String execute(HttpServletRequest req) {
@@ -38,7 +36,10 @@ public class CreateReservationCommand implements ICommand {
             Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
             ReservationDto processed = reservationService.processBooking(booking, user, checkIn, checkOut);
             ReservationDto created = reservationService.create(processed);
-            reservationInfoService.processBookingInfo(booking, checkIn, checkOut, created);
+            System.out.println("++++++++++++++++++++++++++++++++");
+            System.out.println(created.toString());
+            System.out.println("++++++++++++++++++++++++++++++++");
+          //  reservationInfoService.processBookingInfo(booking, checkIn, checkOut, created);
             req.getSession().removeAttribute("booking");
             req.setAttribute("message", MessageManager.getMessage("msg.reservation.created"));
             return "redirect:controller?command=reservation&id=" + created.getId();
