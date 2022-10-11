@@ -3,16 +3,18 @@ package com.company.hotel_booking.data.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,7 +22,6 @@ import java.util.Objects;
  */
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Entity
 @Table(name = "users")
@@ -53,6 +54,9 @@ public class User {
     @Column(name = "avatar")
     private String avatar;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REFRESH)
+    private List<Reservation> reservations;
+
     public enum Role {
         ADMIN (1L),
         CLIENT (2L),
@@ -80,5 +84,19 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", role=" + role +
+                ", avatar='" + avatar + '\'' +
+                '}';
     }
 }

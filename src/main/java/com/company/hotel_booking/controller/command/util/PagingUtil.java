@@ -1,6 +1,6 @@
 package com.company.hotel_booking.controller.command.util;
 
-import com.company.hotel_booking.service.api.IAbstractService;
+import com.company.hotel_booking.service.api.AbstractService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +46,7 @@ public class PagingUtil {
      * @param paging  object Paging
      * @param service instance of object IAbstractService
      */
-    public void setTotalPages(HttpServletRequest req, Paging paging, IAbstractService service) {
+    public void setTotalPages(HttpServletRequest req, Paging paging, AbstractService service) {
         long totalEntities = service.countRow();
         long totalPages = getTotalPages(totalEntities, paging.getLimit());
         String command = req.getParameter("command");

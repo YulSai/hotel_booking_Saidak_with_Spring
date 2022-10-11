@@ -74,12 +74,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean delete(Long id) {
-        return false;
-    }
-
-    @Override
-    public int delete2(Long id) {
+    public int delete(Long id) {
         log.debug("Accessing the database using the delete command. User's id = {}", id);
         try {
             return entityManager.createQuery(SqlManager.SQL_USER_DELETE).setParameter("id", id).executeUpdate();
@@ -126,6 +121,17 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (HibernateException e) {
             log.error("SQLUserDAO findUserByEmail error {}", email, e);
             throw new RegistrationException(MessageManager.getMessage("msg.error.find"));
+        }
+    }
+
+    @Override
+    public int block(Long id) {
+        log.debug("Accessing the database using the update command. User's id = {}", id);
+        try {
+           return entityManager.createQuery(SqlManager.SQL_USER_BLOCK).setParameter("id", id).executeUpdate();
+        } catch (HibernateException e) {
+            log.error("SQLUserDAO update error. Failed to update user {}", id);
+            throw new DaoException(MessageManager.getMessage("msg.error.update") + id);
         }
     }
 }

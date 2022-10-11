@@ -4,21 +4,22 @@ import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.data.entity.User;
+import com.company.hotel_booking.data.repository.api.ReservationRepository;
 import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.service.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Log4j2
 @Component
+@RequiredArgsConstructor
 public class ObjectMapper {
+    private final ReservationRepository reservationRepository;
 
     /**
      * Method transforms object User into object UserDto
@@ -125,13 +126,7 @@ public class ObjectMapper {
             dto.setUser(toDto(entity.getUser()));
             dto.setTotalCost(entity.getTotalCost());
             dto.setStatus(ReservationDto.StatusDto.valueOf(entity.getStatus().toString()));
-            List<ReservationInfoDto> reservationInfoDto = new ArrayList<>();
-            List<ReservationInfo> reservationInfo = entity.getDetails();
-            for (ReservationInfo info : reservationInfo) {
-                ReservationInfoDto resDto = toDto(info);
-                reservationInfoDto.add(resDto);
-            }
-            dto.setDetails(reservationInfoDto);
+            dto.setDetails(entity.getDetails().stream().map(this::toDto).toList());
         } catch (NullPointerException e) {
             log.error("This reservation is not in the catalog.");
             throw new ServiceException(MessageManager.getMessage("msg.empty"));
@@ -153,6 +148,7 @@ public class ObjectMapper {
             entity.setUser(toEntity(dto.getUser()));
             entity.setTotalCost(dto.getTotalCost());
             entity.setStatus(Reservation.Status.valueOf(dto.getStatus().toString()));
+            entity.setDetails(dto.getDetails().stream().map(this::toEntity).toList());
         } catch (NullPointerException e) {
             log.error("This reservation is not in the catalog.");
             throw new ServiceException(MessageManager.getMessage("msg.empty"));
@@ -171,7 +167,7 @@ public class ObjectMapper {
         ReservationInfoDto dto = new ReservationInfoDto();
         try {
             dto.setId(entity.getId());
-            dto.setReservationId(entity.getReservationId());
+            dto.setReservationId(entity.getReservation().getId());
             dto.setRoom(toDto(entity.getRoom()));
             dto.setCheckIn(entity.getCheckIn());
             dto.setCheckOut(entity.getCheckOut());
@@ -195,7 +191,7 @@ public class ObjectMapper {
         ReservationInfo entity = new ReservationInfo();
         try {
             entity.setId(dto.getId());
-            entity.setReservationId(dto.getReservationId());
+            entity.setReservation(reservationRepository.findById(dto.getReservationId()));
             entity.setRoom(toEntity(dto.getRoom()));
             entity.setCheckIn(dto.getCheckIn());
             entity.setCheckOut(dto.getCheckOut());

@@ -16,5 +16,11 @@ public interface UserRepository extends AbstractRepository<Long, User> {
      */
     Object findUserByEmail(String email);
 
-    int delete2(Long id);
+    /**
+     * Method is used for saving updating Entity objects with status Block in the data source
+     *
+     * @param id user id
+     * @return updated entity object
+     */
+    int block(Long id);
 }
