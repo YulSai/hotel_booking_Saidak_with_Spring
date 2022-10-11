@@ -127,11 +127,9 @@ public class RoomRepositoryImpl implements RoomRepository {
     public List<Room> findAvailableRooms(LocalDate check_in, LocalDate check_out, String type, String capacity) {
         log.debug("Accessing the database using the findAvailableRooms command");
         try {
-            Long tId = Room.RoomType.valueOf(type.toUpperCase()).getId();
-            Long cId = Room.Capacity.valueOf(capacity.toUpperCase()).getId();
             return entityManager.createNativeQuery(SqlManager.SQL_ROOM_FIND_AVAILABLE_ROOMS, Room.class)
-                    .setParameter(1, tId)
-                    .setParameter(2, cId)
+                    .setParameter(1, Room.RoomType.valueOf(type.toUpperCase()).getId())
+                    .setParameter(2, Room.Capacity.valueOf(capacity.toUpperCase()).getId())
                     .setParameter(3, Date.valueOf(check_in))
                     .setParameter(4, Date.valueOf(check_out))
                     .setParameter(5, Date.valueOf(check_in))

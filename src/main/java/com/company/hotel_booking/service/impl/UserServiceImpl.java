@@ -4,7 +4,7 @@ import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.data.repository.api.ReservationRepository;
 import com.company.hotel_booking.data.repository.api.UserRepository;
 import com.company.hotel_booking.data.entity.User;
-import com.company.hotel_booking.data.mapper.ObjectMapper;
+import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.LoginUserException;
 import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManager;

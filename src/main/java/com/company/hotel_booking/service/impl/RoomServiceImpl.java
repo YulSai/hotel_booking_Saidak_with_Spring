@@ -3,7 +3,7 @@ package com.company.hotel_booking.service.impl;
 import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.Room;
-import com.company.hotel_booking.data.mapper.ObjectMapper;
+import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.RoomService;
