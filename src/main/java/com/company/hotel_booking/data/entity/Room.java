@@ -1,49 +1,128 @@
 package com.company.hotel_booking.data.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Where;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Class describing the object Room
  */
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@Entity
+@Table(name = "rooms")
+@Where(clause = "deleted = false")
 public class Room {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "room_number")
     private String number;
+
+    @Column(name = "room_type_id")
     private RoomType type;
+
+    @Column(name = "room_capacity_id")
     private Capacity capacity;
+
+    @Column(name = "price")
     private BigDecimal price;
+
+    @Column(name = "room_status_id")
     private RoomStatus status;
 
+    @OneToOne(mappedBy = "room", cascade = CascadeType.REFRESH)
+    private ReservationInfo reservationInfo;
+
     public enum RoomStatus {
-        AVAILABLE,
-        UNAVAILABLE
+        AVAILABLE(1L),
+        UNAVAILABLE(2L);
+
+        private final Long id;
+
+        public Long getId() {
+            return id;
+        }
+
+        RoomStatus(Long id) {
+            this.id = id;
+        }
     }
 
     public enum RoomType {
-        STANDARD,
-        COMFORT,
-        LUX,
-        PRESIDENT
+        STANDARD(1L),
+        COMFORT(2L),
+        LUX(3L),
+        PRESIDENT(4L);
+
+        private final Long id;
+
+        public Long getId() {
+            return id;
+        }
+
+        RoomType(Long id) {
+            this.id = id;
+        }
     }
 
     public enum Capacity {
-        SINGLE,
-        DOUBLE,
-        TRIPLE,
-        FAMILY
+        SINGLE(1L),
+        DOUBLE(2L),
+        TRIPLE(3L),
+        FAMILY(4L);
+
+        private final Long id;
+
+        public Long getId() {
+            return id;
+        }
+
+        Capacity(Long id) {
+            this.id = id;
+        }
     }
 
-    public Room() {
+//    public Room() {
+//    }
+//
+//    public Room(Long id, String number, RoomType type, Capacity capacity, BigDecimal price, RoomStatus status) {
+//        this.id = id;
+//        this.number = number;
+//        this.type = type;
+//        this.capacity = capacity;
+//        this.price = price;
+//        this.status = status;
+//    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Room room = (Room) o;
+        return id != null && Objects.equals(id, room.id);
     }
 
-    public Room(Long id, String number, RoomType type, Capacity capacity, BigDecimal price, RoomStatus status) {
-        this.id = id;
-        this.number = number;
-        this.type = type;
-        this.capacity = capacity;
-        this.price = price;
-        this.status = status;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

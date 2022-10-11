@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Interface for serving Room objects according to the business logics of Room
  */
-public interface IRoomService extends IAbstractService<Long, RoomDto> {
+public interface RoomService extends AbstractService<Long, RoomDto> {
     /**
      * Method gets list of an available Rooms limited by time period
      *

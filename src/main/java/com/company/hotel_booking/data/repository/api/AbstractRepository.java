@@ -45,9 +45,9 @@ public interface AbstractRepository<K, T> {
      * Method is used for "soft" deleting Entity objects in the data source
      *
      * @param id Object id to be "soft" deleted
-     * @return true/false
+     * @return 1/0
      */
-    boolean delete(K id);
+    int delete(K id);
 
     /**
      * Method gets list of objects starting from begin position in the table

@@ -6,7 +6,7 @@ import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.data.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
 import com.company.hotel_booking.managers.MessageManager;
-import com.company.hotel_booking.service.api.IRoomService;
+import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,15 +21,15 @@ import java.util.List;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class RoomServiceImpl implements IRoomService {
+public class RoomServiceImpl implements RoomService {
 
-    private final RoomRepository roomDao;
+    private final RoomRepository roomRepository;
     private final ObjectMapper mapper;
 
     @Override
     public RoomDto findById(Long id) {
         log.debug("Calling a service method findById. RoomDto id = {}", id);
-        Room room = roomDao.findById(id);
+        Room room = roomRepository.findById(id);
         if (room == null) {
             log.error("SQLUserService findById error. No room with id = {}", id);
             throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
@@ -39,7 +39,7 @@ public class RoomServiceImpl implements IRoomService {
 
     public List<RoomDto> findAll() {
         log.debug("Calling a service method findAll");
-        return roomDao.findAll().stream()
+        return roomRepository.findAll().stream()
                 .map(mapper::toDto)
                 .toList();
     }
@@ -47,30 +47,30 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public RoomDto create(RoomDto roomDto) {
         log.debug("Calling a service method create. RoomDto = {}", roomDto);
-        Room existing = roomDao.findRoomByNumber(roomDto.getNumber());
+        Room existing = roomRepository.findRoomByNumber(roomDto.getNumber());
         if (existing != null) {
             log.error("Room with number = {} already exists", roomDto.getNumber());
             throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
         }
-        return mapper.toDto(roomDao.create(mapper.toEntity(roomDto)));
+        return mapper.toDto(roomRepository.create(mapper.toEntity(roomDto)));
     }
 
     @Override
     public RoomDto update(RoomDto roomDto) {
         log.debug("Calling a service method update. RoomDto = {}", roomDto);
-        Room existing = roomDao.findRoomByNumber((roomDto.getNumber()));
+        Room existing = roomRepository.findRoomByNumber((roomDto.getNumber()));
         if (existing != null && !existing.getId().equals(roomDto.getId())) {
             log.error("Room with number = {} already exists", roomDto.getNumber());
             throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
         }
-        return mapper.toDto(roomDao.update(mapper.toEntity(roomDto)));
+        return mapper.toDto(roomRepository.update(mapper.toEntity(roomDto)));
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Calling a service method delete. RoomDto id = {}", id);
-        roomDao.delete(id);
-        if (!roomDao.delete(id)) {
+        roomRepository.delete(id);
+        if (roomRepository.delete(id) != 1) {
             log.error("SQLRoomService deleted error. Failed to delete room with id = {}", id);
             throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
         }
@@ -79,7 +79,7 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public List<RoomDto> findAllPages(Paging paging) {
         log.debug("Calling a service method findAllPages");
-        return roomDao.findAllPages(paging.getLimit(), paging.getOffset()).stream()
+        return roomRepository.findAllPages(paging.getLimit(), paging.getOffset()).stream()
                 .map(mapper::toDto)
                 .toList();
     }
@@ -87,13 +87,13 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public long countRow() {
         log.debug("Calling a service method countRow");
-        return roomDao.countRow();
+        return roomRepository.countRow();
     }
 
     @Override
     public List<RoomDto> findAvailableRooms(LocalDate check_in, LocalDate check_out, String type, String capacity) {
         log.debug("Calling a service method findAvailableRooms");
-        return roomDao.findAvailableRooms(check_in, check_out, type, capacity).stream()
+        return roomRepository.findAvailableRooms(check_in, check_out, type, capacity).stream()
                 .map(mapper::toDto)
                 .toList();
     }
