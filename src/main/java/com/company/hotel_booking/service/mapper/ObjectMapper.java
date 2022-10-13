@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for converting dto to entity
+ */
 @Log4j2
 @Component
 @RequiredArgsConstructor

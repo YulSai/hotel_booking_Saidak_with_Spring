@@ -6,6 +6,9 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+/**
+ * Class for mapping an enum Role of user value to its database representation
+ */
 @Converter(autoApply = true)
 public class RoleConverter implements AttributeConverter<User.Role, Long> {
     @Override

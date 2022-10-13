@@ -5,7 +5,7 @@ import com.company.hotel_booking.controller.command.util.Paging;
 import java.util.List;
 
 /**
- * Interface
+ * General interface
  */
 public interface AbstractService<K, T> {
     /**

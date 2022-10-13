@@ -5,7 +5,7 @@ import com.company.hotel_booking.exceptions.DaoException;
 import java.util.List;
 
 /**
- * Interface
+ * General interface
  */
 public interface AbstractRepository<K, T> {
 

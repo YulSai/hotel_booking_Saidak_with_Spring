@@ -6,6 +6,9 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+/**
+ * Class for mapping an enum Status of reservation value to its database representation
+ */
 @Converter(autoApply = true)
 public class StatusConverter implements AttributeConverter<Reservation.Status, Long> {
     @Override

@@ -6,6 +6,9 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+/**
+ * Class for mapping an enum Capacity of room value to its database representation
+ */
 @Converter(autoApply = true)
 public class CapacityConverter implements AttributeConverter<Room.Capacity, Long> {
     @Override

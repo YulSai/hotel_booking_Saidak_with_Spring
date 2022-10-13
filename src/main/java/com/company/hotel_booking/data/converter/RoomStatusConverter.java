@@ -6,6 +6,9 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+/**
+ * Class for mapping an enum Status of room value to its database representation
+ */
 @Converter(autoApply = true)
 public class RoomStatusConverter implements AttributeConverter<Room.RoomStatus, Long> {
     @Override

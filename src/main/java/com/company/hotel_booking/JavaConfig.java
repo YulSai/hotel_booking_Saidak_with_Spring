@@ -12,20 +12,23 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+/**
+ * Class Spring configuration
+ */
 @Configuration
 @ComponentScan
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @Log4j2
-public class ContextConfiguration {
+public class JavaConfig {
 
     @Bean
-    public EntityManagerFactory entityManagerFactory(){
+    public EntityManagerFactory entityManagerFactory() {
         return Persistence.createEntityManagerFactory("hotelBooking");
     }
 
     @Bean
-    public TransactionManager transactionManager(){
+    public TransactionManager transactionManager() {
         return new JpaTransactionManager(entityManagerFactory());
     }
 }
