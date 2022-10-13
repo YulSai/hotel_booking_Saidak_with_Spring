@@ -1,13 +1,9 @@
 package com.company.hotel_booking.data.repository.impl;
 
-import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.data.repository.api.ReservationInfoRepository;
-import com.company.hotel_booking.data.repository.api.RoomRepository;
 import com.company.hotel_booking.data.entity.ReservationInfo;
-import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.exceptions.DaoException;
 import com.company.hotel_booking.managers.MessageManager;
-import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.managers.SqlManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,11 +13,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class object ReservationInfoDao with implementation of CRUD operation operations
@@ -31,8 +23,6 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class ReservationInfoRepositoryImpl implements ReservationInfoRepository {
-    private final RoomRepository roomRepository;
-    private final ObjectMapper mapper;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -71,40 +61,6 @@ public class ReservationInfoRepositoryImpl implements ReservationInfoRepository 
             throw new DaoException(MessageManager.getMessage("msg.error.create") + reservationInfo);
         }
     }
-
-    @Override
-    public List<ReservationInfo> processBookingInfo(Map<Long, Long> booking, LocalDate checkIn,
-                                                    LocalDate checkOut, ReservationDto reservation) {
-        log.debug("Accessing the database using the processBookingInfo command");
-        List<ReservationInfo> reservationsInfo = new ArrayList<>();
-        booking.forEach((roomId, quantity) -> {
-            ReservationInfo info = new ReservationInfo();
-            info.setReservation(mapper.toEntity(reservation));
-            Room room = roomRepository.findById(roomId);
-            info.setRoom(room);
-            info.setCheckIn(checkIn);
-            info.setCheckOut(checkOut);
-            info.setNights(ChronoUnit.DAYS.between(checkIn, checkOut));
-            info.setRoomPrice(room.getPrice());
-            reservationsInfo.add(info);
-            create(info);
-        });
-        return reservationsInfo;
-    }
-
-    @Override
-    public List<ReservationInfo> findByReservationId(Long id) {
-        log.debug("Accessing the database using the findByReservationId command");
-        try {
-            return entityManager.createQuery(SqlManager.SQL_RESERVATION_INFO_FIND_BY_RESERVATION_ID, ReservationInfo.class)
-                    .setParameter("id", id)
-                    .getResultList();
-        } catch (HibernateException e) {
-            log.error("SQLReservationInfoDAO findByReservationId", e);
-            throw new DaoException(MessageManager.getMessage("msg.error.find"));
-        }
-    }
-
 
     @Override
     public ReservationInfo update(ReservationInfo reservationInfo) {

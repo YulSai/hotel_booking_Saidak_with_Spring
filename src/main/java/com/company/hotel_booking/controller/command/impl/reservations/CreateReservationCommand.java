@@ -36,10 +36,6 @@ public class CreateReservationCommand implements ICommand {
             Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
             ReservationDto processed = reservationService.processBooking(booking, user, checkIn, checkOut);
             ReservationDto created = reservationService.create(processed);
-            System.out.println("++++++++++++++++++++++++++++++++");
-            System.out.println(created.toString());
-            System.out.println("++++++++++++++++++++++++++++++++");
-          //  reservationInfoService.processBookingInfo(booking, checkIn, checkOut, created);
             req.getSession().removeAttribute("booking");
             req.setAttribute("message", MessageManager.getMessage("msg.reservation.created"));
             return "redirect:controller?command=reservation&id=" + created.getId();

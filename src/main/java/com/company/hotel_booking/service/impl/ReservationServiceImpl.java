@@ -61,7 +61,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public ReservationDto processBooking(Map<Long, Long> booking, UserDto user, LocalDate checkIn,
                                          LocalDate checkOut) {
         ReservationDto reservation = new ReservationDto();
@@ -76,11 +75,12 @@ public class ReservationServiceImpl implements ReservationService {
             info.setCheckOut(checkOut);
             info.setNights(ChronoUnit.DAYS.between(checkIn, checkOut));
             info.setRoomPrice(room.getPrice());
+            info.setReservationDto(reservation);
             details.add(info);
         });
-        reservation.setDetails(details);
         BigDecimal totalCost = calculatePrice(details);
         reservation.setTotalCost(totalCost);
+        reservation.setDetails(details);
         return reservation;
     }
 
@@ -95,6 +95,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
     public ReservationDto update(ReservationDto entity) {
         log.debug("Calling a service method update. Reservation = {}", entity);
         return mapper.toDto(reservationRepository.update(mapper.toEntity(entity)));
