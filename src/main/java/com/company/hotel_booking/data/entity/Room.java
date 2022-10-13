@@ -12,9 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -47,8 +48,8 @@ public class Room {
     @Column(name = "room_status_id")
     private RoomStatus status;
 
-    @OneToOne(mappedBy = "room", cascade = CascadeType.REFRESH)
-    private ReservationInfo reservationInfo;
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REFRESH)
+    private List<ReservationInfo> reservationInfo;
 
     public enum RoomStatus {
         AVAILABLE(1L),
@@ -121,7 +122,6 @@ public class Room {
                 ", capacity=" + capacity +
                 ", price=" + price +
                 ", status=" + status +
-                ", reservationInfo=" + reservationInfo.getId() +
                 '}';
     }
 }

@@ -37,7 +37,7 @@ public class ReservationInfo {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "room_id")
     private Room room;
     @Column(name = "check_in")
