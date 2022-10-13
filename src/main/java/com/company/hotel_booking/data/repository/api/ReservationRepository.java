@@ -1,4 +1,4 @@
-package com.company.hotel_booking.data.dao.api;
+package com.company.hotel_booking.data.repository.api;
 
 import com.company.hotel_booking.data.entity.Reservation;
 
@@ -7,7 +7,7 @@ import java.util.List;
 /*
  * Interface extends IAbstractDao interface for managing Reservation entities
  */
-public interface IReservationDao extends IAbstractDao<Long, Reservation> {
+public interface ReservationRepository extends AbstractRepository<Long, Reservation> {
 
     /**
      * Method gets list of reservations starting from begin position in the table by user

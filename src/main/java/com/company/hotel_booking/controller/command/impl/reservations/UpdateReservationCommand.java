@@ -2,7 +2,7 @@ package com.company.hotel_booking.controller.command.impl.reservations;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
-import com.company.hotel_booking.service.api.IReservationService;
+import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class UpdateReservationCommand implements ICommand {
-    private final IReservationService service;
+    private final ReservationService service;
 
     @Override
     public String execute(HttpServletRequest req) {

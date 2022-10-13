@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Interface for serving User objects according to the business logics of User
  */
-public interface IUserService extends IAbstractService<Long, UserDto> {
+public interface UserService extends AbstractService<Long, UserDto> {
     /**
      * Method gets all user Dto
      *

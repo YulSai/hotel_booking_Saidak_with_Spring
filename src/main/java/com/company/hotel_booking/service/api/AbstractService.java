@@ -5,9 +5,9 @@ import com.company.hotel_booking.controller.command.util.Paging;
 import java.util.List;
 
 /**
- * Interface
+ * General interface
  */
-public interface IAbstractService<K, T> {
+public interface AbstractService<K, T> {
     /**
      * Method finds Dto object by id
      *

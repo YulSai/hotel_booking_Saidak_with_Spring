@@ -12,7 +12,7 @@ import java.util.Map;
  * Interface for serving reservation objects according to the business logics of reservation
  */
 public interface
-IReservationService extends IAbstractService<Long, ReservationDto> {
+ReservationService extends AbstractService<Long, ReservationDto> {
     /**
      * Method gets list of reservations starting from begin position in the table by user
      *

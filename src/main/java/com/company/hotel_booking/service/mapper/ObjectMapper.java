@@ -1,4 +1,4 @@
-package com.company.hotel_booking.data.mapper;
+package com.company.hotel_booking.service.mapper;
 
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.entity.ReservationInfo;
@@ -10,16 +10,20 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.service.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for converting dto to entity
+ */
 @Log4j2
 @Component
+@RequiredArgsConstructor
 public class ObjectMapper {
-
     /**
      * Method transforms object User into object UserDto
      *
@@ -128,7 +132,14 @@ public class ObjectMapper {
             List<ReservationInfoDto> reservationInfoDto = new ArrayList<>();
             List<ReservationInfo> reservationInfo = entity.getDetails();
             for (ReservationInfo info : reservationInfo) {
-                ReservationInfoDto resDto = toDto(info);
+                ReservationInfoDto resDto = new ReservationInfoDto();
+                resDto.setId(info.getId());
+                resDto.setReservationDto(dto);
+                resDto.setRoom(toDto(info.getRoom()));
+                resDto.setCheckIn(info.getCheckIn());
+                resDto.setCheckOut(info.getCheckOut());
+                resDto.setNights(info.getNights());
+                resDto.setRoomPrice(info.getRoomPrice());
                 reservationInfoDto.add(resDto);
             }
             dto.setDetails(reservationInfoDto);
@@ -153,6 +164,20 @@ public class ObjectMapper {
             entity.setUser(toEntity(dto.getUser()));
             entity.setTotalCost(dto.getTotalCost());
             entity.setStatus(Reservation.Status.valueOf(dto.getStatus().toString()));
+            List<ReservationInfoDto> reservationInfoDto = dto.getDetails();
+            List<ReservationInfo> reservationInfo = new ArrayList<>();
+            for (ReservationInfoDto infoDto : reservationInfoDto) {
+                ReservationInfo info = new ReservationInfo();
+                info.setId(infoDto.getId());
+                info.setReservation(entity);
+                info.setRoom(toEntity(infoDto.getRoom()));
+                info.setCheckIn(infoDto.getCheckIn());
+                info.setCheckOut(infoDto.getCheckOut());
+                info.setNights(infoDto.getNights());
+                info.setRoomPrice(infoDto.getRoomPrice());
+                reservationInfo.add(info);
+            }
+            entity.setDetails(reservationInfo);
         } catch (NullPointerException e) {
             log.error("This reservation is not in the catalog.");
             throw new ServiceException(MessageManager.getMessage("msg.empty"));
@@ -171,7 +196,7 @@ public class ObjectMapper {
         ReservationInfoDto dto = new ReservationInfoDto();
         try {
             dto.setId(entity.getId());
-            dto.setReservationId(entity.getReservationId());
+            dto.setReservationDto(toDto(entity.getReservation()));
             dto.setRoom(toDto(entity.getRoom()));
             dto.setCheckIn(entity.getCheckIn());
             dto.setCheckOut(entity.getCheckOut());
@@ -195,7 +220,7 @@ public class ObjectMapper {
         ReservationInfo entity = new ReservationInfo();
         try {
             entity.setId(dto.getId());
-            entity.setReservationId(dto.getReservationId());
+            entity.setReservation(toEntity(dto.getReservationDto()));
             entity.setRoom(toEntity(dto.getRoom()));
             entity.setCheckIn(dto.getCheckIn());
             entity.setCheckOut(dto.getCheckOut());

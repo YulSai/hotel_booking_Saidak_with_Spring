@@ -1,4 +1,4 @@
-package com.company.hotel_booking.data.dao.api;
+package com.company.hotel_booking.data.repository.api;
 
 import com.company.hotel_booking.data.entity.Room;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Interface extends IAbstractDao interface for managing Room entities
  */
-public interface IRoomDao extends IAbstractDao<Long, Room> {
+public interface RoomRepository extends AbstractRepository<Long, Room> {
 
     /**
      * Method finds room in the data source by its number

@@ -2,7 +2,7 @@ package com.company.hotel_booking.controller.command.impl.users;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
-import com.company.hotel_booking.service.api.IUserService;
+import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 public class CreateUserCommand implements ICommand {
-    private final IUserService service;
+    private final UserService service;
 
     @Override
     public String execute(HttpServletRequest req) {

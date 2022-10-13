@@ -27,8 +27,8 @@
     </tr>
     <c:forEach items="${rooms}" var="room" varStatus="counter">
         <tr>
-            <td><a href="controller?command=room&id=${room.id}">${counter.count}</a></td>
-            <td>${room.number}</td>
+            <td>${counter.count}</td>
+            <td><a href="controller?command=room&id=${room.id}">${room.number}</a></td>
             <td>${room.type}</td>
             <td>${room.capacity}</td>
             <td>${room.status}</td>

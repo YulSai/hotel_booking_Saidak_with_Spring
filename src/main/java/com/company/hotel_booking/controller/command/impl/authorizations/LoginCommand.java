@@ -3,7 +3,7 @@ package com.company.hotel_booking.controller.command.impl.authorizations;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
-import com.company.hotel_booking.service.api.IUserService;
+import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class LoginCommand implements ICommand {
-    private final IUserService userService;
+    private final UserService userService;
 
     @Override
     public String execute(HttpServletRequest req) {

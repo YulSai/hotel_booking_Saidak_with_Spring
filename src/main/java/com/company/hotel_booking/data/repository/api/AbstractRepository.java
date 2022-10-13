@@ -1,13 +1,13 @@
-package com.company.hotel_booking.data.dao.api;
+package com.company.hotel_booking.data.repository.api;
 
 import com.company.hotel_booking.exceptions.DaoException;
 
 import java.util.List;
 
 /**
- * Interface
+ * General interface
  */
-public interface IAbstractDao<K, T> {
+public interface AbstractRepository<K, T> {
 
     /**
      * Method finds Entity object in the data source by id
@@ -30,7 +30,7 @@ public interface IAbstractDao<K, T> {
      * @param entity Entity object to be saved
      * @return saved entity object
      */
-    T save(T entity);
+    T create(T entity);
 
 
     /**
@@ -45,9 +45,9 @@ public interface IAbstractDao<K, T> {
      * Method is used for "soft" deleting Entity objects in the data source
      *
      * @param id Object id to be "soft" deleted
-     * @return true/false
+     * @return 1/0
      */
-    boolean delete(K id);
+    int delete(K id);
 
     /**
      * Method gets list of objects starting from begin position in the table

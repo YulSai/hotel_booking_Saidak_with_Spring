@@ -5,7 +5,7 @@ import com.company.hotel_booking.controller.command.util.PagingUtil;
 import com.company.hotel_booking.exceptions.NotFoundException;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.PagesManager;
-import com.company.hotel_booking.service.api.IUserService;
+import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class UsersCommand implements ICommand {
-    private final IUserService userService;
+    private final UserService userService;
     private final PagingUtil pagingUtil;
 
     @Override

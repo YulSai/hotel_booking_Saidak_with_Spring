@@ -2,7 +2,7 @@ package com.company.hotel_booking.controller.command.impl.reservations;
 
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.PagesManager;
-import com.company.hotel_booking.service.api.IReservationService;
+import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 public class BookingCommand implements ICommand {
-    private final IReservationService reservationService;
+    private final ReservationService reservationService;
 
     @Override
     public String execute(HttpServletRequest req) {
