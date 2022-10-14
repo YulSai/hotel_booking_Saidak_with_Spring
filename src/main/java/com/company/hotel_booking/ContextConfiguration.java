@@ -1,6 +1,5 @@
 package com.company.hotel_booking;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,6 @@ import javax.persistence.Persistence;
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
-@Log4j2
 public class ContextConfiguration {
 
     @Bean

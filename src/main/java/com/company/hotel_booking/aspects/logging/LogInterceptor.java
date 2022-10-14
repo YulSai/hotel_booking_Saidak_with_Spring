@@ -2,6 +2,7 @@ package com.company.hotel_booking.aspects.logging;
 
 import com.company.hotel_booking.exceptions.DaoException;
 import com.company.hotel_booking.exceptions.LoginUserException;
+import com.company.hotel_booking.exceptions.NotFoundException;
 import com.company.hotel_booking.exceptions.RegistrationException;
 import com.company.hotel_booking.exceptions.ServiceException;
 import lombok.extern.log4j.Log4j2;
@@ -17,6 +18,13 @@ import java.util.Arrays;
 @Aspect
 @Log4j2
 public class LogInterceptor {
+
+    @Before("@annotation(com.company.hotel_booking.aspects.logging.annotations.LogInvocation)")
+    public void logMethodCallServlet(JoinPoint jp) {
+        String className = jp.getSignature().getDeclaringTypeName();
+        String methodName = jp.getSignature().getName();
+        log.debug("Calling a method " + methodName + " from " + className);
+    }
 
     @Before("@annotation(com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer)")
     public void logMethodCallService(JoinPoint jp) {
@@ -58,5 +66,12 @@ public class LogInterceptor {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
+    }
+
+    @AfterThrowing(value = "@annotation(com.company.hotel_booking.aspects.logging.annotations.NotFoundEx)", throwing = "e")
+    public void afterThrowingNotFound(JoinPoint jp, NotFoundException e) {
+        String className = jp.getSignature().getDeclaringTypeName();
+        String methodName = jp.getSignature().getName();
+        log.error("Incorrect address entered. Class " + className + " method " + methodName + " error. Exception is " + e);
     }
 }

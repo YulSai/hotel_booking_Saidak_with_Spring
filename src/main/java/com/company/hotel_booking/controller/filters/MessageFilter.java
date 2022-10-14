@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.filters;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class MessageFilter extends HttpFilter {
 
     @Override
+    @LogInvocation
     protected void doFilter(HttpServletRequest req, HttpServletResponse res,
                             FilterChain chain) throws IOException, ServletException {
         HttpSession session = req.getSession();

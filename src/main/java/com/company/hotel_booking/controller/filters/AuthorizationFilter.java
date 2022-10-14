@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.filters;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.CommandName;
 import com.company.hotel_booking.controller.command.api.SecurityLevel;
 import com.company.hotel_booking.controller.command.CommandResolver;
@@ -12,22 +13,20 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 
 /**
  * Class with filter for authorization
  */
-@Log4j2
 @WebFilter(urlPatterns = "/controller/*")
 public class AuthorizationFilter extends HttpFilter {
     @Override
+    @LogInvocation
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
         String command = req.getParameter("command").toUpperCase();
         if (command == null || "".equals(command) || !CommandName.contains(command.toUpperCase())) {
-            log.error("Incorrect address entered");
             req.setAttribute("status", 404);
             res.setStatus(404);
             req.getRequestDispatcher(PagesManager.PAGE_404).forward(req, res);

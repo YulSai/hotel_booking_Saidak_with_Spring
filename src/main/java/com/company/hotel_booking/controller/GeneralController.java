@@ -1,5 +1,7 @@
 package com.company.hotel_booking.controller;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
+import com.company.hotel_booking.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.controller.command.api.CommandName;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.controller.command.CommandResolver;
@@ -14,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -25,7 +26,6 @@ import java.util.Locale;
  */
 @WebServlet("/controller")
 @MultipartConfig(maxFileSize = GeneralController.MB * 10, maxRequestSize = GeneralController.MB * 100)
-@Log4j2
 @Controller
 @RequiredArgsConstructor
 public class GeneralController extends HttpServlet {
@@ -54,7 +54,6 @@ public class GeneralController extends HttpServlet {
         try {
             page = command.execute(req);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
             ExceptionsHandler exceptionsHandler = new ExceptionsHandler();
             page = exceptionsHandler.handleException(req, resp, e);
         }
@@ -96,21 +95,21 @@ public class GeneralController extends HttpServlet {
      *
      * @param commandName command name
      */
+    @NotFoundEx
     public void validateCommandName(String commandName) {
         if (commandName == null || !CommandName.contains(commandName.toUpperCase())) {
-            log.error("Incorrect address entered");
             throw new NotFoundException();
         }
     }
 
     @Override
+    @LogInvocation
     public void init() {
-        log.info("Servlet init");
         commandResolver = ContextListener.context.getBean(CommandResolver.class);
     }
 
     @Override
+    @LogInvocation
     public void destroy() {
-        log.info("Servlet destroy");
     }
 }

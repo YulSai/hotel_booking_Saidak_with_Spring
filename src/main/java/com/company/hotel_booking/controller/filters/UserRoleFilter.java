@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.filters;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.SecurityLevel;
 import com.company.hotel_booking.controller.command.CommandResolver;
 import com.company.hotel_booking.managers.MessageManager;
@@ -57,6 +58,7 @@ public class UserRoleFilter extends HttpFilter {
     }
 
     @Override
+    @LogInvocation
     protected void doFilter(HttpServletRequest req, HttpServletResponse res,
                             FilterChain chain) throws ServletException, IOException {
         String command = req.getParameter("command");
