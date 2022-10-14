@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.local;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 public class LanguageSelectionCommand implements ICommand {
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         String language = req.getParameter("language");
         HttpSession session = req.getSession();

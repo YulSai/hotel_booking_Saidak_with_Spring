@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.reservations;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.ReservationService;
@@ -22,6 +23,7 @@ public class BookingCommand implements ICommand {
     private final ReservationService reservationService;
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         HttpSession session = req.getSession();
         @SuppressWarnings("unchecked")

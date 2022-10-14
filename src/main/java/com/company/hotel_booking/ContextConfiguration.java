@@ -19,7 +19,7 @@ import javax.persistence.Persistence;
 @ComponentScan
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ContextConfiguration {
 
     @Bean

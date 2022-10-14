@@ -87,7 +87,6 @@ public class Reservation {
                 ", user=" + user +
                 ", totalCost=" + totalCost +
                 ", status=" + status +
-                ", details=" + details +
                 '}';
     }
 }
