@@ -49,7 +49,6 @@ public class ReservationDto {
                 ", user=" + user +
                 ", totalCost=" + totalCost +
                 ", status=" + status +
-                ", details=" + details +
                 '}';
     }
 }

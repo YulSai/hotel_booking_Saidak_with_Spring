@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public UserDto findById(Long id) {
         User user = userRepository.findById(id);
         if (user == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.user.error.find.by.id") + id);
         }
         return mapper.toDto(user);
     }
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @ServiceEx
     public UserDto create(UserDto userDto) {
         if (userRepository.findUserByEmail(userDto.getEmail()) != null) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.user.error.create.exists"));
         }
         userValidator.isValid(userDto);
         String hashPassword = digestUtil.hash(userDto.getPassword());
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     public UserDto update(UserDto userDto) {
         User existing = (User) userRepository.findUserByEmail(userDto.getEmail());
         if (existing != null && !existing.getId().equals(userDto.getId())) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.user.error.update.exists"));
         }
         userValidator.isValid(userDto);
         return mapper.toDto(userRepository.update(mapper.toEntity(userDto)));
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         String existPassword = userRepository.findById(userDto.getId()).getPassword();
         String hashPassword = digestUtil.hash(userDto.getPassword());
         if (hashPassword.equals(existPassword)) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.new.password"));
+            throw new ServiceException(MessageManager.getMessage("msg.user.error.new.password"));
         }
         userDto.setPassword(hashPassword);
         return mapper.toDto(userRepository.update(mapper.toEntity(userDto)));
@@ -97,12 +97,12 @@ public class UserServiceImpl implements UserService {
         if (reservationRepository.findAllByUsers(id).isEmpty()) {
             int resultDeleted = userRepository.delete(id);
             if (resultDeleted != 1) {
-                throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
+                throw new ServiceException(MessageManager.getMessage("msg.user.error.delete") + id);
             }
         } else {
             int resultBlock = userRepository.block(id);
             if (resultBlock != 1) {
-                throw new ServiceException(MessageManager.getMessage("msg.error.block") + id);
+                throw new ServiceException(MessageManager.getMessage("msg.user.error.block") + id);
             }
         }
     }

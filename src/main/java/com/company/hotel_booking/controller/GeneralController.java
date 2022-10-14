@@ -55,7 +55,7 @@ public class GeneralController extends HttpServlet {
             page = command.execute(req);
         } catch (Exception e) {
             ExceptionsHandler exceptionsHandler = new ExceptionsHandler();
-            page = exceptionsHandler.handleException(req, resp, e);
+            page = exceptionsHandler.handleException(req, resp, e, messageManger);
         }
         if (page.startsWith(REDIRECT)) {
             setMessageSession(req);

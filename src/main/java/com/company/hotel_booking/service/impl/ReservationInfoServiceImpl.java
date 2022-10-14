@@ -31,7 +31,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     public ReservationInfoDto findById(Long id) {
         ReservationInfo reservationInfo = reservationInfoRepository.findById(id);
         if (reservationInfo == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.find.by.id") + id);
         }
         return mapper.toDto(reservationInfo);
     }
@@ -48,13 +48,21 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     @LogInvocationServer
     @Transactional
     public ReservationInfoDto create(ReservationInfoDto entity) {
-        return mapper.toDto(reservationInfoRepository.create(mapper.toEntity(entity)));
+        ReservationInfoDto info = mapper.toDto(reservationInfoRepository.create(mapper.toEntity(entity)));
+        if (info == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.create") + entity);
+        }
+        return info;
     }
 
     @Override
     @LogInvocationServer
     public ReservationInfoDto update(ReservationInfoDto entity) {
-        return mapper.toDto(reservationInfoRepository.update(mapper.toEntity(entity)));
+        ReservationInfoDto info = mapper.toDto(reservationInfoRepository.update(mapper.toEntity(entity)));
+        if (info == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.update") + entity);
+        }
+        return info;
     }
 
     @Override
@@ -63,7 +71,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     public void delete(Long id) {
         reservationInfoRepository.delete(id);
         if (reservationInfoRepository.delete(id) != 1) {
-            throw new ServiceException("Failed to delete reservation info with id " + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.delete") + id);
         }
     }
 

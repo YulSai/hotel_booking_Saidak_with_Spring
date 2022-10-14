@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return entityManager.find(User.class, id);
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find.by.id") + id);
+            throw new DaoException(MessageManager.getMessage("msg.user.error.find.by.id ") + id);
         }
     }
 
@@ -46,7 +46,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return entityManager.createQuery(SqlManager.SQL_USER_FIND_ALL, User.class).getResultList();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find.all"));
+            throw new DaoException(MessageManager.getMessage("msg.users.error.find.all"));
         }
     }
 
@@ -58,7 +58,7 @@ public class UserRepositoryImpl implements UserRepository {
             entityManager.persist(user);
             return user;
         } catch (HibernateException | NullPointerException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.create") + user);
+            throw new DaoException(MessageManager.getMessage("msg.user.error.create") + user);
         }
     }
 
@@ -70,7 +70,7 @@ public class UserRepositoryImpl implements UserRepository {
             entityManager.merge(user);
             return user;
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.update") + user);
+            throw new DaoException(MessageManager.getMessage("msg.user.error.update") + user);
         }
     }
 
@@ -81,7 +81,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return entityManager.createQuery(SqlManager.SQL_USER_DELETE).setParameter("id", id).executeUpdate();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.delete") + id);
+            throw new DaoException(MessageManager.getMessage("msg.user.error.delete") + id);
         }
     }
 
@@ -95,7 +95,7 @@ public class UserRepositoryImpl implements UserRepository {
                     .setFirstResult((int) offset)
                     .getResultList();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.users.error.find.all"));
         }
     }
 
@@ -106,7 +106,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return (Long) entityManager.createQuery(SqlManager.SQL_USER_COUNT_USERS).getSingleResult();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find.count"));
+            throw new DaoException(MessageManager.getMessage("msg.users.error.find.count"));
         }
     }
 
@@ -121,7 +121,7 @@ public class UserRepositoryImpl implements UserRepository {
                     .stream()
                     .findFirst().orElse(null);
         } catch (HibernateException e) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.find"));
+            throw new RegistrationException(MessageManager.getMessage("msg.user.error.find.by.email" + email));
         }
     }
 
@@ -132,7 +132,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return entityManager.createQuery(SqlManager.SQL_USER_BLOCK).setParameter("id", id).executeUpdate();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.update") + id);
+            throw new DaoException(MessageManager.getMessage("msg.user.error.update") + id);
         }
     }
 }

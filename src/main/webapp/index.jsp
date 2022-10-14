@@ -12,8 +12,7 @@
 <body>
 <jsp:include page="jsp/navbar.jsp"/>
 <p>${requestScope.message}</p>
-<h2>${welcome}</h2>
-<h1><fmt:message key="msg.main.welcome"/> ${sessionScope.user != null ? sessionScope.user.firstName : 'Guest'}!</h1>
+<h1><fmt:message key="msg.main.welcome" /> ${sessionScope.user != null ? sessionScope.user.firstName : 'Guest'}!</h1>
 <img src="images/mainImg.jpg" alt="hotel"/>
 </body>
 </html>

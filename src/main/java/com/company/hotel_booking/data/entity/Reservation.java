@@ -48,7 +48,7 @@ public class Reservation {
 
     @OneToMany(mappedBy = "reservation", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
             fetch = FetchType.EAGER)
-    List<ReservationInfo> details;
+    private List<ReservationInfo> details;
 
     public enum Status {
         IN_PROGRESS(1L),
@@ -87,6 +87,7 @@ public class Reservation {
                 ", user=" + user +
                 ", totalCost=" + totalCost +
                 ", status=" + status +
+                ", details=" + details +
                 '}';
     }
 }

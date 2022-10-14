@@ -10,7 +10,7 @@ public class MessageMangerTest {
 
     @Test
     public void getMessageEn() {
-        String actual = new MessageManager(Locale.UK).getMessage("msg.main.welcome");
+        String actual = new MessageManager(Locale.UK).getMessage("msg.main.welcome ");
         String expected = "Welcome to HotelBooking,";
         assertEquals(expected, actual);
     }

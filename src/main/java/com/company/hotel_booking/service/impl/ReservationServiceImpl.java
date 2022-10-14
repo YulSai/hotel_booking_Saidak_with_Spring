@@ -40,7 +40,7 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto findById(Long id) {
         Reservation reservation = reservationRepository.findById(id);
         if (reservation == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.empty") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.find.by.id") + id);
         }
         return mapper.toDto(reservation);
     }
@@ -58,7 +58,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public ReservationDto create(ReservationDto entity) {
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
-        return mapper.toDto(reservationRepository.create(mapper.toEntity(entity)));
+        ReservationDto reservation = mapper.toDto(reservationRepository.create(mapper.toEntity(entity)));
+        if (reservation == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.create") + entity);
+        }
+        return reservation;
     }
 
     @Override
@@ -101,7 +105,11 @@ public class ReservationServiceImpl implements ReservationService {
     @LogInvocationServer
     @Transactional
     public ReservationDto update(ReservationDto entity) {
-        return mapper.toDto(reservationRepository.update(mapper.toEntity(entity)));
+        ReservationDto reservation = mapper.toDto(reservationRepository.update(mapper.toEntity(entity)));
+        if (reservation == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.update") + entity);
+        }
+        return reservation;
     }
 
     @Override
@@ -110,7 +118,7 @@ public class ReservationServiceImpl implements ReservationService {
     public void delete(Long id) {
         reservationRepository.delete(id);
         if (reservationRepository.delete(id) != 1) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.delete") + id);
         }
     }
 

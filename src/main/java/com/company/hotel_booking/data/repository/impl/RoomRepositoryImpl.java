@@ -35,7 +35,7 @@ public class RoomRepositoryImpl implements RoomRepository {
         try {
             return entityManager.find(Room.class, id);
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find.by.id") + id);
+            throw new DaoException(MessageManager.getMessage("msg.room.error.find.by.id") + id);
         }
     }
 
@@ -46,7 +46,7 @@ public class RoomRepositoryImpl implements RoomRepository {
         try {
             return entityManager.createQuery(SqlManager.SQL_ROOM_FIND_ALL, Room.class).getResultList();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find.all"));
+            throw new DaoException(MessageManager.getMessage("msg.rooms.error.find.all"));
         }
     }
 
@@ -58,7 +58,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             entityManager.persist(room);
             return room;
         } catch (HibernateException | NullPointerException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.create") + room);
+            throw new DaoException(MessageManager.getMessage("msg.room.error.create") + room);
         }
     }
 
@@ -70,7 +70,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             entityManager.merge(room);
             return room;
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.command") + room);
+            throw new DaoException(MessageManager.getMessage("msg.room.error.update") + room);
         }
     }
 
@@ -81,7 +81,7 @@ public class RoomRepositoryImpl implements RoomRepository {
         try {
             return entityManager.createQuery(SqlManager.SQL_ROOM_DELETE).setParameter("id", id).executeUpdate();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.delete") + id);
+            throw new DaoException(MessageManager.getMessage("msg.room.error.delete") + id);
         }
     }
 
@@ -95,7 +95,7 @@ public class RoomRepositoryImpl implements RoomRepository {
                     .setFirstResult((int) offset)
                     .getResultList();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.rooms.error.find.all"));
         }
     }
 
@@ -106,7 +106,7 @@ public class RoomRepositoryImpl implements RoomRepository {
         try {
             return (Long) entityManager.createQuery(SqlManager.SQL_ROOM_COUNT_ROOMS).getSingleResult();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find.count"));
+            throw new DaoException(MessageManager.getMessage("msg.rooms.error.find.count"));
         }
     }
 
@@ -121,7 +121,7 @@ public class RoomRepositoryImpl implements RoomRepository {
                     .stream()
                     .findFirst().orElse(null);
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find") + number);
+            throw new DaoException(MessageManager.getMessage("msg.room.error.find.by.number") + number);
         }
     }
 
@@ -139,7 +139,7 @@ public class RoomRepositoryImpl implements RoomRepository {
                     .setParameter(6, Date.valueOf(check_out))
                     .getResultList();
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find"));
+            throw new DaoException(MessageManager.getMessage("msg.rooms.error.find.available"));
         }
     }
 }

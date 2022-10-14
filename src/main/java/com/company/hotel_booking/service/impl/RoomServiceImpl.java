@@ -32,7 +32,7 @@ public class RoomServiceImpl implements RoomService {
     public RoomDto findById(Long id) {
         Room room = roomRepository.findById(id);
         if (room == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.room.error.find.by.id") + id);
         }
         return mapper.toDto(room);
     }
@@ -51,7 +51,7 @@ public class RoomServiceImpl implements RoomService {
     public RoomDto create(RoomDto roomDto) {
         Room existing = roomRepository.findRoomByNumber(roomDto.getNumber());
         if (existing != null) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.room.error.create.exists"));
         }
         return mapper.toDto(roomRepository.create(mapper.toEntity(roomDto)));
     }
@@ -62,7 +62,7 @@ public class RoomServiceImpl implements RoomService {
     public RoomDto update(RoomDto roomDto) {
         Room existing = roomRepository.findRoomByNumber((roomDto.getNumber()));
         if (existing != null && !existing.getId().equals(roomDto.getId())) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.exists"));
+            throw new ServiceException(MessageManager.getMessage("msg.room.error.update.exists"));
         }
         return mapper.toDto(roomRepository.update(mapper.toEntity(roomDto)));
     }
@@ -73,7 +73,7 @@ public class RoomServiceImpl implements RoomService {
     public void delete(Long id) {
         roomRepository.delete(id);
         if (roomRepository.delete(id) != 1) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.room.error.delete") + id);
         }
     }
 

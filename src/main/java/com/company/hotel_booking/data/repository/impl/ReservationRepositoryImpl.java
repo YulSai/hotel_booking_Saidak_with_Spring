@@ -33,7 +33,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
         try {
             return entityManager.find(Reservation.class, id);
         } catch (HibernateException e) {
-            throw new DaoException(MessageManager.getMessage("msg.error.find.by.id") + id);
+            throw new DaoException(MessageManager.getMessage("msg.reservation.error.find.by.id") + id);
         }
     }
 
