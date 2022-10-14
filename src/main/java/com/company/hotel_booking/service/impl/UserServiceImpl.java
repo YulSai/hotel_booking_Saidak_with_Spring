@@ -1,8 +1,8 @@
 package com.company.hotel_booking.service.impl;
 
-import com.company.hotel_booking.aspects.logging.LogInvocationServer;
-import com.company.hotel_booking.aspects.logging.LoginEx;
-import com.company.hotel_booking.aspects.logging.ServiceEx;
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.aspects.logging.annotations.LoginEx;
+import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.data.repository.api.ReservationRepository;
 import com.company.hotel_booking.data.repository.api.UserRepository;

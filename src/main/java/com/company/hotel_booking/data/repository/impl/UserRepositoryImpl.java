@@ -1,8 +1,8 @@
 package com.company.hotel_booking.data.repository.impl;
 
-import com.company.hotel_booking.aspects.logging.DaoEx;
-import com.company.hotel_booking.aspects.logging.LogInvocationRepository;
-import com.company.hotel_booking.aspects.logging.RegistrationEx;
+import com.company.hotel_booking.aspects.logging.annotations.DaoEx;
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocationRepository;
+import com.company.hotel_booking.aspects.logging.annotations.RegistrationEx;
 import com.company.hotel_booking.data.repository.api.UserRepository;
 import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.exceptions.DaoException;

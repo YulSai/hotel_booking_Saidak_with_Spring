@@ -18,47 +18,45 @@ import java.util.Arrays;
 @Log4j2
 public class LogInterceptor {
 
-    @Before("@annotation(LogInvocationServer)")
+    @Before("@annotation(com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer)")
     public void logMethodCallService(JoinPoint jp) {
         String methodName = jp.getSignature().getName();
         Object[] args = jp.getArgs();
         log.debug("Calling a service method " + methodName + " with " + Arrays.toString(args));
     }
 
-    @Before("@annotation(LogInvocationRepository)")
+    @Before("@annotation(com.company.hotel_booking.aspects.logging.annotations.LogInvocationRepository)")
     public void logMethodCallRepository(JoinPoint jp) {
         String methodName = jp.getSignature().getName();
         Object[] args = jp.getArgs();
         log.debug("Accessing the database using the method " + methodName + " with " + Arrays.toString(args));
     }
 
-    @AfterThrowing(value = "@annotation(LoginEx)", throwing = "e")
+    @AfterThrowing(value = "@annotation(com.company.hotel_booking.aspects.logging.annotations.LoginEx)", throwing = "e")
     public void afterThrowingLogin(JoinPoint jp, LoginUserException e) {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
     }
 
-    @AfterThrowing(value = "@annotation(RegistrationEx)", throwing = "e")
+    @AfterThrowing(value = "@annotation(com.company.hotel_booking.aspects.logging.annotations.RegistrationEx)", throwing = "e")
     public void afterThrowingRegistration(JoinPoint jp, RegistrationException e) {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
     }
 
-    @AfterThrowing(value = "@annotation(ServiceEx)", throwing = "e")
+    @AfterThrowing(value = "@annotation(com.company.hotel_booking.aspects.logging.annotations.ServiceEx)", throwing = "e")
     public void afterThrowingService(JoinPoint jp, ServiceException e) {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
     }
 
-    @AfterThrowing(value = "@annotation(DaoEx)", throwing = "e")
+    @AfterThrowing(value = "@annotation(com.company.hotel_booking.aspects.logging.annotations.DaoEx)", throwing = "e")
     public void afterThrowingDao(JoinPoint jp, DaoException e) {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
     }
-
-
 }

@@ -1,7 +1,7 @@
 package com.company.hotel_booking.service.mapper;
 
-import com.company.hotel_booking.aspects.logging.LogInvocationServer;
-import com.company.hotel_booking.aspects.logging.ServiceEx;
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.entity.Room;

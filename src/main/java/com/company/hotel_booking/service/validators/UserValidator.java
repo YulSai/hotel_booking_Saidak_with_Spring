@@ -1,6 +1,6 @@
 package com.company.hotel_booking.service.validators;
 
-import com.company.hotel_booking.aspects.logging.RegistrationEx;
+import com.company.hotel_booking.aspects.logging.annotations.RegistrationEx;
 import com.company.hotel_booking.exceptions.RegistrationException;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.dto.UserDto;
