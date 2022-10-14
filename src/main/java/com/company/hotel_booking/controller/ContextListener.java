@@ -1,6 +1,6 @@
 package com.company.hotel_booking.controller;
 
-import com.company.hotel_booking.JavaConfig;
+import com.company.hotel_booking.ContextConfiguration;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -15,7 +15,7 @@ public class ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         log.info("Context was initialized");
-        context = new AnnotationConfigApplicationContext(JavaConfig.class);
+        context = new AnnotationConfigApplicationContext(ContextConfiguration.class);
     }
 
     @Override
