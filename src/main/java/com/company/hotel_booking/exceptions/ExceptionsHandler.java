@@ -33,16 +33,6 @@ public class ExceptionsHandler {
             status = 400;
             message = e.getMessage();
             page = PagesManager.PAGE_CREATE_USER;
-        } else if (e instanceof UnAuthorizedException) {
-            log.error("UnAuthorizedException");
-            status = 401;
-            message = e.getMessage();
-            page = PagesManager.PAGE_LOGIN;
-        } else if (e instanceof ForbiddenException) {
-            log.error("ForbiddenException");
-            status = 403;
-            message = e.getMessage();
-            page = PagesManager.PAGE_INDEX;
         } else if (e instanceof NotFoundException) {
             log.error("NotFoundException");
             status = 404;
