@@ -38,7 +38,7 @@
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="3"><fmt:message key="msg.cost"/>${requestScope.booking.totalCost} USD</td>
+            <td colspan="3"><fmt:message key="msg.cost" />${requestScope.booking.totalCost} USD</td>
         </tr>
 
     </table>

@@ -1,5 +1,7 @@
 package com.company.hotel_booking.service.impl;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.data.repository.api.ReservationInfoRepository;
 import com.company.hotel_booking.data.entity.ReservationInfo;
@@ -9,7 +11,6 @@ import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationInfoService;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,7 +19,6 @@ import java.util.List;
 /**
  * Class object ReservationInfoDTO with implementation of CRUD operation operations
  */
-@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ReservationInfoServiceImpl implements ReservationInfoService {
@@ -26,58 +26,66 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     private final ObjectMapper mapper;
 
     @Override
+    @LogInvocationServer
+    @ServiceEx
     public ReservationInfoDto findById(Long id) {
-        log.debug("Calling a service method findById. ReservationInfoDto id = {}", id);
         ReservationInfo reservationInfo = reservationInfoRepository.findById(id);
         if (reservationInfo == null) {
-            log.error("SQLUserService findById error. No with id = {}", id);
-            throw new ServiceException(MessageManager.getMessage("msg.error.find") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.find.by.id") + id);
         }
         return mapper.toDto(reservationInfo);
     }
 
     @Override
+    @LogInvocationServer
     public List<ReservationInfoDto> findAll() {
-        log.debug("Calling a service method findAll");
         return reservationInfoRepository.findAll().stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     @Override
+    @LogInvocationServer
     @Transactional
     public ReservationInfoDto create(ReservationInfoDto entity) {
-        log.debug("Calling a service method create. ReservationInfo = {}", entity);
-        return mapper.toDto(reservationInfoRepository.create(mapper.toEntity(entity)));
+        ReservationInfoDto info = mapper.toDto(reservationInfoRepository.create(mapper.toEntity(entity)));
+        if (info == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.create") + entity);
+        }
+        return info;
     }
 
     @Override
+    @LogInvocationServer
     public ReservationInfoDto update(ReservationInfoDto entity) {
-        log.debug("Calling a service method update. ReservationInfo = {}", entity);
-        return mapper.toDto(reservationInfoRepository.update(mapper.toEntity(entity)));
+        ReservationInfoDto info = mapper.toDto(reservationInfoRepository.update(mapper.toEntity(entity)));
+        if (info == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.update") + entity);
+        }
+        return info;
     }
 
     @Override
+    @LogInvocationServer
+    @ServiceEx
     public void delete(Long id) {
-        log.debug("Calling a service method delete. ReservationInfo id = {}", id);
         reservationInfoRepository.delete(id);
         if (reservationInfoRepository.delete(id) != 1) {
-            log.error("SQLReservationService deleted error. Failed to delete reservation info with id = {}", id);
-            throw new ServiceException("Failed to delete reservation info with id " + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.delete") + id);
         }
     }
 
     @Override
+    @LogInvocationServer
     public List<ReservationInfoDto> findAllPages(Paging paging) {
-        log.debug("Calling a service method indAllPages");
         return reservationInfoRepository.findAllPages(paging.getLimit(), paging.getOffset()).stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     @Override
+    @LogInvocationServer
     public long countRow() {
-        log.debug("Calling a service method countRow");
         return reservationInfoRepository.countRow();
     }
 }

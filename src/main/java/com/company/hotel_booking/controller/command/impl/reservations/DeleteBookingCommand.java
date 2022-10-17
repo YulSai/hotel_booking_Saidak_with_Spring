@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.reservations;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DeleteBookingCommand implements ICommand {
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         HttpSession session = req.getSession();
         LocalDate checkIn = (LocalDate) session.getAttribute("check_in");

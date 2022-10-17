@@ -1,9 +1,9 @@
 package com.company.hotel_booking;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionManager;
@@ -19,8 +19,8 @@ import javax.persistence.Persistence;
 @ComponentScan
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
-@Log4j2
-public class JavaConfig {
+@EnableAspectJAutoProxy(proxyTargetClass = true)
+public class ContextConfiguration {
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {

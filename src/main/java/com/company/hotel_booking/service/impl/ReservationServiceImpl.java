@@ -1,5 +1,7 @@
 package com.company.hotel_booking.service.impl;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.data.repository.api.ReservationRepository;
 import com.company.hotel_booking.data.repository.api.RoomRepository;
@@ -13,7 +15,6 @@ import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,7 +26,6 @@ import java.util.*;
 /**
  * Class object ReservationDTO with implementation of CRUD operation operations
  */
-@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
@@ -35,32 +35,38 @@ public class ReservationServiceImpl implements ReservationService {
     private final ObjectMapper mapper;
 
     @Override
+    @LogInvocationServer
+    @ServiceEx
     public ReservationDto findById(Long id) {
-        log.debug("Calling a service method findById. Reservation id = {}", id);
         Reservation reservation = reservationRepository.findById(id);
         if (reservation == null) {
-            log.error("SQLReservationService findById error. id = {}", id);
-            throw new ServiceException(MessageManager.getMessage("msg.empty") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.find.by.id") + id);
         }
         return mapper.toDto(reservation);
     }
 
+    @Override
+    @LogInvocationServer
     public List<ReservationDto> findAll() {
-        log.debug("Calling a service method findAll");
         return reservationRepository.findAll().stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     @Override
+    @LogInvocationServer
     @Transactional
     public ReservationDto create(ReservationDto entity) {
-        log.debug("Calling a service method create. Reservation = {}", entity);
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
-        return mapper.toDto(reservationRepository.create(mapper.toEntity(entity)));
+        ReservationDto reservation = mapper.toDto(reservationRepository.create(mapper.toEntity(entity)));
+        if (reservation == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.create") + entity);
+        }
+        return reservation;
     }
 
     @Override
+    @LogInvocationServer
     public ReservationDto processBooking(Map<Long, Long> booking, UserDto user, LocalDate checkIn,
                                          LocalDate checkOut) {
         ReservationDto reservation = new ReservationDto();
@@ -84,6 +90,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
+    @LogInvocationServer
     private BigDecimal calculatePrice(List<ReservationInfoDto> details) {
         BigDecimal totalCost = BigDecimal.ZERO;
         for (ReservationInfoDto detail : details) {
@@ -95,47 +102,51 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @LogInvocationServer
     @Transactional
     public ReservationDto update(ReservationDto entity) {
-        log.debug("Calling a service method update. Reservation = {}", entity);
-        return mapper.toDto(reservationRepository.update(mapper.toEntity(entity)));
+        ReservationDto reservation = mapper.toDto(reservationRepository.update(mapper.toEntity(entity)));
+        if (reservation == null) {
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.update") + entity);
+        }
+        return reservation;
     }
 
     @Override
+    @LogInvocationServer
+    @ServiceEx
     public void delete(Long id) {
-        log.debug("Calling a service method delete. Reservation id = {}", id);
         reservationRepository.delete(id);
         if (reservationRepository.delete(id) != 1) {
-            log.error("SQLReservationService deleted error. Failed to delete reservation with id = {}", id);
-            throw new ServiceException(MessageManager.getMessage("msg.error.delete") + id);
+            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.delete") + id);
         }
     }
 
     @Override
+    @LogInvocationServer
     public List<ReservationDto> findAllPages(Paging paging) {
-        log.debug("Calling a service method findAllPages");
         return reservationRepository.findAllPages(paging.getLimit(), paging.getOffset()).stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     @Override
+    @LogInvocationServer
     public List<ReservationDto> findAllPagesByUsers(Paging paging, Long id) {
-        log.debug("Calling a service method findAllPagesByUsers");
         return reservationRepository.findAllPagesByUsers(paging.getLimit(), paging.getOffset(), id).stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     @Override
+    @LogInvocationServer
     public long countRow() {
-        log.debug("Calling a service method countRow");
         return reservationRepository.countRow();
     }
 
     @Override
+    @LogInvocationServer
     public List<ReservationDto> findAllByUsers(Long id) {
-        log.debug("Calling a service method findAllPagesByUsers");
         return reservationRepository.findAllByUsers(id).stream()
                 .map(mapper::toDto)
                 .toList();

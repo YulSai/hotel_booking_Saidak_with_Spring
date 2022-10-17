@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.rooms;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.RoomService;
@@ -19,6 +20,7 @@ public class UpdateRoomCommand implements ICommand {
     private final RoomService service;
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         RoomDto room = getRoomFromInput(req);
         RoomDto updated = service.update(room);

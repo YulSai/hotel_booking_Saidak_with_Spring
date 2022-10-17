@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.reservations;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationService;
@@ -17,6 +18,7 @@ public class UpdateReservationCommand implements ICommand {
     private final ReservationService service;
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         ReservationDto reservation = service.findById(Long.valueOf(req.getParameter("id")));
         String status = req.getParameter("status").toUpperCase();

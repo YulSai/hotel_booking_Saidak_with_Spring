@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.reservations;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
@@ -23,6 +24,7 @@ public class CreateReservationCommand implements ICommand {
     private final ReservationService reservationService;
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         HttpSession session = req.getSession();
         UserDto user = (UserDto) session.getAttribute("user");

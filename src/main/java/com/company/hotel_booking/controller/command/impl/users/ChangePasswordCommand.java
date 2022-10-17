@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.users;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.UserService;
@@ -17,6 +18,7 @@ public class ChangePasswordCommand implements ICommand {
     private final UserService service;
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         UserDto user = getUserFromInput(req);
         UserDto updated = service.changePassword(user);

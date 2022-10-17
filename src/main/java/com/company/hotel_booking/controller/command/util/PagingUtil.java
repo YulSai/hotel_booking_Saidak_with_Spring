@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.util;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.service.api.AbstractService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ public class PagingUtil {
      * @param req HttpServletRequest
      * @return Paging
      */
+    @LogInvocation
     public Paging getPaging(HttpServletRequest req) {
         String limitStr = req.getParameter("limit");
         String offsetStr = req.getParameter("page");
@@ -33,6 +35,7 @@ public class PagingUtil {
      * @param limit         max number of lines per page
      * @return total pages
      */
+    @LogInvocation
     public long getTotalPages(long totalEntities, int limit) {
         long totalPages = totalEntities / limit;
         totalPages += (totalEntities - (totalPages * limit) > 0 ? 1 : 0);
@@ -46,6 +49,7 @@ public class PagingUtil {
      * @param paging  object Paging
      * @param service instance of object IAbstractService
      */
+    @LogInvocation
     public void setTotalPages(HttpServletRequest req, Paging paging, AbstractService service) {
         long totalEntities = service.countRow();
         long totalPages = getTotalPages(totalEntities, paging.getLimit());

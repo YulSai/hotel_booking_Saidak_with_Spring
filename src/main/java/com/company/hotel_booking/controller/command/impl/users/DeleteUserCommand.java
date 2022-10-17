@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.users;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
@@ -22,6 +23,7 @@ public class DeleteUserCommand implements ICommand {
     private final ReservationService reservationService;
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         Long id = Long.parseLong(req.getParameter("id"));
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);

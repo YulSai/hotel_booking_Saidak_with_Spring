@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.command.impl.reservations;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.ReservationService;
@@ -17,6 +18,7 @@ public class UpdateReservationFormCommand implements ICommand {
     private final ReservationService service;
 
     @Override
+    @LogInvocation
     public String execute(HttpServletRequest req) {
         Long id = Long.parseLong(req.getParameter("id"));
         ReservationDto reservationDto = service.findById(id);

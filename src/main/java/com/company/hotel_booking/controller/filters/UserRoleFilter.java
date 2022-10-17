@@ -1,5 +1,6 @@
 package com.company.hotel_booking.controller.filters;
 
+import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.SecurityLevel;
 import com.company.hotel_booking.controller.command.CommandResolver;
 import com.company.hotel_booking.managers.MessageManager;
@@ -12,7 +13,6 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 
@@ -20,7 +20,6 @@ import java.io.IOException;
  * Class with filter for user access levels
  */
 @WebFilter(urlPatterns = "/controller/*")
-@Log4j2
 public class UserRoleFilter extends HttpFilter {
 
     /**
@@ -49,7 +48,6 @@ public class UserRoleFilter extends HttpFilter {
         SecurityLevel levelUser = SecurityLevel.valueOf(role);
         SecurityLevel levelCommand = CommandResolver.getINSTANCE().getSecurityLevel(command);
         if (levelUser.ordinal() < levelCommand.ordinal()) {
-            log.error("Insufficient access rights");
             req.setAttribute("status", 404);
             req.setAttribute("message", MessageManager.getMessage("msg.insufficient.rights"));
             req.getRequestDispatcher(PagesManager.PAGE_ERROR).forward(req, res);
@@ -57,6 +55,7 @@ public class UserRoleFilter extends HttpFilter {
     }
 
     @Override
+    @LogInvocation
     protected void doFilter(HttpServletRequest req, HttpServletResponse res,
                             FilterChain chain) throws ServletException, IOException {
         String command = req.getParameter("command");

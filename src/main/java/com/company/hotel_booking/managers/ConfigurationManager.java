@@ -1,7 +1,6 @@
 package com.company.hotel_booking.managers;
 
 import com.company.hotel_booking.exceptions.ConnectionPoolException;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.util.Properties;
 /**
  * Class with configuration constants and for getting settings
  */
-@Log4j2
 @Component
 public class ConfigurationManager {
     private static final Properties properties = new Properties();
@@ -27,7 +25,6 @@ public class ConfigurationManager {
         try (InputStream in = getClass().getResourceAsStream(RESOURCE_NAME)) {
             properties.load(in);
         } catch (IOException e) {
-            log.error("Error with connection " + e);
             throw new ConnectionPoolException(MessageManager.getMessage("msg.error.create"), e);
         }
     }

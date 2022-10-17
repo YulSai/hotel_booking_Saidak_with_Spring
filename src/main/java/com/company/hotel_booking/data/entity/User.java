@@ -3,6 +3,7 @@ package com.company.hotel_booking.data.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Where;
 
@@ -19,6 +20,7 @@ import java.util.Objects;
  */
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 @Entity
 @Table(name = "users")
@@ -78,19 +80,5 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", role=" + role +
-                ", avatar='" + avatar + '\'' +
-                '}';
     }
 }
