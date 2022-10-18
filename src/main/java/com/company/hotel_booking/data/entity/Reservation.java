@@ -1,9 +1,11 @@
 package com.company.hotel_booking.data.entity;
 
+import com.company.hotel_booking.managers.SqlManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.CascadeType;
@@ -29,6 +31,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "reservations")
+@SQLDelete(sql = SqlManager.SQL_RESERVATION_DELETE)
 @Where(clause = "deleted = false")
 public class Reservation {
     @Id

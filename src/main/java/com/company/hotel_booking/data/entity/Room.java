@@ -1,10 +1,12 @@
 package com.company.hotel_booking.data.entity;
 
+import com.company.hotel_booking.managers.SqlManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
@@ -25,6 +27,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "rooms")
+@SQLDelete(sql = SqlManager.SQL_ROOM_DELETE)
 @Where(clause = "deleted = false")
 public class Room {
     @Id
