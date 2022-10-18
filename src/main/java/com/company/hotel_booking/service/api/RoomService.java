@@ -16,5 +16,5 @@ public interface RoomService extends AbstractService<Long, RoomDto> {
      * @param check_out end date to search
      * @return List of reservations
      */
-    List<RoomDto> findAvailableRooms(LocalDate check_in, LocalDate check_out, String type, String capacity);
+    List<RoomDto> findAvailableRooms(Long typeId, Long capacityId, LocalDate check_in, LocalDate check_out);
 }

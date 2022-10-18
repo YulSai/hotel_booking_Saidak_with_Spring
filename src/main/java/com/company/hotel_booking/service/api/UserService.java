@@ -2,19 +2,10 @@ package com.company.hotel_booking.service.api;
 
 import com.company.hotel_booking.service.dto.UserDto;
 
-import java.util.List;
-
 /**
  * Interface for serving User objects according to the business logics of User
  */
 public interface UserService extends AbstractService<Long, UserDto> {
-    /**
-     * Method gets all user Dto
-     *
-     * @return list of user Dto
-     */
-    List<UserDto> findAll();
-
     /**
      * Method is used for user authentication
      *

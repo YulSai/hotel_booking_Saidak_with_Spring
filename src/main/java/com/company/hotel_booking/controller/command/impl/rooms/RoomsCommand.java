@@ -2,7 +2,6 @@ package com.company.hotel_booking.controller.command.impl.rooms;
 
 import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.controller.command.util.PagingUtil;
 import com.company.hotel_booking.exceptions.NotFoundException;
 import com.company.hotel_booking.controller.command.api.ICommand;
@@ -11,6 +10,8 @@ import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -28,12 +29,13 @@ public class RoomsCommand implements ICommand {
     @LogInvocation
     @NotFoundEx
     public String execute(HttpServletRequest req) {
-        Paging paging = pagingUtil.getPaging(req);
-        List<RoomDto> rooms = roomService.findAllPages(paging);
+        Pageable pageable = pagingUtil.getPaging(req, "id");
+        Page<RoomDto> roomsDtoPage = roomService.findAllPages(pageable);
+        List<RoomDto> rooms = roomsDtoPage.toList();
         if (rooms.size() == 0) {
             throw new NotFoundException();
         } else {
-            pagingUtil.setTotalPages(req, paging, roomService);
+            pagingUtil.setTotalPages(req, roomsDtoPage);
             req.setAttribute("rooms", rooms);
             return PagesManager.PAGE_ROOMS;
         }
