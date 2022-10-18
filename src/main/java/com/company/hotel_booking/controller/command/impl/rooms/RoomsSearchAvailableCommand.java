@@ -2,6 +2,7 @@ package com.company.hotel_booking.controller.command.impl.rooms;
 
 import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
+import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
 import com.company.hotel_booking.service.api.RoomService;
@@ -32,9 +33,9 @@ public class RoomsSearchAvailableCommand implements ICommand {
             req.setAttribute("message", MessageManager.getMessage("msg.incorrect.date"));
             return PagesManager.PAGE_SEARCH_AVAILABLE_ROOMS;
         } else {
-            String type = req.getParameter("type");
-            String capacity = req.getParameter("capacity");
-            List<RoomDto> roomsAvailable = roomService.findAvailableRooms(checkIn, checkOut, type, capacity);
+            Long typeId = Room.RoomType.valueOf(req.getParameter("type").toUpperCase()).getId();
+            Long capacityId = Room.Capacity.valueOf(req.getParameter("capacity").toUpperCase()).getId();
+            List<RoomDto> roomsAvailable = roomService.findAvailableRooms(typeId, capacityId, checkIn, checkOut);
             if (roomsAvailable.isEmpty()) {
                 req.setAttribute("message", MessageManager.getMessage("msg.search.no.available.rooms"));
             }
