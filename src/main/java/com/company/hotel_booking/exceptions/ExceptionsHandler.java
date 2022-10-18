@@ -12,11 +12,7 @@ public class ExceptionsHandler {
         String message;
         int status;
 
-        if (e instanceof DaoException) {
-            status = 400;
-            message = e.getMessage();
-            page = PagesManager.PAGE_ERROR;
-        } else if (e instanceof ServiceException) {
+        if (e instanceof ServiceException) {
             status = 400;
             message = e.getMessage();
             page = PagesManager.PAGE_ERROR;
