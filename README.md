@@ -41,9 +41,9 @@ Change of languages (RU and EN) is implemented.
 <p>
 • Information about the subject area should be stored in the database<br>
 • If the data in the database is stored in Cyrillic, it is recommended to use utf-8 encoding<br>
-• JDBC-only database access technology<br>
+• Hibernate database access technology<br>
 • To work with the database in the application, a thread-safe connection pool must be implemented, the use of synchronized and volatile is prohibited.<br>
-• When designing a database, it is recommended to use no more than 6-8 tables<br>
+• When designing a database, it is recommended to use no more than 5-8 tables<br>
 </p>
 
 <h2> 

@@ -19,7 +19,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class DeleteUserCommand implements ICommand {
-    private final UserService service;
+    private final UserService userService;
     private final ReservationService reservationService;
 
     @Override
@@ -31,7 +31,8 @@ public class DeleteUserCommand implements ICommand {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);
             reservationService.update(reservation);
         }
-        service.delete(id);
+
+        userService.delete(userService.findById(id));
         req.setAttribute("message", MessageManager.getMessage("msg.user.deleted"));
         return PagesManager.PAGE_DELETE_USER;
     }

@@ -1,8 +1,9 @@
 package com.company.hotel_booking.service.api;
 
-import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,11 +17,11 @@ ReservationService extends AbstractService<Long, ReservationDto> {
     /**
      * Method gets list of reservations starting from begin position in the table by user
      *
-     * @param paging object Paging
+     * @param pageable an instance of interface Pageable for pagination information
      * @param id     user's id
      * @return List of reservations by user
      */
-    List<ReservationDto> findAllPagesByUsers(Paging paging, Long id);
+    Page<ReservationDto> findAllPagesByUsers(Pageable pageable, Long id);
 
     /**
      * Method processes information about booking

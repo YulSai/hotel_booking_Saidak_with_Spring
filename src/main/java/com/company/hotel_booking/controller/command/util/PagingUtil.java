@@ -1,8 +1,11 @@
 package com.company.hotel_booking.controller.command.util;
 
 import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.service.api.AbstractService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,49 +15,35 @@ import org.springframework.stereotype.Component;
 public class PagingUtil {
 
     /**
-     * Method gets Paging
+     * Method gets Pageable
      *
-     * @param req HttpServletRequest
+     * @param req    HttpServletRequest
+     * @param sortBy properties for sorting
      * @return Paging
      */
     @LogInvocation
-    public Paging getPaging(HttpServletRequest req) {
+    public Pageable getPaging(HttpServletRequest req, String sortBy) {
         String limitStr = req.getParameter("limit");
         String offsetStr = req.getParameter("page");
 
         int limit = limitStr == null ? 10 : Integer.parseInt(limitStr);
-        long page = offsetStr == null ? 1 : Long.parseLong(offsetStr);
-        long offset = (page - 1) * limit;
-        return new Paging(limit, offset, page);
-    }
+        int page = offsetStr == null ? 1 : Integer.parseInt(offsetStr);
 
-    /**
-     * Method gets total pages
-     *
-     * @param totalEntities count row
-     * @param limit         max number of lines per page
-     * @return total pages
-     */
-    @LogInvocation
-    public long getTotalPages(long totalEntities, int limit) {
-        long totalPages = totalEntities / limit;
-        totalPages += (totalEntities - (totalPages * limit) > 0 ? 1 : 0);
-        return totalPages;
+        Sort sort = Sort.by(Sort.Direction.ASC, sortBy);
+        return PageRequest.of(page - 1, limit, sort);
     }
 
     /**
      * Method sets the total number of pages and the current page
      *
      * @param req     HttpServletRequest
-     * @param paging  object Paging
-     * @param service instance of object IAbstractService
+     * @param dtoPage Page of entities meeting the paging restriction
      */
     @LogInvocation
-    public void setTotalPages(HttpServletRequest req, Paging paging, AbstractService service) {
-        long totalEntities = service.countRow();
-        long totalPages = getTotalPages(totalEntities, paging.getLimit());
+    public void setTotalPages(HttpServletRequest req, Page dtoPage) {
+        long totalPages = dtoPage.getTotalPages();
         String command = req.getParameter("command");
-        req.setAttribute("current_page", paging.getPage());
+        req.setAttribute("current_page", dtoPage.getPageable().getPageNumber() + 1);
         req.setAttribute("total_pages", totalPages);
         req.setAttribute("command", command);
     }

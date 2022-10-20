@@ -3,9 +3,8 @@ package com.company.hotel_booking.service.impl;
 import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.aspects.logging.annotations.LoginEx;
 import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
-import com.company.hotel_booking.controller.command.util.Paging;
-import com.company.hotel_booking.data.repository.api.ReservationRepository;
-import com.company.hotel_booking.data.repository.api.UserRepository;
+import com.company.hotel_booking.data.repository.ReservationRepository;
+import com.company.hotel_booking.data.repository.UserRepository;
 import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.LoginUserException;
@@ -16,9 +15,9 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.utils.DigestUtil;
 import com.company.hotel_booking.service.validators.UserValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Class object UserDTO with implementation of CRUD operation operations
@@ -36,44 +35,33 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @ServiceEx
     public UserDto findById(Long id) {
-        User user = userRepository.findById(id);
-        if (user == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.user.error.find.by.id") + id);
-        }
-        return mapper.toDto(user);
-    }
-
-    @Override
-    @LogInvocationServer
-    public List<UserDto> findAll() {
-        return userRepository.findAll().stream()
-                .map(mapper::toDto)
-                .toList();
+        return mapper.toDto(userRepository.findById(id).orElseThrow(() ->
+                new ServiceException(MessageManager.getMessage("msg.user.error.find.by.id") + id)));
     }
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public UserDto create(UserDto userDto) {
-        if (userRepository.findUserByEmail(userDto.getEmail()) != null) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new ServiceException(MessageManager.getMessage("msg.user.error.create.exists"));
         }
         userValidator.isValid(userDto);
         String hashPassword = digestUtil.hash(userDto.getPassword());
         userDto.setPassword(hashPassword);
-        return mapper.toDto(userRepository.create(mapper.toEntity(userDto)));
+        return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public UserDto update(UserDto userDto) {
-        User existing = (User) userRepository.findUserByEmail(userDto.getEmail());
+        User existing = userRepository.findByEmail(userDto.getEmail()).get();
         if (existing != null && !existing.getId().equals(userDto.getId())) {
             throw new ServiceException(MessageManager.getMessage("msg.user.error.update.exists"));
         }
         userValidator.isValid(userDto);
-        return mapper.toDto(userRepository.update(mapper.toEntity(userDto)));
+        return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }
 
     @Override
@@ -81,60 +69,49 @@ public class UserServiceImpl implements UserService {
     @ServiceEx
     public UserDto changePassword(UserDto userDto) {
         userValidator.isValid(userDto);
-        String existPassword = userRepository.findById(userDto.getId()).getPassword();
+        String existPassword = userRepository.findById(userDto.getId()).get().getPassword();
         String hashPassword = digestUtil.hash(userDto.getPassword());
         if (hashPassword.equals(existPassword)) {
             throw new ServiceException(MessageManager.getMessage("msg.user.error.new.password"));
         }
         userDto.setPassword(hashPassword);
-        return mapper.toDto(userRepository.update(mapper.toEntity(userDto)));
+        return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }
+
 
     @Override
     @LogInvocationServer
     @ServiceEx
-    public void delete(Long id) {
-        if (reservationRepository.findAllByUsers(id).isEmpty()) {
-            int resultDeleted = userRepository.delete(id);
-            if (resultDeleted != 1) {
-                throw new ServiceException(MessageManager.getMessage("msg.user.error.delete") + id);
+    public void delete(UserDto userDto) {
+        userRepository.delete(mapper.toEntity(userDto));
+        if (reservationRepository.findByUserId(userDto.getId()).isEmpty()) {
+            userRepository.delete(mapper.toEntity(userDto));
+            if (userRepository.existsById(userDto.getId())) {
+                throw new ServiceException(MessageManager.getMessage("msg.user.error.delete") + userDto.getId());
             }
         } else {
-            int resultBlock = userRepository.block(id);
-            if (resultBlock != 1) {
-                throw new ServiceException(MessageManager.getMessage("msg.user.error.block") + id);
+            userRepository.block(userDto.getId());
+            if (userRepository.existsById(userDto.getId())) {
+                throw new ServiceException(MessageManager.getMessage("msg.user.error.delete") + userDto.getId());
             }
         }
     }
 
     @Override
     @LogInvocationServer
-    public List<UserDto> findAllPages(Paging paging) {
-        return userRepository.findAllPages(paging.getLimit(), paging.getOffset()).stream()
-                .map(mapper::toDto)
-                .toList();
+    public Page<UserDto> findAllPages(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(mapper::toDto);
     }
 
     @Override
     @LogInvocationServer
     @LoginEx
     public UserDto login(String email, String password) {
-        User user = (User) userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new LoginUserException();
-        } else {
-            UserDto userDto = mapper.toDto(user);
-            String hashPassword = digestUtil.hash(password);
-            if (!userDto.getPassword().equals(hashPassword)) {
-                throw new LoginUserException();
-            }
-            return userDto;
-        }
-    }
-
-    @Override
-    @LogInvocationServer
-    public long countRow() {
-        return userRepository.countRow();
+        return mapper.toDto(userRepository.findByEmail(email)
+                .stream()
+                .filter(u -> u.getEmail().equals(email) && u.getPassword().equals(digestUtil.hash(password)))
+                .findFirst()
+                .orElseThrow(LoginUserException::new));
     }
 }

@@ -2,8 +2,7 @@ package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
-import com.company.hotel_booking.controller.command.util.Paging;
-import com.company.hotel_booking.data.repository.api.RoomRepository;
+import com.company.hotel_booking.data.repository.RoomRepository;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.exceptions.ServiceException;
@@ -11,6 +10,8 @@ import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,71 +31,52 @@ public class RoomServiceImpl implements RoomService {
     @LogInvocationServer
     @ServiceEx
     public RoomDto findById(Long id) {
-        Room room = roomRepository.findById(id);
-        if (room == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.room.error.find.by.id") + id);
-        }
-        return mapper.toDto(room);
-    }
-
-    @Override
-    @LogInvocationServer
-    public List<RoomDto> findAll() {
-        return roomRepository.findAll().stream()
-                .map(mapper::toDto)
-                .toList();
+        return mapper.toDto(roomRepository.findById(id).orElseThrow(
+                () -> new ServiceException(MessageManager.getMessage("msg.room.error.find.by.id") + id)));
     }
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public RoomDto create(RoomDto roomDto) {
-        Room existing = roomRepository.findRoomByNumber(roomDto.getNumber());
-        if (existing != null) {
+        if (roomRepository.findByNumber(roomDto.getNumber()).isPresent()) {
             throw new ServiceException(MessageManager.getMessage("msg.room.error.create.exists"));
         }
-        return mapper.toDto(roomRepository.create(mapper.toEntity(roomDto)));
+        return mapper.toDto(roomRepository.save(mapper.toEntity(roomDto)));
     }
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public RoomDto update(RoomDto roomDto) {
-        Room existing = roomRepository.findRoomByNumber((roomDto.getNumber()));
+        Room existing = roomRepository.findByNumber((roomDto.getNumber())).get();
         if (existing != null && !existing.getId().equals(roomDto.getId())) {
             throw new ServiceException(MessageManager.getMessage("msg.room.error.update.exists"));
         }
-        return mapper.toDto(roomRepository.update(mapper.toEntity(roomDto)));
+        return mapper.toDto(roomRepository.save(mapper.toEntity(roomDto)));
     }
 
     @Override
     @LogInvocationServer
     @ServiceEx
-    public void delete(Long id) {
-        roomRepository.delete(id);
-        if (roomRepository.delete(id) != 1) {
-            throw new ServiceException(MessageManager.getMessage("msg.room.error.delete") + id);
+    public void delete(RoomDto roomDto) {
+        roomRepository.delete(mapper.toEntity(roomDto));
+        if (roomRepository.existsById(roomDto.getId())) {
+            throw new ServiceException(MessageManager.getMessage("msg.room.error.delete") + roomDto.getId());
         }
     }
 
     @Override
     @LogInvocationServer
-    public List<RoomDto> findAllPages(Paging paging) {
-        return roomRepository.findAllPages(paging.getLimit(), paging.getOffset()).stream()
-                .map(mapper::toDto)
-                .toList();
+    public Page<RoomDto> findAllPages(Pageable pageable) {
+        return roomRepository.findAll(pageable)
+                .map(mapper::toDto);
     }
 
     @Override
     @LogInvocationServer
-    public long countRow() {
-        return roomRepository.countRow();
-    }
-
-    @Override
-    @LogInvocationServer
-    public List<RoomDto> findAvailableRooms(LocalDate check_in, LocalDate check_out, String type, String capacity) {
-        return roomRepository.findAvailableRooms(check_in, check_out, type, capacity).stream()
+    public List<RoomDto> findAvailableRooms(Long typeId, Long capacityId, LocalDate check_in, LocalDate check_out) {
+        return roomRepository.findAvailableRooms(typeId, capacityId, check_in, check_out, check_in, check_out).stream()
                 .map(mapper::toDto)
                 .toList();
     }

@@ -1,10 +1,12 @@
 package com.company.hotel_booking.data.entity;
 
+import com.company.hotel_booking.managers.SqlManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
@@ -24,6 +26,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = SqlManager.SQL_USER_DELETE)
 @Where(clause = "deleted = false")
 public class User {
 
@@ -53,22 +56,6 @@ public class User {
     @Column(name = "avatar")
     private String avatar;
 
-    public enum Role {
-        ADMIN (1L),
-        CLIENT (2L),
-        GUEST (3L);
-
-        private final Long id;
-
-        public Long getId() {
-            return id;
-        }
-
-        Role(Long id) {
-            this.id = id;
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,5 +67,21 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public enum Role {
+        ADMIN(1L),
+        CLIENT(2L),
+        GUEST(3L);
+
+        private final Long id;
+
+        Role(Long id) {
+            this.id = id;
+        }
+
+        public Long getId() {
+            return id;
+        }
     }
 }

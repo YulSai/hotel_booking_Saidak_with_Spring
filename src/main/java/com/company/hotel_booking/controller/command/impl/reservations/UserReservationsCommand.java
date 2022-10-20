@@ -2,7 +2,6 @@ package com.company.hotel_booking.controller.command.impl.reservations;
 
 import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.controller.command.api.ICommand;
-import com.company.hotel_booking.controller.command.util.Paging;
 import com.company.hotel_booking.controller.command.util.PagingUtil;
 import com.company.hotel_booking.managers.MessageManager;
 import com.company.hotel_booking.managers.PagesManager;
@@ -12,6 +11,8 @@ import com.company.hotel_booking.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -28,9 +29,10 @@ public class UserReservationsCommand implements ICommand {
     @Override
     @LogInvocation
     public String execute(HttpServletRequest req) {
-        Paging paging = pagingUtil.getPaging(req);
         Long id = Long.valueOf(req.getParameter("id"));
-        List<ReservationDto> reservations = reservationService.findAllPagesByUsers(paging, id);
+        Pageable pageable = pagingUtil.getPaging(req, "id");
+        Page<ReservationDto> reservationsDtoPage =  reservationService.findAllPagesByUsers(pageable, id);
+        List<ReservationDto> reservations = reservationsDtoPage.toList();
         if (reservations.isEmpty()) {
             req.setAttribute("message", MessageManager.getMessage("msg.reservations.no"));
             return PagesManager.PAGE_RESERVATIONS;
@@ -38,9 +40,10 @@ public class UserReservationsCommand implements ICommand {
             HttpSession session = req.getSession();
             UserDto user = (UserDto) session.getAttribute("user");
             if ("CLIENT".equals(user.getRole().toString())) {
-                reservations = reservationService.findAllPagesByUsers(paging, user.getId());
+                reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, user.getId());
+                reservations = reservationsDtoPage.toList();
             }
-            pagingUtil.setTotalPages(req, paging, reservationService);
+            pagingUtil.setTotalPages(req, reservationsDtoPage);
             req.setAttribute("reservations", reservations);
             return PagesManager.PAGE_RESERVATIONS;
         }
