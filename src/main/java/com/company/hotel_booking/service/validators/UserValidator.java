@@ -1,8 +1,8 @@
 package com.company.hotel_booking.service.validators;
 
-import com.company.hotel_booking.aspects.logging.annotations.RegistrationEx;
-import com.company.hotel_booking.exceptions.RegistrationException;
-import com.company.hotel_booking.managers.MessageManager;
+import com.company.hotel_booking.utils.aspects.logging.annotations.RegistrationEx;
+import com.company.hotel_booking.utils.exceptions.RegistrationException;
+import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.dto.UserDto;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class UserValidator {
         if (firstName == null || ("").equals(firstName)) {
             throw new RegistrationException(MessageManager.getMessage("msg.error.first.name.empty"));
         }
-        if (!firstName.matches("^[A-Za-z]+")) {
+        if (!firstName.matches("^[A-Za-z-А-Яа-я]+")) {
             throw new RegistrationException(MessageManager.getMessage("msg.error.first.name.format"));
         }
 
@@ -32,7 +32,7 @@ public class UserValidator {
         if (lastName == null || ("").equals(lastName)) {
             throw new RegistrationException(MessageManager.getMessage("msg.error.last.name.empty"));
         }
-        if (!lastName.matches("^[A-Za-z-]+")) {
+        if (!lastName.matches("^[A-Za-z-А-Яа-я]+")) {
             throw new RegistrationException(MessageManager.getMessage("msg.error.last.name.format"));
         }
 

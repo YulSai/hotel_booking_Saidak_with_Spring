@@ -7,6 +7,6 @@
         version="3.0">
 
     <error-page>
-        <location>/jsp/404.jsp</location>
+        <location>/WEB-INF/jsp/404.jsp</location>
     </error-page>
 </web-app>

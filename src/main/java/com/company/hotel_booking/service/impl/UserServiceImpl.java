@@ -1,15 +1,15 @@
 package com.company.hotel_booking.service.impl;
 
-import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.aspects.logging.annotations.LoginEx;
-import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
+import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.UserRepository;
 import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.service.mapper.ObjectMapper;
-import com.company.hotel_booking.exceptions.LoginUserException;
-import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManager;
+import com.company.hotel_booking.utils.exceptions.LoginUserException;
+import com.company.hotel_booking.utils.exceptions.ServiceException;
+import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.utils.DigestUtil;
@@ -83,7 +83,6 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @ServiceEx
     public void delete(UserDto userDto) {
-        userRepository.delete(mapper.toEntity(userDto));
         if (reservationRepository.findByUserId(userDto.getId()).isEmpty()) {
             userRepository.delete(mapper.toEntity(userDto));
             if (userRepository.existsById(userDto.getId())) {

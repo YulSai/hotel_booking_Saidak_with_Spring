@@ -1,6 +1,6 @@
 package com.company.hotel_booking.data.entity;
 
-import com.company.hotel_booking.managers.SqlManager;
+import com.company.hotel_booking.utils.managers.SqlManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.company.hotel_booking.data.repository;
 
 import com.company.hotel_booking.data.entity.User;
-import com.company.hotel_booking.managers.SqlManager;
+import com.company.hotel_booking.utils.managers.SqlManager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
