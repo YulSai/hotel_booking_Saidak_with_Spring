@@ -1,4 +1,4 @@
-package com.company.hotel_booking.exceptions;
+package com.company.hotel_booking.utils.exceptions;
 
 /**
  * Class for handling exceptions when information is not found on the request

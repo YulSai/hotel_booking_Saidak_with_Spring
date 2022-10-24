@@ -1,4 +1,4 @@
-package com.company.hotel_booking.exceptions;
+package com.company.hotel_booking.utils.exceptions;
 
 import org.springframework.stereotype.Component;
 
