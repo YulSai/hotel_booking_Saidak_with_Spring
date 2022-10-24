@@ -1,12 +1,12 @@
 package com.company.hotel_booking.service.impl;
 
-import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.RoomRepository;
 import com.company.hotel_booking.service.mapper.ObjectMapper;
-import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManager;
+import com.company.hotel_booking.utils.exceptions.ServiceException;
+import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;

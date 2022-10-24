@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title><fmt:message key="msg.booking.title"/></title>
 </head>
 <body>
@@ -27,24 +27,23 @@
         </tr>
         <c:forEach items="${requestScope.booking.details}" var="item">
             <tr>
-                <td><a href="controller?command=room&id=${item.room.id}">${item.room.number}</a></td>
+                <td><a href="/rooms/${item.room.id}">${item.room.number}</a></td>
                 <td>${item.room.price}</td>
                 <td>${item.checkIn}</td>
                 <td>${item.checkOut}</td>
                 <td>${requestScope.booking.status}</td>
-                <td><a href="controller?command=delete_booking&id=${item.room.id}">
+                <td><a href="/reservations/delete_booking/${item.room.id}">
                     <input type="submit" value="<fmt:message key="msg.delete"/>"></a>
                 </td>
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="3"><fmt:message key="msg.cost" />${requestScope.booking.totalCost} USD</td>
+            <td colspan="3"><fmt:message key="msg.cost"/>${requestScope.booking.totalCost} USD</td>
         </tr>
 
     </table>
-    <a href="controller?command=create_reservation"><input type="submit"
-                                                           value="<fmt:message key="msg.booking.reserve"/>"></a>
-    <a href="controller?command=clean_booking"><input type="submit" value="<fmt:message key="msg.booking.clean"/>"></a>
+    <a href="/reservations/create"><input type="submit" value="<fmt:message key="msg.booking.reserve"/>"></a>
+    <a href="/reservations/clean_booking"><input type="submit" value="<fmt:message key="msg.booking.clean"/>"></a>
 </c:if>
 </body>
 </html>

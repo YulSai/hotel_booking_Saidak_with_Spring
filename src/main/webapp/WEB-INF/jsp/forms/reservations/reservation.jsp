@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/tables.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><fmt:message key="msg.reservation.title"/></title>
 </head>
 <body>
@@ -24,7 +24,7 @@
         <th><fmt:message key="msg.status"/></th>
     </tr>
     <td><a
-            href="controller?command=reservation&id=${requestScope.reservation.id}">${requestScope.reservation.id}</a>
+            href="/reservations/${requestScope.reservation.id}">${requestScope.reservation.id}</a>
     </td>
     <td>
         <table>
@@ -41,7 +41,7 @@
             </tr>
             <c:forEach items="${requestScope.reservation.details }" var="info">
                 <tr>
-                    <td><a href="controller?command=room&id=${info.room.id}">${info.room.number}</a></td>
+                    <td><a href="/rooms/${info.room.id}">${info.room.number}</a></td>
                     <td>${info.room.type}</td>
                     <td>${info.room.capacity}</td>
                     <td>${info.checkIn}</td>
@@ -56,12 +56,11 @@
     <td>${requestScope.reservation.totalCost} USD</td>
     <td>${requestScope.reservation.status.toString().toLowerCase()}</td>
     <c:if test="${sessionScope.user.role == 'ADMIN'}">
-        <td><a href="controller?command=update_reservation_form&id=${requestScope.reservation.id}">
-            <fmt:message key="msg.update"/></a>
+        <td><a href="/reservations/update/${requestScope.reservation.id}"> <fmt:message key="msg.update"/></a>
         </td>
     </c:if>
     <c:if test="${sessionScope.user.role == 'CLIENT'}">
-        <td><a href="controller?command=cancel_reservation&id=${requestScope.reservation.id}">
+        <td><a href="/reservations/cancel_reservation/${requestScope.reservation.id}">
             <fmt:message key="msg.cancel"/></a></td>
     </c:if>
 </table>
