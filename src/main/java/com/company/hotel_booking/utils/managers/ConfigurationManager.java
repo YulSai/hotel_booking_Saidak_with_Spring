@@ -1,6 +1,6 @@
-package com.company.hotel_booking.managers;
+package com.company.hotel_booking.utils.managers;
 
-import com.company.hotel_booking.exceptions.ConnectionPoolException;
+import com.company.hotel_booking.utils.exceptions.ConnectionPoolException;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

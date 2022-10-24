@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/tables.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><fmt:message key="msg.users.title"/></title>
 </head>
 <body>
@@ -27,17 +27,17 @@
     <c:forEach items="${requestScope.users}" var="user" varStatus="counter">
         <tr>
             <td>${counter.count}</td>
-            <td><a href="controller?command=user&id=${user.id}">${user.firstName}</a></td>
-            <td><a href="controller?command=user&id=${user.id}">${user.lastName}</a></td>
+            <td><a href="/users/${user.id}">${user.firstName}</a></td>
+            <td><a href="/users/${user.id}">${user.lastName}</a></td>
             <td><c:out value="${user.email}"/></td>
             <td>${user.phoneNumber}</td>
             <td>${user.role.toString().toLowerCase()}</td>
             <td>
-                <li><a href="controller?command=update_user_form&id=${user.id}"><fmt:message key="msg.user.update"/></a>
+                <li><a href="/users/update_role/${user.id}"><fmt:message key="msg.user.update.role"/></a>
                 </li>
             </td>
             <td>
-                <li><a href="controller?command=delete_user&id=${user.id}"><fmt:message key="msg.user.delete"/></a></li>
+                <li><a href="/users/delete/${user.id}"><fmt:message key="msg.user.delete"/></a></li>
             </td>
         </tr>
     </c:forEach>

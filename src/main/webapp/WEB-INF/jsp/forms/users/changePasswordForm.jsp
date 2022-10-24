@@ -8,22 +8,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title><fmt:message key="msg.update.user.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
 <h1><fmt:message key="msg.update.user.title"/></h1>
 <p>${requestScope.message}</p>
-<form method="post" action="controller" enctype="multipart/form-data">
-    <input name="command" type="hidden" value="change_password"/>
-    <input name="id" type="hidden" value="${requestScope.user.id}"/>
-
+<form method="post" action="/users/change_password/${user.id}">
     <c:if test="${sessionScope.user.role == 'CLIENT'}">
-        <input id="first_name-input" name="first_name" type="hidden" value="${requestScope.user.firstName}"/>
-        <input id="last_name-input" name="last_name" type="hidden" value="${requestScope.user.lastName}"/>
+        <input id="first_name-input" name="firstName" type="hidden" value="${requestScope.user.firstName}"/>
+        <input id="last_name-input" name="lastName" type="hidden" value="${requestScope.user.lastName}"/>
         <input id="email-input" name="email" type="hidden" value="<c:out value="${requestScope.user.email}"/>"/>
-        <input id="phone_number-input" name="phone_number" type="hidden" min="13"
+        <input id="phone_number-input" name="phoneNumber" type="hidden" min="13"
                value="${requestScope.user.phoneNumber}"/>
         <input id="avatar_input" name="avatar" type="hidden" value="${requestScope.user.avatar}"/>
         <input id="role-input-admin" name="role" type="hidden" value="${requestScope.user.role}"/>

@@ -7,18 +7,16 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title><fmt:message key="msg.update.room.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
 <h1><fmt:message key="msg.update.room.title"/></h1>
 <p>${requestScope.message}</p>
-<form method="post" action="controller">
-    <input name="command" type="hidden" value="update_room"/>
-    <input name="id" type="hidden" value="${requestScope.room.id}"/>
+<form method="post" action="/rooms/update/${requestScope.room.id}">
     <label for="room_number-input"><fmt:message key="msg.number"/> </label>
-    <input id="room_number-input" name="room_number" type="text" value="${requestScope.room.number}"/>
+    <input id="room_number-input" name="number" type="text" value="${requestScope.room.number}"/>
     <br/>
     <select name="type" required="required">
         <option value="${requestScope.room.type}">${requestScope.room.type}</option>

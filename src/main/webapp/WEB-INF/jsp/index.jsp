@@ -6,13 +6,13 @@
 <fmt:setBundle basename="pageMessage"/>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title>HotelBooking</title>
 </head>
 <body>
-<jsp:include page="jsp/navbar.jsp"/>
+<jsp:include page="navbar.jsp"/>
 <p>${requestScope.message}</p>
 <h1><fmt:message key="msg.main.welcome" /> ${sessionScope.user != null ? sessionScope.user.firstName : 'Guest'}!</h1>
-<img src="images/mainImg.jpg" alt="hotel"/>
+<img src="/images/mainImg.jpg" alt="hotel"/>
 </body>
 </html>
