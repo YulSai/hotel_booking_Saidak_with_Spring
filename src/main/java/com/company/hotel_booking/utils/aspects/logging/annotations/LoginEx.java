@@ -1,4 +1,4 @@
-package com.company.hotel_booking.aspects.logging.annotations;
+package com.company.hotel_booking.utils.aspects.logging.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NotFoundEx {
+public @interface LoginEx {
 }

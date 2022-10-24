@@ -1,4 +1,4 @@
-package com.company.hotel_booking.aspects.logging.annotations;
+package com.company.hotel_booking.utils.aspects.logging.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
