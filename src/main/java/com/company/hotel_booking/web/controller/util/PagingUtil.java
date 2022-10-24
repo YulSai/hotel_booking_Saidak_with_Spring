@@ -1,12 +1,14 @@
-package com.company.hotel_booking.controller.command.util;
+package com.company.hotel_booking.web.controller.util;
 
-import com.company.hotel_booking.aspects.logging.annotations.LogInvocation;
-import jakarta.servlet.http.HttpServletRequest;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Class with methods for object Paging
@@ -40,9 +42,9 @@ public class PagingUtil {
      * @param dtoPage Page of entities meeting the paging restriction
      */
     @LogInvocation
-    public void setTotalPages(HttpServletRequest req, Page dtoPage) {
+    @GetMapping("/${page}")
+    public void setTotalPages(HttpServletRequest req, Page dtoPage, String command) {
         long totalPages = dtoPage.getTotalPages();
-        String command = req.getParameter("command");
         req.setAttribute("current_page", dtoPage.getPageable().getPageNumber() + 1);
         req.setAttribute("total_pages", totalPages);
         req.setAttribute("command", command);
