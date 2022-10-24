@@ -1,13 +1,13 @@
 package com.company.hotel_booking.service.mapper;
 
-import com.company.hotel_booking.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.aspects.logging.annotations.ServiceEx;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.data.entity.User;
-import com.company.hotel_booking.exceptions.ServiceException;
-import com.company.hotel_booking.managers.MessageManager;
+import com.company.hotel_booking.utils.exceptions.ServiceException;
+import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
@@ -41,7 +41,7 @@ public class ObjectMapper {
             dto.setEmail(entity.getEmail());
             dto.setPassword(entity.getPassword());
             dto.setPhoneNumber(entity.getPhoneNumber());
-            dto.setRole(UserDto.RoleDto.valueOf(entity.getRole().toString()));
+            dto.setRole(UserDto.RoleDto.valueOf((entity.getRole().toString())));
             dto.setAvatar(entity.getAvatar());
         } catch (NullPointerException e) {
             throw new ServiceException(MessageManager.getMessage("msg.error.find"));

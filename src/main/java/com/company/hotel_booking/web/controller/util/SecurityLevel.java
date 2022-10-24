@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controller.command.api;
+package com.company.hotel_booking.web.controller.util;
 
 /**
  * Enum of access levels

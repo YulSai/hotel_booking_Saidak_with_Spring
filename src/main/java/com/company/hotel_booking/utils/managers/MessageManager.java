@@ -1,4 +1,4 @@
-package com.company.hotel_booking.managers;
+package com.company.hotel_booking.utils.managers;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 /**
  * Class for receiving text messages
  */
+
 public class MessageManager {
     private static final String RESOURCE_NAME = "pageMessage";
     private static ResourceBundle resourceBundle;

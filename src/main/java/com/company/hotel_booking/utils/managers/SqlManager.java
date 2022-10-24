@@ -1,4 +1,4 @@
-package com.company.hotel_booking.managers;
+package com.company.hotel_booking.utils.managers;
 
 /**
  * Class with SQL constants
