@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/tables.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><fmt:message key="msg.available.title"/></title>
 </head>
 <body>
@@ -29,16 +29,15 @@
     </tr>
     <c:forEach items="${sessionScope.rooms_available}" var="room" varStatus="counter">
         <tr>
-            <td><a href="controller?command=room&id=${room.id}">${counter.count}</a></td>
+            <td><a href="/rooms/${room.id}">${counter.count}</a></td>
             <td>${room.number}</td>
             <td>${room.type}</td>
             <td>${room.capacity}</td>
             <td>${room.status}</td>
             <td>${room.price}</td>
             <td>
-                <form method="post" action="controller">
-                    <input type="hidden" name="command" value="add_booking">
-                    <input type="hidden" name="room_id" value="${room.id}">
+                <form method="post" action="/reservations/add_booking">
+                    <input type="hidden" name="roomId" value="${room.id}">
                     <input type="hidden" name="check_in" value="${check_in}">
                     <input type="hidden" name="check_out" value="${check_out}">
                     <input type="submit" value="<fmt:message key="msg.available.book"/>">

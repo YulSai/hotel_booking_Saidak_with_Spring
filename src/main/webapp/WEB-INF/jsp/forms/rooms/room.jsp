@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/tables.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><fmt:message key="msg.room.title"/></title>
 </head>
 <body>
@@ -42,8 +42,7 @@
     </tr>
 </table>
 <ul>
-    <li><a href="controller?command=update_room_form&id=${requestScope.room.id}"><fmt:message
-            key="msg.room.update"/></a></li>
+    <li><a href="/rooms/update/${requestScope.room.id}"><fmt:message key="msg.room.update"/></a></li>
 </ul>
 </body>
 </html>

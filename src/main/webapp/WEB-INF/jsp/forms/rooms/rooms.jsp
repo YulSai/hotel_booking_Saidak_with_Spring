@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/tables.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><fmt:message key="msg.rooms.title"/></title>
 </head>
 <body>
@@ -28,13 +28,12 @@
     <c:forEach items="${rooms}" var="room" varStatus="counter">
         <tr>
             <td>${counter.count}</td>
-            <td><a href="controller?command=room&id=${room.id}">${room.number}</a></td>
+            <td><a href="/rooms/${room.id}">${room.number}</a></td>
             <td>${room.type}</td>
             <td>${room.capacity}</td>
             <td>${room.status}</td>
             <td>${room.price}</td>
-            <td><a href="controller?command=update_room_form&id=${room.id}"><fmt:message
-                    key="msg.update"/></a></td>
+            <td><a href="/rooms/update/${room.id}"><fmt:message key="msg.update"/></a></td>
         </tr>
     </c:forEach>
 </table>
