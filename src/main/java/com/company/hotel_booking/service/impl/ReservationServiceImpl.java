@@ -33,13 +33,14 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
     private final ObjectMapper mapper;
+    private final MessageManager messageManager;
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public ReservationDto findById(Long id) {
         return mapper.toDto(reservationRepository.findById(id).orElseThrow(
-                () -> new ServiceException(MessageManager.getMessage("msg.reservation.error.find.by.id") + id)));
+                () -> new ServiceException(messageManager.getMessage("msg.reservation.error.find.by.id") + id)));
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ReservationServiceImpl implements ReservationService {
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.create") + entity);
+            throw new ServiceException(messageManager.getMessage("msg.reservation.error.create") + entity);
         }
         return reservation;
     }
@@ -96,7 +97,7 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto update(ReservationDto entity) {
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.reservation.error.update") + entity);
+            throw new ServiceException(messageManager.getMessage("msg.reservation.error.update") + entity);
         }
         return reservation;
     }
@@ -108,7 +109,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.delete(mapper.toEntity(reservationDto));
         if (reservationRepository.existsById(reservationDto.getId())) {
             throw new ServiceException(
-                    MessageManager.getMessage("msg.reservation.error.delete") + reservationDto.getId());
+                    messageManager.getMessage("msg.reservation.error.delete") + reservationDto.getId());
         }
     }
 

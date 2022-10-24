@@ -26,13 +26,14 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final ObjectMapper mapper;
+    private final MessageManager messageManager;
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public RoomDto findById(Long id) {
         return mapper.toDto(roomRepository.findById(id).orElseThrow(
-                () -> new ServiceException(MessageManager.getMessage("msg.room.error.find.by.id") + id)));
+                () -> new ServiceException(messageManager.getMessage("msg.room.error.find.by.id") + id)));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class RoomServiceImpl implements RoomService {
     @ServiceEx
     public RoomDto create(RoomDto roomDto) {
         if (roomRepository.findByNumber(roomDto.getNumber()).isPresent()) {
-            throw new ServiceException(MessageManager.getMessage("msg.room.error.create.exists"));
+            throw new ServiceException(messageManager.getMessage("msg.room.error.create.exists"));
         }
         return mapper.toDto(roomRepository.save(mapper.toEntity(roomDto)));
     }
@@ -51,7 +52,7 @@ public class RoomServiceImpl implements RoomService {
     public RoomDto update(RoomDto roomDto) {
         Room existing = roomRepository.findByNumber((roomDto.getNumber())).get();
         if (existing != null && !existing.getId().equals(roomDto.getId())) {
-            throw new ServiceException(MessageManager.getMessage("msg.room.error.update.exists"));
+            throw new ServiceException(messageManager.getMessage("msg.room.error.update.exists"));
         }
         return mapper.toDto(roomRepository.save(mapper.toEntity(roomDto)));
     }
@@ -62,7 +63,7 @@ public class RoomServiceImpl implements RoomService {
     public void delete(RoomDto roomDto) {
         roomRepository.delete(mapper.toEntity(roomDto));
         if (roomRepository.existsById(roomDto.getId())) {
-            throw new ServiceException(MessageManager.getMessage("msg.room.error.delete") + roomDto.getId());
+            throw new ServiceException(messageManager.getMessage("msg.room.error.delete") + roomDto.getId());
         }
     }
 

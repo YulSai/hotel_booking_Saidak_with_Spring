@@ -5,7 +5,6 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.utils.managers.PagesManager;
 import com.company.hotel_booking.web.controller.util.PagingUtil;
@@ -53,7 +52,7 @@ public class ReservationController {
         }
 
         if (reservations.isEmpty()) {
-            req.setAttribute("message", MessageManager.getMessage("msg.empty"));
+            req.setAttribute("message", messageManager.getMessage("msg.empty"));
             return PagesManager.PAGE_RESERVATIONS;
         }
 
@@ -66,16 +65,9 @@ public class ReservationController {
     @NotFoundEx
     @GetMapping("/{id}")
     public String getReservationById(@PathVariable Long id, Model model) {
-        if (id == null) {
-            throw new NotFoundException();
-        }
         ReservationDto reservation = reservationService.findById(id);
-        if (reservation.getId() == null) {
-            throw new NotFoundException();
-        } else {
-            model.addAttribute("reservation", reservation);
-            return PagesManager.PAGE_RESERVATION;
-        }
+        model.addAttribute("reservation", reservation);
+        return PagesManager.PAGE_RESERVATION;
     }
 
     @LogInvocation
@@ -85,7 +77,7 @@ public class ReservationController {
         LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
         LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
         if (user == null) {
-            model.addAttribute("message", MessageManager.getMessage("msg.login"));
+            model.addAttribute("message", messageManager.getMessage("msg.login"));
             return PagesManager.PAGE_LOGIN;
         } else {
             @SuppressWarnings("unchecked")
@@ -113,7 +105,7 @@ public class ReservationController {
         reservation = reservationService.findById(reservation.getId());
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
         ReservationDto updated = reservationService.update(reservation);
-        model.addAttribute("message", MessageManager.getMessage("msg.reservation.updated"));
+        model.addAttribute("message", messageManager.getMessage("msg.reservation.updated"));
         return "redirect:/reservations/" + updated.getId();
     }
 
@@ -194,7 +186,7 @@ public class ReservationController {
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, id);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
         if (reservations.isEmpty()) {
-            model.addAttribute("message", MessageManager.getMessage("msg.reservations.no"));
+            model.addAttribute("message", messageManager.getMessage("msg.reservations.no"));
             return PagesManager.PAGE_RESERVATIONS;
         } else {
             UserDto user = (UserDto) session.getAttribute("user");

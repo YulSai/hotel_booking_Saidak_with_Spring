@@ -24,6 +24,9 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ObjectMapper {
+
+    private final MessageManager messageManager;
+
     /**
      * Method transforms object User into object UserDto
      *
@@ -44,7 +47,7 @@ public class ObjectMapper {
             dto.setRole(UserDto.RoleDto.valueOf((entity.getRole().toString())));
             dto.setAvatar(entity.getAvatar());
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.find"));
+            throw new ServiceException(messageManager.getMessage("msg.error.find"));
         }
         return dto;
     }
@@ -69,7 +72,7 @@ public class ObjectMapper {
             entity.setRole(User.Role.valueOf(dto.getRole().toString()));
             entity.setAvatar(dto.getAvatar());
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.find"));
+            throw new ServiceException(messageManager.getMessage("msg.error.find"));
         }
         return entity;
     }
@@ -92,7 +95,7 @@ public class ObjectMapper {
             dto.setCapacity(RoomDto.CapacityDto.valueOf(entity.getCapacity().toString()));
             dto.setNumber(entity.getNumber());
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.find"));
+            throw new ServiceException(messageManager.getMessage("msg.error.find"));
         }
         return dto;
     }
@@ -115,7 +118,7 @@ public class ObjectMapper {
             entity.setCapacity(Room.Capacity.valueOf(dto.getCapacity().toString()));
             entity.setNumber(dto.getNumber());
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.error.find"));
+            throw new ServiceException(messageManager.getMessage("msg.error.find"));
         }
         return entity;
     }
@@ -150,7 +153,7 @@ public class ObjectMapper {
             }
             dto.setDetails(reservationInfoDto);
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.empty"));
+            throw new ServiceException(messageManager.getMessage("msg.empty"));
         }
         return dto;
     }
@@ -185,7 +188,7 @@ public class ObjectMapper {
             }
             entity.setDetails(reservationInfo);
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.empty"));
+            throw new ServiceException(messageManager.getMessage("msg.empty"));
         }
         return entity;
     }
@@ -209,7 +212,7 @@ public class ObjectMapper {
             dto.setNights(entity.getNights());
             dto.setRoomPrice(entity.getRoomPrice());
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.empty"));
+            throw new ServiceException(messageManager.getMessage("msg.empty"));
         }
         return dto;
     }
@@ -233,7 +236,7 @@ public class ObjectMapper {
             entity.setNights(dto.getNights());
             entity.setRoomPrice(dto.getRoomPrice());
         } catch (NullPointerException e) {
-            throw new ServiceException(MessageManager.getMessage("msg.empty"));
+            throw new ServiceException(messageManager.getMessage("msg.empty"));
         }
         return entity;
     }
