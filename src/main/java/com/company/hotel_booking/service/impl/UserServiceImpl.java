@@ -1,12 +1,12 @@
 package com.company.hotel_booking.service.impl;
 
+import com.company.hotel_booking.service.mapper.UserMapper;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.UserRepository;
 import com.company.hotel_booking.data.entity.User;
-import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.utils.exceptions.LoginUserException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.utils.managers.MessageManager;
@@ -25,11 +25,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    private final UserMapper mapper;
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final DigestUtil digestUtil;
     private final UserValidator userValidator;
-    private final ObjectMapper mapper;
+
     private final MessageManager messageManager;
 
     @Override

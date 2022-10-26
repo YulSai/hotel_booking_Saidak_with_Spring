@@ -1,10 +1,11 @@
 package com.company.hotel_booking.service.impl;
 
+import com.company.hotel_booking.service.mapper.ReservationMapper;
+import com.company.hotel_booking.service.mapper.RoomMapper;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.RoomRepository;
-import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationService;
@@ -32,7 +33,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
-    private final ObjectMapper mapper;
+    private final ReservationMapper mapper;
+    private final RoomMapper roomMapper;
     private final MessageManager messageManager;
 
     @Override
@@ -65,13 +67,13 @@ public class ReservationServiceImpl implements ReservationService {
         List<ReservationInfoDto> details = new ArrayList<>();
         booking.forEach((roomId, quantity) -> {
             ReservationInfoDto info = new ReservationInfoDto();
-            RoomDto room = mapper.toDto(roomRepository.findById(roomId).get());
+            RoomDto room = roomMapper.toDto(roomRepository.findById(roomId).get());
             info.setRoom(room);
             info.setCheckIn(checkIn);
             info.setCheckOut(checkOut);
             info.setNights(ChronoUnit.DAYS.between(checkIn, checkOut));
             info.setRoomPrice(room.getPrice());
-            info.setReservationDto(reservation);
+            info.setReservation(reservation);
             details.add(info);
         });
         BigDecimal totalCost = calculatePrice(details);

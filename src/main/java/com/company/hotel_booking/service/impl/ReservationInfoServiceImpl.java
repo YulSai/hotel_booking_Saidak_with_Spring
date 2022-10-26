@@ -1,9 +1,9 @@
 package com.company.hotel_booking.service.impl;
 
+import com.company.hotel_booking.service.mapper.ReservationInfoMapper;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationInfoRepository;
-import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationInfoService;
@@ -22,7 +22,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class ReservationInfoServiceImpl implements ReservationInfoService {
     private final ReservationInfoRepository reservationInfoRepository;
-    private final ObjectMapper mapper;
+    private final ReservationInfoMapper mapper;
     private final MessageManager messageManager;
 
     @Override
