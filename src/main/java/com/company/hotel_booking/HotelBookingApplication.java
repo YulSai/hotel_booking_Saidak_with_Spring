@@ -16,9 +16,6 @@ import java.util.Locale;
 /**
  * Class Spring configuration and entry-point
  */
-//@PropertySource("classpath:application.properties")
-//@EnableJpaRepositories
-//@EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 public class HotelBookingApplication implements WebMvcConfigurer {
