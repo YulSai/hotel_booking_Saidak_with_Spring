@@ -4,13 +4,17 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.RegistrationE
 import com.company.hotel_booking.utils.exceptions.RegistrationException;
 import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
  * Class with method for validating user's email and password
  */
 @Component
+@RequiredArgsConstructor
 public class UserValidator {
+
+    private final MessageManager messageManager;
 
     /**
      * Method checks if the email and password is valid
@@ -22,42 +26,42 @@ public class UserValidator {
 
         String firstName = userDto.getFirstName();
         if (firstName == null || ("").equals(firstName)) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.first.name.empty"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.first.name.empty"));
         }
         if (!firstName.matches("^[A-Za-z-А-Яа-я]+")) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.first.name.format"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.first.name.format"));
         }
 
         String lastName = userDto.getLastName();
         if (lastName == null || ("").equals(lastName)) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.last.name.empty"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.last.name.empty"));
         }
         if (!lastName.matches("^[A-Za-z-А-Яа-я]+")) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.last.name.format"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.last.name.format"));
         }
 
         String email = userDto.getEmail();
         if (email == null || ("").equals(email)) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.email.empty"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.email.empty"));
         }
         if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.email.format"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.email.format"));
         }
 
         String password = userDto.getPassword();
         if (password == null || ("").equals(password)) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.password.empty"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.password.empty"));
         }
         if (!password.matches("[A-Za-z0-9_]+")) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.password.format"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.password.format"));
         }
         if (password.length() < 6) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.password.length"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.password.length"));
         }
 
         String phoneNumber = userDto.getPhoneNumber();
         if (phoneNumber == null || ("").equals(phoneNumber)) {
-            throw new RegistrationException(MessageManager.getMessage("msg.error.phone.empty"));
+            throw new RegistrationException(messageManager.getMessage("msg.error.phone.empty"));
         }
     }
 }

@@ -11,7 +11,6 @@ import org.hibernate.annotations.Where;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,9 +49,13 @@ public class Reservation {
     @Column(name = "status_id")
     private Status status;
 
-    @OneToMany(mappedBy = "reservation", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
-    private List<ReservationInfo> details;
+    @OneToMany(mappedBy = "reservation", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<ReservationInfo> details = new ArrayList<>();
+
+    public void addDetails (ReservationInfo info){
+        details.add(info);
+        info.setReservation(this);
+    }
 
     public enum Status {
         IN_PROGRESS(1L),

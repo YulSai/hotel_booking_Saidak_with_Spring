@@ -19,11 +19,38 @@
 *.tar.gz
 *.rar
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
 # virtual machine crash logs
 hs_err_pid*
 replay_pid*
 
-# Eclipse files
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# Idea/Eclipse files
+/out/
+.idea
+*.iws
+*.iml
+*.ipr
 /.settings/
 *.prefs
 /bin/
@@ -31,10 +58,6 @@ replay_pid*
 *.bak
 *.json
 /target/
-.classpath
-.project
-
-# Idea files
-/out/
-.idea/
-*.iml*
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/

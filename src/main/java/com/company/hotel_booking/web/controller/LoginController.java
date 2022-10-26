@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     private final UserService userService;
+    private final MessageManager messageManager;
 
     @LogInvocation
     @GetMapping("/login")
@@ -31,7 +32,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
         if (email == null || ("").equals(email) || password == null || ("").equals(password)) {
-            model.addAttribute("message", MessageManager.getMessage("msg.login.details"));
+            model.addAttribute("message", messageManager.getMessage("msg.login.details"));
             return PagesManager.PAGE_LOGIN;
         }
         UserDto userDto = userService.login(email, password);

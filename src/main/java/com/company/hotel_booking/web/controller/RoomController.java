@@ -5,7 +5,6 @@ import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.utils.managers.PagesManager;
 import com.company.hotel_booking.web.controller.util.PagingUtil;
@@ -41,29 +40,19 @@ public class RoomController {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<RoomDto> roomsDtoPage = roomService.findAllPages(pageable);
         List<RoomDto> rooms = roomsDtoPage.toList();
-        if (rooms.size() == 0) {
-            throw new NotFoundException();
-        } else {
-            pagingUtil.setTotalPages(req, roomsDtoPage, "rooms/all");
-            model.addAttribute("rooms", rooms);
-            return PagesManager.PAGE_ROOMS;
-        }
+        pagingUtil.setTotalPages(req, roomsDtoPage, "rooms/all");
+        model.addAttribute("rooms", rooms);
+        return PagesManager.PAGE_ROOMS;
+
     }
 
     @LogInvocation
     @NotFoundEx
     @GetMapping("/{id}")
     public String getRoomById(@PathVariable Long id, Model model) {
-        if (id == null) {
-            throw new NotFoundException();
-        }
         RoomDto room = roomService.findById(id);
-        if (room.getId() == null) {
-            throw new NotFoundException();
-        } else {
-            model.addAttribute("room", room);
-            return PagesManager.PAGE_ROOM;
-        }
+        model.addAttribute("room", room);
+        return PagesManager.PAGE_ROOM;
     }
 
     @LogInvocation
@@ -92,7 +81,7 @@ public class RoomController {
     @PostMapping("/update/{id}")
     public String updateRoom(@ModelAttribute RoomDto room, Model model) {
         RoomDto updated = roomService.update(room);
-        model.addAttribute("message", MessageManager.getMessage("msg.room.updated"));
+        model.addAttribute("message", messageManager.getMessage("msg.room.updated"));
         return "redirect:/rooms/" + updated.getId();
     }
 
@@ -110,14 +99,14 @@ public class RoomController {
         LocalDate checkIn = LocalDate.parse(check_in);
         LocalDate checkOut = LocalDate.parse(check_out);
         if (checkOut.equals(checkIn) | checkOut.isBefore(checkIn)) {
-            model.addAttribute("message", MessageManager.getMessage("msg.incorrect.date"));
+            model.addAttribute("message", messageManager.getMessage("msg.incorrect.date"));
             return PagesManager.PAGE_SEARCH_AVAILABLE_ROOMS;
         } else {
             Long typeId = Room.RoomType.valueOf(type.toUpperCase()).getId();
             Long capacityId = Room.Capacity.valueOf(capacity.toUpperCase()).getId();
             List<RoomDto> roomsAvailable = roomService.findAvailableRooms(typeId, capacityId, checkIn, checkOut);
             if (roomsAvailable.isEmpty()) {
-                model.addAttribute("message", MessageManager.getMessage("msg.search.no.available.rooms"));
+                model.addAttribute("message", messageManager.getMessage("msg.search.no.available.rooms"));
             }
             session.setAttribute("rooms_available", roomsAvailable);
             session.setAttribute("check_in", checkIn);

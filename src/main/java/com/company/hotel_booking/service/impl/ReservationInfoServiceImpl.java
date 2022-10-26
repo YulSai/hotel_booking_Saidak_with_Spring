@@ -1,9 +1,9 @@
 package com.company.hotel_booking.service.impl;
 
+import com.company.hotel_booking.service.mapper.ReservationInfoMapper;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationInfoRepository;
-import com.company.hotel_booking.service.mapper.ObjectMapper;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationInfoService;
@@ -22,14 +22,15 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class ReservationInfoServiceImpl implements ReservationInfoService {
     private final ReservationInfoRepository reservationInfoRepository;
-    private final ObjectMapper mapper;
+    private final ReservationInfoMapper mapper;
+    private final MessageManager messageManager;
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public ReservationInfoDto findById(Long id) {
         return mapper.toDto(reservationInfoRepository.findById(id).orElseThrow(
-                () -> new ServiceException(MessageManager.getMessage
+                () -> new ServiceException(messageManager.getMessage
                         ("msg.reservation.info.error.find.by.id") + id)));
     }
 
@@ -39,7 +40,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     public ReservationInfoDto create(ReservationInfoDto entity) {
         ReservationInfoDto info = mapper.toDto(reservationInfoRepository.save(mapper.toEntity(entity)));
         if (info == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.create") + entity);
+            throw new ServiceException(messageManager.getMessage("msg.reservation.info.error.create") + entity);
         }
         return info;
     }
@@ -49,7 +50,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     public ReservationInfoDto update(ReservationInfoDto entity) {
         ReservationInfoDto info = mapper.toDto(reservationInfoRepository.save(mapper.toEntity(entity)));
         if (info == null) {
-            throw new ServiceException(MessageManager.getMessage("msg.reservation.info.error.update") + entity);
+            throw new ServiceException(messageManager.getMessage("msg.reservation.info.error.update") + entity);
         }
         return info;
     }
@@ -61,7 +62,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
         reservationInfoRepository.delete(mapper.toEntity(reservationInfoDto));
         if (reservationInfoRepository.existsById(reservationInfoDto.getId())) {
             throw new ServiceException(
-                    MessageManager.getMessage("msg.reservation.info.error.delete") + reservationInfoDto.getId());
+                    messageManager.getMessage("msg.reservation.info.error.delete") + reservationInfoDto.getId());
         }
     }
 

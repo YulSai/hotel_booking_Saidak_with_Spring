@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +21,12 @@ public class ReservationDto {
     private UserDto user;
     private BigDecimal totalCost;
     private StatusDto status;
-    List<ReservationInfoDto> details;
+    private List<ReservationInfoDto> details = new ArrayList<>();
+
+    public void addDetails (ReservationInfoDto info){
+        details.add(info);
+        info.setReservation(this);
+    }
 
     public enum StatusDto {
         IN_PROGRESS,

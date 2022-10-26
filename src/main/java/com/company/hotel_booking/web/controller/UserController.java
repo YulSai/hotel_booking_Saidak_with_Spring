@@ -6,7 +6,6 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.utils.managers.PagesManager;
 import com.company.hotel_booking.web.controller.util.PagingUtil;
@@ -46,33 +45,22 @@ public class UserController {
         Pageable pageable = pagingUtil.getPaging(req, "lastName");
         Page<UserDto> usersDtoPage = userService.findAllPages(pageable);
         List<UserDto> users = usersDtoPage.toList();
-        if (users.size() == 0) {
-            throw new NotFoundException();
-        } else {
-            pagingUtil.setTotalPages(req, usersDtoPage, "users/all");
-            model.addAttribute("users", users);
-            return PagesManager.PAGE_USERS;
-        }
+        pagingUtil.setTotalPages(req, usersDtoPage, "users/all");
+        model.addAttribute("users", users);
+        return PagesManager.PAGE_USERS;
     }
 
     @LogInvocation
     @NotFoundEx
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id, HttpSession session, Model model) {
-        if (id == null) {
-            throw new NotFoundException();
-        }
         UserDto user = userService.findById(id);
-        if (user.getId() == null) {
-            throw new NotFoundException();
-        } else {
-            UserDto userDto = (UserDto) session.getAttribute("user");
-            if ("CLIENT".equals(userDto.getRole().toString())) {
-                user = userService.findById(userDto.getId());
-            }
-            model.addAttribute("user", user);
-            return PagesManager.PAGE_USER;
+        UserDto userDto = (UserDto) session.getAttribute("user");
+        if ("CLIENT".equals(userDto.getRole().toString())) {
+            user = userService.findById(userDto.getId());
         }
+        model.addAttribute("user", user);
+        return PagesManager.PAGE_USER;
     }
 
     @LogInvocation
@@ -168,7 +156,7 @@ public class UserController {
                 avatarName = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
                 String location = "avatars/";
                 File pathFile = new File(location);
-                if(!pathFile.exists()){
+                if (!pathFile.exists()) {
                     pathFile.mkdir();
                 }
                 pathFile = new File(location + avatarName);

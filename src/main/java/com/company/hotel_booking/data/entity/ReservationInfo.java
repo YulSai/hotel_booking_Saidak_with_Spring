@@ -11,6 +11,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class ReservationInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -68,8 +69,8 @@ public class ReservationInfo {
     public String toString() {
         return "ReservationInfo{" +
                 "id=" + id +
-                ", reservation=" + reservation.getId() +
-                ", room=" + room.getNumber() +
+                ", reservation=" + reservation +
+                ", room=" + room +
                 ", checkIn=" + checkIn +
                 ", checkOut=" + checkOut +
                 ", nights=" + nights +
