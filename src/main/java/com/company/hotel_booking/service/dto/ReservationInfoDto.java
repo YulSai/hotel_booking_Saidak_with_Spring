@@ -17,7 +17,7 @@ import org.hibernate.Hibernate;
 @RequiredArgsConstructor
 public class ReservationInfoDto {
     private Long id;
-    private ReservationDto reservationDto;
+    private ReservationDto reservation;
     private RoomDto room;
     private LocalDate checkIn;
     private LocalDate checkOut;
@@ -41,7 +41,7 @@ public class ReservationInfoDto {
     public String toString() {
         return "ReservationInfoDto{" +
                 "id=" + id +
-                ", reservation=" + reservationDto+
+                ", reservation=" + reservation +
                 ", room=" + room +
                 ", checkIn=" + checkIn +
                 ", checkOut=" + checkOut +
