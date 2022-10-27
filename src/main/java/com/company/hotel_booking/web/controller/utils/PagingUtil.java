@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controller.util;
+package com.company.hotel_booking.web.controller.utils;
 
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import org.springframework.data.domain.Page;

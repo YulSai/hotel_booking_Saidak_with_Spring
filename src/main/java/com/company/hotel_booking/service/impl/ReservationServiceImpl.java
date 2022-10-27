@@ -7,7 +7,6 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.RoomRepository;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
-import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
@@ -35,14 +34,13 @@ public class ReservationServiceImpl implements ReservationService {
     private final RoomRepository roomRepository;
     private final ReservationMapper mapper;
     private final RoomMapper roomMapper;
-    private final MessageManager messageManager;
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public ReservationDto findById(Long id) {
         return mapper.toDto(reservationRepository.findById(id).orElseThrow(
-                () -> new ServiceException(messageManager.getMessage("msg.reservation.error.find.by.id") + id)));
+                () -> new ServiceException("msg.reservation.error.find.by.id")));
     }
 
     @Override
@@ -52,7 +50,7 @@ public class ReservationServiceImpl implements ReservationService {
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException(messageManager.getMessage("msg.reservation.error.create") + entity);
+            throw new ServiceException("msg.reservation.error.create");
         }
         return reservation;
     }
@@ -99,7 +97,7 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto update(ReservationDto entity) {
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException(messageManager.getMessage("msg.reservation.error.update") + entity);
+            throw new ServiceException("msg.reservation.error.update");
         }
         return reservation;
     }
@@ -110,8 +108,7 @@ public class ReservationServiceImpl implements ReservationService {
     public void delete(ReservationDto reservationDto) {
         reservationRepository.delete(mapper.toEntity(reservationDto));
         if (reservationRepository.existsById(reservationDto.getId())) {
-            throw new ServiceException(
-                    messageManager.getMessage("msg.reservation.error.delete") + reservationDto.getId());
+            throw new ServiceException("msg.reservation.error.delete");
         }
     }
 

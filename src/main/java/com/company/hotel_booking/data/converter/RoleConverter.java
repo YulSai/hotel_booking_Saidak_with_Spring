@@ -1,6 +1,7 @@
 package com.company.hotel_booking.data.converter;
 
 import com.company.hotel_booking.data.entity.User;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -12,6 +13,7 @@ import java.util.stream.Stream;
 @Converter(autoApply = true)
 public class RoleConverter implements AttributeConverter<User.Role, Long> {
     @Override
+    @LogInvocation
     public Long convertToDatabaseColumn(User.Role role) {
         if (role == null) {
             return null;
@@ -20,6 +22,7 @@ public class RoleConverter implements AttributeConverter<User.Role, Long> {
     }
 
     @Override
+    @LogInvocation
     public User.Role convertToEntityAttribute(Long id) {
         if (id == null) {
             return null;
