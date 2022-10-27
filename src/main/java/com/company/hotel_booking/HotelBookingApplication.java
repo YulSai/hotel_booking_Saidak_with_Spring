@@ -1,8 +1,8 @@
 package com.company.hotel_booking;
 
 import com.company.hotel_booking.web.filters.AuthorizationFilter;
-import com.company.hotel_booking.web.interceptor.GeneralInterceptor;
-import com.company.hotel_booking.web.interceptor.MessageInterceptor;
+import com.company.hotel_booking.web.interceptors.GeneralInterceptor;
+import com.company.hotel_booking.web.interceptors.MessageInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

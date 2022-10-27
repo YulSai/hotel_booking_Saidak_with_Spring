@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.interceptor;
+package com.company.hotel_booking.web.interceptors;
 
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import lombok.extern.log4j.Log4j2;
