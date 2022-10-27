@@ -1,7 +1,7 @@
-<h2 align="center"> 🎓 Java Web Development <br/>(powered by Epam)<br/>Final project: HotelBooking</h2>
+<h2 align="center"> 🎓 Java Professional <br/>(powered by JavaClass.online)<br/>Final project: HotelBooking</h2>
 
 <h4> EN: All copyrights to the terms of the project provided below belong to the company 
-<a href="https://www.epam.com/" rel="nofollow">EPAM</a><br>
+<a href="https://javaclass.online" rel="nofollow">JavaClass</a><br>
 </h4>
 <hr align="center">
 
@@ -15,7 +15,7 @@
 
 <h2> 
 <a id="user-content-project-topic" class="anchor" aria-hidden="true" href="#project-topic">
-<svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+<svg class="oct icon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
 <path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path>
 </svg></a>
 🛒 Project topic
@@ -57,14 +57,14 @@ Change of languages (RU and EN) is implemented.
 • Implement the application using Spring Framework and JSP technologies.<br>
 • The application architecture must conform to the Layered architecture and MVC patterns. Controller can only be of two kinds: role controller or application controller.<br>
 • Application interface must be localized; choice of languages: EN|RU etc.<br>
-• The application must correctly handle emerging exceptions, including keeping their log. Use Log4J2/SLF4J as a logger<br>
+• The application must correctly handle emerging exceptions, including keeping their log. Use Log4J2 as a logger and with Spring AOP<br>
 • Classes and other entities of the application must be properly structured into packages and have a name that reflects their functionality.<br>
 • To store user information between requests, use a session.<br>
-• Apply filters to intercept and modify request and response objects.<br>
-• JSTL tags must be used when implementing JSP pages, scriptlets are not allowed.<br>
+• Apply filters and interceptors to intercept and modify request and response objects.<br>
+• Spring tags must be used when implementing JSP pages, scriptlets are not allowed.<br>
 • Implement protection against re-execution of the request by pressing F5 and from js injection.<br>
 • Viewing "long lists" is desirable to organize in page-by-page mode.<br>
-• Validate input data on the client and on the server.<br>
+• Validate input data on controllers using Java Validation API.<br>
 • Documentation for the project must be prepared in accordance with the requirements of javadoc.<br>
 • Code formatting must comply with the Java Code Convention.<br>
 • When deploying the application, it is allowed to use Maven technology.<br>
