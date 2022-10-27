@@ -1,48 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
-    <title><fmt:message key="msg.room.title"/></title>
+    <title><spring:message code="msg.room.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
-<h1><fmt:message key="msg.room.title"/></h1>
+<h1><spring:message code="msg.room.title"/></h1>
 <p>${requestScope.message}</p>
 <table class="first">
     <tr>
-        <th><fmt:message key="msg.field"/></th>
-        <th><fmt:message key="msg.value"/></th>
+        <th><spring:message code="msg.field"/></th>
+        <th><spring:message code="msg.value"/></th>
     </tr>
     <tr>
-        <td class="name"><fmt:message key="msg.number"/></td>
+        <td class="name"><spring:message code="msg.number"/></td>
         <td class="sign">${requestScope.room.number}</td>
     </tr>
     <tr>
-        <td class="name"><fmt:message key="msg.type"/></td>
+        <td class="name"><spring:message code="msg.type"/></td>
         <td class="sign">${requestScope.room.type}</td>
     </tr>
     <tr>
-        <td class="name"><fmt:message key="msg.capacity"/></td>
+        <td class="name"><spring:message code="msg.capacity"/></td>
         <td class="sign">${requestScope.room.capacity}</td>
     </tr>
     <tr>
-        <td class="name"><fmt:message key="msg.status"/></td>
+        <td class="name"><spring:message code="msg.status"/></td>
         <td class="sign">${requestScope.room.status}</td>
     </tr>
     <tr>
-        <td class="name"><fmt:message key="msg.price"/>USD</td>
+        <td class="name"><spring:message code="msg.price"/>USD</td>
         <td class="sign">${requestScope.room.price}</td>
     </tr>
 </table>
 <ul>
-    <li><a href="/rooms/update/${requestScope.room.id}"><fmt:message key="msg.room.update"/></a></li>
+    <li><a href="/rooms/update/${requestScope.room.id}"><spring:message code="msg.room.update"/></a></li>
 </ul>
 </body>
 </html>

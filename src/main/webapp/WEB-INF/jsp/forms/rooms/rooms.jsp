@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
-    <title><fmt:message key="msg.rooms.title"/></title>
+    <title><spring:message code="msg.rooms.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
@@ -18,12 +16,12 @@
     <jsp:include page="../pagination.jsp"/>
     <tr>
         <th>#</th>
-        <th><fmt:message key="msg.number"/></th>
-        <th><fmt:message key="msg.type"/></th>
-        <th><fmt:message key="msg.capacity"/></th>
-        <th><fmt:message key="msg.status"/></th>
-        <th><fmt:message key="msg.price"/>USD</th>
-        <th><fmt:message key="msg.action"/></th>
+        <th><spring:message code="msg.number"/></th>
+        <th><spring:message code="msg.type"/></th>
+        <th><spring:message code="msg.capacity"/></th>
+        <th><spring:message code="msg.status"/></th>
+        <th><spring:message code="msg.price"/>USD</th>
+        <th><spring:message code="msg.action"/></th>
     </tr>
     <c:forEach items="${rooms}" var="room" varStatus="counter">
         <tr>
@@ -33,7 +31,7 @@
             <td>${room.capacity}</td>
             <td>${room.status}</td>
             <td>${room.price}</td>
-            <td><a href="/rooms/update/${room.id}"><fmt:message key="msg.update"/></a></td>
+            <td><a href="/rooms/update/${room.id}"><spring:message code="msg.update"/></a></td>
         </tr>
     </c:forEach>
 </table>

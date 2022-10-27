@@ -1,29 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
-    <title><fmt:message key="msg.reservations.title"/></title>
+    <title><spring:message code="msg.reservations.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
-<h1><fmt:message key="msg.reservations.title"/></h1>
+<h1><spring:message code="msg.reservations.title"/></h1>
 <p>${requestScope.message}</p>
 <table class="first">
     <jsp:include page="../pagination.jsp"/>
     <tr>
         <th>#</th>
-        <th><fmt:message key="msg.user"/></th>
-        <th><fmt:message key="msg.items"/></th>
-        <th><fmt:message key="msg.status"/></th>
-        <th><fmt:message key="msg.action"/></th>
+        <th><spring:message code="msg.user"/></th>
+        <th><spring:message code="msg.items"/></th>
+        <th><spring:message code="msg.status"/></th>
+        <th><spring:message code="msg.action"/></th>
     </tr>
     <c:forEach items="${requestScope.reservations}" var="reservation" varStatus="counter">
         <tr>
@@ -38,15 +36,15 @@
                         <tr>${info.checkIn} </tr>
                         <tr>${info.checkOut} </tr>
                     </c:forEach>
-                    <fmt:message key="msg.cost"/>${reservation.totalCost} USD
+                    <spring:message code="msg.cost"/>${reservation.totalCost} USD
                 </table>
             <td>${reservation.status.toString().toLowerCase()}</td>
             <c:if test="${sessionScope.user.role == 'ADMIN'}">
-                <td><a href="/reservations/update/${reservation.id}"> <fmt:message key="msg.reservations.update"/></a>
+                <td><a href="/reservations/update/${reservation.id}"> <spring:message code="msg.reservations.update"/></a>
                 </td>
             </c:if>
             <c:if test="${sessionScope.user.role == 'CLIENT'}">
-                <td><a href="/reservations/cancel_reservation/${reservation.id}"> <fmt:message key="msg.cancel"/></a>
+                <td><a href="/reservations/cancel_reservation/${reservation.id}"> <spring:message code="msg.cancel"/></a>
                 </td>
             </c:if>
             </td>

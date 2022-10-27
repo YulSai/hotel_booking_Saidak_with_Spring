@@ -1,19 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title><fmt:message key="msg.update.user.role.title"/></title>
+    <title><spring:message code="msg.update.user.role.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
-<h1><fmt:message key="msg.update.user.role.title"/></h1>
+<h1><spring:message code="msg.update.user.role.title"/></h1>
 <p>${requestScope.message}</p>
 <form method="post" action="/users/update_role/${requestScope.user.id}" enctype="multipart/form-data">
         <input id="first_name-input" name="firstName" type="hidden" value="${requestScope.user.firstName}"/>
@@ -25,12 +23,12 @@
         <input id="avatar_input" name="avatar" type="hidden" value="${requestScope.user.avatar}"/>
         <input id="role-input-admin" name="role" type="radio"
                value="ADMIN" ${requestScope.user.role=='ADMIN' ? 'checked' : ''}/>
-        <label for="role-input-admin"><fmt:message key="msg.update.user.admin"/></label>
+        <label for="role-input-admin"><spring:message code="msg.update.user.admin"/></label>
         <input id="role-input-client" name="role" type="radio"
                value="CLIENT" ${requestScope.user.role=='CLIENT' ? 'checked' : ''}/>
-        <label for="role-input-client"><fmt:message key="msg.update.user.client"/></label>
+        <label for="role-input-client"><spring:message code="msg.update.user.client"/></label>
         <br/>
-    <input type="submit" value="<fmt:message key="msg.update.user.save"/>"/>
+    <input type="submit" value="<spring:message code="msg.update.user.save"/>"/>
 </form>
 </body>
 </html>
