@@ -1,39 +1,46 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title><fmt:message key="msg.create.new.user.title"/></title>
+    <title><spring:message code="msg.create.new.user.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
 <p>${requestScope.message}</p>
-<h1><fmt:message key="msg.create.new.user.title"/></h1>
-<form action="/users/create" enctype="multipart/form-data" method="post">
-    <label for="first_name-input"><fmt:message key="msg.create.user.first.name"/></label>
-    <input id="first_name-input" name="firstName" type="text"/>
+<h1><spring:message code="msg.create.new.user.title"/></h1>
+<form:form action="/users/create" enctype="multipart/form-data" method="post" modelAttribute="userDto">
+    <form:errors path="firstName" cssClass="error-block"/>
+    <form:label path="firstName" for="first_name-input"><spring:message code="msg.create.user.first.name"/></form:label>
+    <form:input id="first_name-input" path="firstName" type="text"/>
     <br/>
-    <label for="last_name-input"><fmt:message key="msg.create.user.last.name"/></label>
-    <input id="last_name-input" name="lastName" type="text"/>
+    <form:errors path="lastName" cssClass="error-block"/>
+    <form:label path="lastName" for="last_name-input"><spring:message code="msg.create.user.last.name"/></form:label>
+    <form:input id="last_name-input" path="lastName" type="text"/>
     <br/>
-    <label for="email-input"><fmt:message key="msg.create.user.email"/></label>
-    <input id="email-input" name="email" type="email"/>
+    <form:errors path="email" cssClass="error-block"/>
+    <form:label path="email" for="email-input"><spring:message code="msg.create.user.email"/></form:label>
+    <form:input id="email-input" path="email" type="email"/>
     <br/>
-    <label for="password-input"><fmt:message key="msg.create.user.password"/></label>
-    <input id="password-input" name="password" type="password" min="6"/>
+    <form:errors path="password" cssClass="error-block"/>
+    <spring:message code="msg.create.user.password.min" var="placeholder_password"/>
+    <form:label path="password" for="password-input"><spring:message code="msg.create.user.password"/></form:label>
+    <form:input id="password-input" path="password" type="password" min="6" placeholder='${placeholder_password}'/>
     <br/>
-    <label for="phone_number-input"><fmt:message key="msg.create.user.phone"/></label>
-    <input id="phone_number-input" name="phoneNumber" type="tel" min="6"/>
+    <form:errors path="phoneNumber" cssClass="error-block"/>
+    <spring:message code="msg.create.user.phone.format" var="placeholder_phone_number"/>
+    <form:label path="phoneNumber" for="phone_number-input"><spring:message code="msg.create.user.phone"/></form:label>
+    <form:input id="phone_number-input" path="phoneNumber" type="tel" min="10"
+           placeholder='${placeholder_password}'/>
     <br/>
-    <label for="avatar_input"><fmt:message key="msg.user.avatar"/></label>
+    <label for="avatar_input"><spring:message code="msg.user.avatar"/></label>
     <input id="avatar_input" name="avatarFile" type="file" accept="image/*"/>
     <br/>
-    <input type="submit" value="<fmt:message key="msg.user.register"/>"/>
-</form>
+    <form:button><spring:message code="msg.user.register"/></form:button>
+</form:form>
 </body>
 </html>
