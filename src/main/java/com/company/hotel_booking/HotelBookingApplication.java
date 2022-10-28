@@ -78,12 +78,7 @@ public class HotelBookingApplication implements WebMvcConfigurer {
     public FilterRegistrationBean<AuthorizationFilter> authorizationFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean<>();
         registration.setFilter(new AuthorizationFilter(messageSource()));
-        registration.addUrlPatterns("/users/all", "/users/{id}", "/users/update", "/users/delete",
-                "/users/change_password",
-                "/rooms/all", "/rooms/{id}", "/rooms/update", "/rooms/create", "/reservations/all",
-                "/reservations/{id}",
-                "/reservations/update", "/reservations/create", "/reservations/cancel_reservation",
-                "/reservations/user_reservations");
+        registration.addUrlPatterns("/users/*", "/rooms/*", "/reservations/*");
         registration.setOrder(2);
         return registration;
     }
