@@ -78,7 +78,6 @@ public class UserServiceImpl implements UserService {
         return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }
 
-
     @Override
     @LogInvocationServer
     @ServiceEx
@@ -114,7 +113,27 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(LoginUserException::new));
     }
 
-    public String getAvatarPath(MultipartFile avatarFile) {
+    @Override
+    public UserDto processCreateUser(UserDto userDto, MultipartFile avatarFile) {
+        userDto.setAvatar(getAvatarPath(avatarFile));
+        return create(userDto);
+    }
+
+    @Override
+    public UserDto processUserUpdates(UserDto userDto, MultipartFile avatarFile) {
+        if (!avatarFile.isEmpty()) {
+            userDto.setAvatar(getAvatarPath(avatarFile));
+        }
+        return update(userDto);
+    }
+
+    /**
+     * Method writes file and gets path to this file
+     *
+     * @param avatarFile MultipartFile avatar
+     * @return name of file as String
+     */
+    private String getAvatarPath(MultipartFile avatarFile) {
         String avatarName;
         try {
             if (!avatarFile.isEmpty()) {

@@ -53,10 +53,12 @@ public class UserController {
     @NotFoundEx
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id, HttpSession session, Model model) {
-        UserDto user = userService.findById(id);
+        UserDto user;
         UserDto userDto = (UserDto) session.getAttribute("user");
         if ("CLIENT".equals(userDto.getRole().toString())) {
             user = userService.findById(userDto.getId());
+        } else {
+            user = userService.findById(id);
         }
         model.addAttribute("user", user);
         return PagesManager.PAGE_USER;
@@ -75,15 +77,14 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/create")
-    public String createUser(@ModelAttribute @Valid UserDto userdto, Errors errors, HttpSession session,
+    public String createUser(@ModelAttribute @Valid UserDto userDto, Errors errors, HttpSession session,
                              MultipartFile avatarFile,
                              Locale locale) {
         if (errors.hasErrors()) {
             return PagesManager.PAGE_CREATE_USER;
         }
-        userdto.setRole(UserDto.RoleDto.CLIENT);
-        userdto.setAvatar(userService.getAvatarPath(avatarFile));
-        UserDto created = userService.create(userdto);
+        userDto.setRole(UserDto.RoleDto.CLIENT);
+        UserDto created = userService.processCreateUser(userDto, avatarFile);
         session.setAttribute("user", created);
         session.setAttribute("message", messageManager.getMessage("msg.user.created", null, locale));
         return "redirect:/users/" + created.getId();
@@ -99,16 +100,12 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    public String updateUser(@ModelAttribute @Valid UserDto userdto, Errors errors, MultipartFile avatarFile,
+    public String updateUser(@ModelAttribute @Valid UserDto userDto, Errors errors, MultipartFile avatarFile,
                              HttpSession session, Locale locale) {
         if (errors.hasErrors()) {
             return PagesManager.PAGE_UPDATE_USERS;
         }
-
-        if (!avatarFile.isEmpty()) {
-            userdto.setAvatar(userService.getAvatarPath(avatarFile));
-        }
-        UserDto updated = userService.update(userdto);
+        UserDto updated = userService.processUserUpdates(userDto, avatarFile);
         session.setAttribute("message", messageManager.getMessage("msg.user.updated", null, locale));
         return "redirect:/users/" + updated.getId();
     }

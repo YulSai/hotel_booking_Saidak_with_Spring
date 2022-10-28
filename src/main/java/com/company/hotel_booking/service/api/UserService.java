@@ -25,10 +25,19 @@ public interface UserService extends AbstractService<Long, UserDto> {
     UserDto changePassword(UserDto userDto);
 
     /**
-     * Method writes file and gets path to this file
-     *
-     * @param avatarFile MultipartFile avatar
-     * @return name of file as String
+     * Method sets to user avatar and saves UserDto object
+     * @param userDto object UserDto
+     * @param avatarFile MultipartFile
+     * @return object UserDto
      */
-    String getAvatarPath(MultipartFile avatarFile);
+    UserDto processCreateUser(UserDto userDto, MultipartFile avatarFile);
+
+    /**
+     * Method sets to user avatar and updates UserDto object
+     * @param userDto object UserDto
+     * @param avatarFile MultipartFile
+     * @return object UserDto
+     */
+    UserDto processUserUpdates(UserDto userDto, MultipartFile avatarFile);
+
 }
