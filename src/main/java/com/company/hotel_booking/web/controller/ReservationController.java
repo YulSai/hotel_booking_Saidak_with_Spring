@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -100,10 +99,11 @@ public class ReservationController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    public String updateReservation(@ModelAttribute ReservationDto reservation, @RequestParam String status,
+    public String updateReservation(@PathVariable Long id, @RequestParam String status,
                                     HttpSession session, Locale locale) {
-        reservation = reservationService.findById(reservation.getId());
+        ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
+
         ReservationDto updated = reservationService.update(reservation);
         session.setAttribute("message", messageManager
                 .getMessage("msg.reservation.updated", null, locale));
