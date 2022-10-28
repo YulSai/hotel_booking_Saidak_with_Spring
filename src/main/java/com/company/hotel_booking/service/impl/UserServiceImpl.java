@@ -114,12 +114,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @LogInvocationServer
+    @ServiceEx
     public UserDto processCreateUser(UserDto userDto, MultipartFile avatarFile) {
         userDto.setAvatar(getAvatarPath(avatarFile));
         return create(userDto);
     }
 
     @Override
+    @LogInvocationServer
+    @ServiceEx
     public UserDto processUserUpdates(UserDto userDto, MultipartFile avatarFile) {
         if (!avatarFile.isEmpty()) {
             userDto.setAvatar(getAvatarPath(avatarFile));
