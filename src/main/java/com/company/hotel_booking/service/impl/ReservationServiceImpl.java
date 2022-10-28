@@ -80,6 +80,15 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
+    @Override
+    @LogInvocationServer
+    @ServiceEx
+    public ReservationDto processReservationCreation(Map<Long, Long> booking, UserDto user, LocalDate checkIn,
+                                                     LocalDate checkOut) {
+        ReservationDto reservation = processBooking(booking, user, checkIn, checkOut);
+        return create(reservation);
+    }
+
     @LogInvocationServer
     private BigDecimal calculatePrice(List<ReservationInfoDto> details) {
         BigDecimal totalCost = BigDecimal.ZERO;

@@ -82,8 +82,7 @@ public class ReservationController {
         } else {
             @SuppressWarnings("unchecked")
             Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
-            ReservationDto processed = reservationService.processBooking(booking, user, checkIn, checkOut);
-            ReservationDto created = reservationService.create(processed);
+            ReservationDto created = reservationService.processReservationCreation(booking, user, checkIn, checkOut);
             session.removeAttribute("booking");
             session.setAttribute("message", messageManager
                     .getMessage("msg.reservation.created", null, locale));

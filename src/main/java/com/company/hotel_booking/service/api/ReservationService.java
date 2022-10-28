@@ -36,6 +36,18 @@ ReservationService extends AbstractService<Long, ReservationDto> {
                                   LocalDate checkOut);
 
     /**
+     * Method saves reservation
+     *
+     * @param booking  Map collection with booking data
+     * @param user     user who is booking
+     * @param checkIn  booking start date
+     * @param checkOut booking end date
+     * @return list of reservation
+     */
+    ReservationDto processReservationCreation(Map<Long, Long> booking, UserDto user, LocalDate checkIn,
+                                  LocalDate checkOut);
+
+    /**
      * Method gets list of reservations by user
      *
      * @param id user's id
