@@ -16,6 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Class object UserDTO with implementation of CRUD operation operations
@@ -107,5 +112,26 @@ public class UserServiceImpl implements UserService {
                 .filter(u -> u.getEmail().equals(email) && u.getPassword().equals(digestUtil.hash(password)))
                 .findFirst()
                 .orElseThrow(LoginUserException::new));
+    }
+
+    public String getAvatarPath(MultipartFile avatarFile) {
+        String avatarName;
+        try {
+            if (!avatarFile.isEmpty()) {
+                avatarName = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
+                String location = "avatars/";
+                File pathFile = new File(location);
+                if (!pathFile.exists()) {
+                    pathFile.mkdir();
+                }
+                pathFile = new File(location + avatarName);
+                avatarFile.transferTo(pathFile);
+            } else {
+                avatarName = "defaultAvatar.png";
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return avatarName;
     }
 }

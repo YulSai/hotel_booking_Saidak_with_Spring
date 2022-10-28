@@ -25,11 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/users")
@@ -85,7 +82,7 @@ public class UserController {
             return PagesManager.PAGE_CREATE_USER;
         }
         userdto.setRole(UserDto.RoleDto.CLIENT);
-        userdto.setAvatar(getAvatarPath(avatarFile));
+        userdto.setAvatar(userService.getAvatarPath(avatarFile));
         UserDto created = userService.create(userdto);
         session.setAttribute("user", created);
         session.setAttribute("message", messageManager.getMessage("msg.user.created", null, locale));
@@ -109,7 +106,7 @@ public class UserController {
         }
 
         if (!avatarFile.isEmpty()) {
-            userdto.setAvatar(getAvatarPath(avatarFile));
+            userdto.setAvatar(userService.getAvatarPath(avatarFile));
         }
         UserDto updated = userService.update(userdto);
         session.setAttribute("message", messageManager.getMessage("msg.user.updated", null, locale));
@@ -164,32 +161,5 @@ public class UserController {
         UserDto updated = userService.update(user);
         session.setAttribute("message", messageManager.getMessage("msg.user.updated", null, locale));
         return "redirect:/users/" + updated.getId();
-    }
-
-    /**
-     * Method writes file and gets path to this file
-     *
-     * @param avatarFile MultipartFile avatar
-     * @return name of file as String
-     */
-    private String getAvatarPath(MultipartFile avatarFile) {
-        String avatarName;
-        try {
-            if (!avatarFile.isEmpty()) {
-                avatarName = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
-                String location = "avatars/";
-                File pathFile = new File(location);
-                if (!pathFile.exists()) {
-                    pathFile.mkdir();
-                }
-                pathFile = new File(location + avatarName);
-                avatarFile.transferTo(pathFile);
-            } else {
-                avatarName = "defaultAvatar.png";
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return avatarName;
     }
 }
