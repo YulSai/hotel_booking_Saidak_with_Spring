@@ -5,16 +5,15 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.utils.managers.PagesManager;
-import com.company.hotel_booking.web.controller.util.PagingUtil;
+import com.company.hotel_booking.web.controller.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +25,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Controller
@@ -34,17 +34,16 @@ import java.util.Map;
 public class ReservationController {
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
-    private final MessageManager messageManager;
+    private final MessageSource messageManager;
 
     @LogInvocation
     @NotFoundEx
     @GetMapping("/all")
-    public String getAllReservations(Model model, HttpServletRequest req) {
+    public String getAllReservations(HttpServletRequest req, HttpSession session, Model model, Locale locale) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
 
-        HttpSession session = req.getSession();
         UserDto user = (UserDto) session.getAttribute("user");
         if ("CLIENT".equals(user.getRole().toString())) {
             reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, user.getId());
@@ -52,7 +51,7 @@ public class ReservationController {
         }
 
         if (reservations.isEmpty()) {
-            req.setAttribute("message", messageManager.getMessage("msg.empty"));
+            model.addAttribute("message", messageManager.getMessage("msg.empty", null, locale));
             return PagesManager.PAGE_RESERVATIONS;
         }
 
@@ -72,20 +71,20 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/create")
-    public String createReservation(HttpSession session, Model model) {
+    public String createReservation(HttpSession session, Locale locale) {
         UserDto user = (UserDto) session.getAttribute("user");
         LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
         LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
         if (user == null) {
-            model.addAttribute("message", messageManager.getMessage("msg.login"));
+            session.setAttribute("message", messageManager.getMessage("msg.login", null, locale));
             return PagesManager.PAGE_LOGIN;
         } else {
             @SuppressWarnings("unchecked")
             Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
-            ReservationDto processed = reservationService.processBooking(booking, user, checkIn, checkOut);
-            ReservationDto created = reservationService.create(processed);
+            ReservationDto created = reservationService.processReservationCreation(booking, user, checkIn, checkOut);
             session.removeAttribute("booking");
-            // model.addAttribute("message", MessageManager.getMessage("msg.reservation.created"));
+            session.setAttribute("message", messageManager
+                    .getMessage("msg.reservation.created", null, locale));
             return "redirect:/reservations/" + created.getId();
         }
     }
@@ -100,22 +99,24 @@ public class ReservationController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    public String updateReservation(@ModelAttribute ReservationDto reservation, @RequestParam String status,
-                                    Model model) {
-        reservation = reservationService.findById(reservation.getId());
+    public String updateReservation(@PathVariable Long id, @RequestParam String status,
+                                    HttpSession session, Locale locale) {
+        ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
+
         ReservationDto updated = reservationService.update(reservation);
-        model.addAttribute("message", messageManager.getMessage("msg.reservation.updated"));
+        session.setAttribute("message", messageManager
+                .getMessage("msg.reservation.updated", null, locale));
         return "redirect:/reservations/" + updated.getId();
     }
 
     @LogInvocation
     @GetMapping("/cancel_reservation/{id}")
-    public String cancelReservation(@PathVariable Long id) {
+    public String cancelReservation(@PathVariable Long id, HttpSession session, Locale locale) {
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.REJECTED);
         ReservationDto updated = reservationService.update(reservation);
-        //  model.addAttribute("message", MessageManager.getMessage("msg.reservations.cancel"));
+        session.setAttribute("message", messageManager.getMessage("msg.reservations.cancel", null, locale));
         return "redirect:/reservations/" + updated.getId();
     }
 
@@ -180,13 +181,14 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/user_reservations/{id}")
-    public String getAllReservationsByUser(@PathVariable Long id, Model model, HttpServletRequest req,
-                                           HttpSession session) {
+    public String getAllReservationsByUser(@PathVariable Long id, HttpServletRequest req,
+                                           HttpSession session, Model model, Locale locale) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, id);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
         if (reservations.isEmpty()) {
-            model.addAttribute("message", messageManager.getMessage("msg.reservations.no"));
+            model.addAttribute("message", messageManager
+                    .getMessage("msg.reservations.no", null, locale));
             return PagesManager.PAGE_RESERVATIONS;
         } else {
             UserDto user = (UserDto) session.getAttribute("user");

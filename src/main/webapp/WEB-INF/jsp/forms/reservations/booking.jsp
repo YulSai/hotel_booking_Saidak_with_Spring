@@ -1,29 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title><fmt:message key="msg.booking.title"/></title>
+    <title><spring:message code="msg.booking.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
-<h1 id="title"><fmt:message key="msg.booking.your"/></h1>
+<h1 id="title"><spring:message code="msg.booking.your"/></h1>
 <c:if test="${requestScope.booking == null}">
-    <h2><fmt:message key="msg.booking.no.booking"/></h2>
+    <h2><spring:message code="msg.booking.no.booking"/></h2>
 </c:if>
 <c:if test="${requestScope.booking != null}">
     <table>
         <tr>
-            <th><fmt:message key="msg.items"/></th>
-            <th><fmt:message key="msg.price"/>USD</th>
-            <th><fmt:message key="msg.booking.checkIn"/></th>
-            <th><fmt:message key="msg.booking.checkOut"/></th>
-            <th><fmt:message key="msg.status"/></th>
+            <th><spring:message code="msg.items"/></th>
+            <th><spring:message code="msg.price"/>USD</th>
+            <th><spring:message code="msg.booking.checkIn"/></th>
+            <th><spring:message code="msg.booking.checkOut"/></th>
+            <th><spring:message code="msg.status"/></th>
         </tr>
         <c:forEach items="${requestScope.booking.details}" var="item">
             <tr>
@@ -33,17 +31,17 @@
                 <td>${item.checkOut}</td>
                 <td>${requestScope.booking.status}</td>
                 <td><a href="/reservations/delete_booking/${item.room.id}">
-                    <input type="submit" value="<fmt:message key="msg.delete"/>"></a>
+                    <input type="submit" value="<spring:message code="msg.delete"/>"></a>
                 </td>
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="3"><fmt:message key="msg.cost"/>${requestScope.booking.totalCost} USD</td>
+            <td colspan="3"><spring:message code="msg.cost"/>${requestScope.booking.totalCost} USD</td>
         </tr>
 
     </table>
-    <a href="/reservations/create"><input type="submit" value="<fmt:message key="msg.booking.reserve"/>"></a>
-    <a href="/reservations/clean_booking"><input type="submit" value="<fmt:message key="msg.booking.clean"/>"></a>
+    <a href="/reservations/create"><input type="submit" value="<spring:message code="msg.booking.reserve"/>"></a>
+    <a href="/reservations/clean_booking"><input type="submit" value="<spring:message code="msg.booking.clean"/>"></a>
 </c:if>
 </body>
 </html>

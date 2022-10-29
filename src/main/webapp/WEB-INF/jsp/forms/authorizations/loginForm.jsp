@@ -1,36 +1,34 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/login.css">
-    <title><fmt:message key="msg.login.title"/></title>
+    <title><spring:message code="msg.login.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
-<h1><fmt:message key="msg.login.title"/></h1>
+<h1><spring:message code="msg.login.title"/></h1>
 <p>${requestScope.message}</p>
 <form method="post" action="/login">
     <input name="command" type="hidden" value="login"/>
     <img src="/images/avatarLogin.png" alt="Avatar" class="avatar">
     <br/>
-    <label for="email-input"><b><fmt:message key="msg.email"/></b></label>
-    <input id="email-input" type="email" placeholder="<fmt:message key="msg.login.enter.email"/>"
+    <label for="email-input"><b><spring:message code="msg.email"/></b></label>
+    <input id="email-input" type="email" placeholder="<spring:message code="msg.login.enter.email"/>"
            name="email" required>
     <br/>
-    <label for="password-input"><b><fmt:message key="msg.password"/></b></label>
-    <input id="password-input" type="password" placeholder="<fmt:message key="msg.login.enter.password"/>"
-           name="password" min="6" required>
+    <label for="password-input"><b><spring:message code="msg.password"/></b></label>
+    <input id="password-input" type="password" placeholder="<spring:message code="msg.login.enter.password"/>"
+           name="password" min="6" autocomplete="current-password" required>
     <br/>
-    <button type="submit"><fmt:message key="msg.login.login"/></button>
-    <button type="button"><a href="/users/create"><fmt:message key="msg.login.new.user"/></a>
+    <button type="submit"><spring:message code="msg.login.login"/></button>
+    <button type="button"><a href="/users/create"><spring:message code="msg.login.new.user"/></a>
     </button>
-    <button type="button"><a href="/"><fmt:message key="msg.cancel"/></a></button>
+    <button type="button"><a href="/"><spring:message code="msg.cancel"/></a></button>
 </form>
 </body>
 </html>

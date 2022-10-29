@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/language")
@@ -15,16 +14,8 @@ import javax.servlet.http.HttpSession;
 public class LanguageController {
 
     @LogInvocation
-    @GetMapping("/en")
-    public String selectLanguageEnglish(HttpServletRequest req, HttpSession session) {
-        session.setAttribute("language", "en");
-        return "redirect:" + req.getHeader("referer");
-    }
-
-    @LogInvocation
-    @GetMapping("/ru")
-    public String selectLanguageRussian(HttpServletRequest req, HttpSession session) {
-        session.setAttribute("language", "ru");
+    @GetMapping
+    public String changeLanguage(HttpServletRequest req) {
         return "redirect:" + req.getHeader("referer");
     }
 }

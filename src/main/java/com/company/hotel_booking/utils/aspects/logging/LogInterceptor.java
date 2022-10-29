@@ -2,7 +2,6 @@ package com.company.hotel_booking.utils.aspects.logging;
 
 import com.company.hotel_booking.utils.exceptions.LoginUserException;
 import com.company.hotel_booking.utils.exceptions.NotFoundException;
-import com.company.hotel_booking.utils.exceptions.RegistrationException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -37,13 +36,6 @@ public class LogInterceptor {
 
     @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx)", throwing = "e")
     public void afterThrowingLogin(JoinPoint jp, LoginUserException e) {
-        String className = jp.getSignature().getDeclaringTypeName();
-        String methodName = jp.getSignature().getName();
-        log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
-    }
-
-    @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.RegistrationEx)", throwing = "e")
-    public void afterThrowingRegistration(JoinPoint jp, RegistrationException e) {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);

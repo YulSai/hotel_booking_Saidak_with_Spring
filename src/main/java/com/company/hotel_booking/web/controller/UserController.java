@@ -6,14 +6,15 @@ import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.managers.MessageManager;
 import com.company.hotel_booking.utils.managers.PagesManager;
-import com.company.hotel_booking.web.controller.util.PagingUtil;
+import com.company.hotel_booking.web.controller.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/users")
@@ -35,8 +35,7 @@ public class UserController {
     private final UserService userService;
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
-
-    private final MessageManager messageManager;
+    private final MessageSource messageManager;
 
     @LogInvocation
     @NotFoundEx
@@ -54,13 +53,20 @@ public class UserController {
     @NotFoundEx
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id, HttpSession session, Model model) {
-        UserDto user = userService.findById(id);
+        UserDto user;
         UserDto userDto = (UserDto) session.getAttribute("user");
         if ("CLIENT".equals(userDto.getRole().toString())) {
             user = userService.findById(userDto.getId());
+        } else {
+            user = userService.findById(id);
         }
         model.addAttribute("user", user);
         return PagesManager.PAGE_USER;
+    }
+
+    @ModelAttribute
+    public UserDto userDto() {
+        return new UserDto();
     }
 
     @LogInvocation
@@ -71,11 +77,16 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/create")
-    public String createUser(@ModelAttribute UserDto user, HttpSession session, MultipartFile avatarFile) {
-        user.setRole(UserDto.RoleDto.CLIENT);
-        user.setAvatar(getAvatarPath(avatarFile));
-        UserDto created = userService.create(user);
+    public String createUser(@ModelAttribute @Valid UserDto userDto, Errors errors, HttpSession session,
+                             MultipartFile avatarFile,
+                             Locale locale) {
+        if (errors.hasErrors()) {
+            return PagesManager.PAGE_CREATE_USER;
+        }
+        userDto.setRole(UserDto.RoleDto.CLIENT);
+        UserDto created = userService.processCreateUser(userDto, avatarFile);
         session.setAttribute("user", created);
+        session.setAttribute("message", messageManager.getMessage("msg.user.created", null, locale));
         return "redirect:/users/" + created.getId();
     }
 
@@ -89,25 +100,26 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    public String updateUser(@ModelAttribute UserDto user, MultipartFile avatarFile) {
-        if (!avatarFile.isEmpty()) {
-            user.setAvatar(getAvatarPath(avatarFile));
+    public String updateUser(@ModelAttribute @Valid UserDto userDto, Errors errors, MultipartFile avatarFile,
+                             HttpSession session, Locale locale) {
+        if (errors.hasErrors()) {
+            return PagesManager.PAGE_UPDATE_USERS;
         }
-        UserDto updated = userService.update(user);
-        // model.addAttribute("message", messageManager.getMessage("msg.user.updated"));
+        UserDto updated = userService.processUserUpdates(userDto, avatarFile);
+        session.setAttribute("message", messageManager.getMessage("msg.user.updated", null, locale));
         return "redirect:/users/" + updated.getId();
     }
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id, Model model) {
+    public String deleteUser(@PathVariable Long id, Model model, Locale locale) {
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);
             reservationService.update(reservation);
         }
         userService.delete(userService.findById(id));
-        model.addAttribute("message", messageManager.getMessage("msg.user.deleted"));
+        model.addAttribute("message", messageManager.getMessage("msg.user.deleted", null, locale));
         return PagesManager.PAGE_DELETE_USER;
     }
 
@@ -121,9 +133,14 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/change_password/{id}")
-    public String changePassword(@ModelAttribute UserDto user) {
-        UserDto updated = userService.changePassword(user);
-        // model.addAttribute("message", messageManager.getMessage("msg.user.password.change"));
+    public String changePassword(@ModelAttribute @Valid UserDto userdto, Errors errors, HttpSession session,
+                                 Locale locale) {
+        if (errors.hasErrors()) {
+            return PagesManager.PAGE_CHANGE_PASSWORD;
+        }
+        UserDto updated = userService.changePassword(userdto);
+        session.setAttribute("message", messageManager
+                .getMessage("msg.user.password.change", null, locale));
         return "redirect:/users/" + updated.getId();
     }
 
@@ -137,36 +154,9 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/update_role/{id}")
-    public String updateUserRole(@ModelAttribute UserDto user) {
+    public String updateUserRole(@ModelAttribute UserDto user, HttpSession session, Locale locale) {
         UserDto updated = userService.update(user);
-        // model.addAttribute("message", messageManager.getMessage("msg.user.updated"));
+        session.setAttribute("message", messageManager.getMessage("msg.user.updated", null, locale));
         return "redirect:/users/" + updated.getId();
-    }
-
-    /**
-     * Method writes file and gets path to this file
-     *
-     * @param avatarFile MultipartFile avatar
-     * @return name of file as String
-     */
-    private String getAvatarPath(MultipartFile avatarFile) {
-        String avatarName;
-        try {
-            if (!avatarFile.isEmpty()) {
-                avatarName = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
-                String location = "avatars/";
-                File pathFile = new File(location);
-                if (!pathFile.exists()) {
-                    pathFile.mkdir();
-                }
-                pathFile = new File(location + avatarName);
-                avatarFile.transferTo(pathFile);
-            } else {
-                avatarName = "defaultAvatar.png";
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return avatarName;
     }
 }

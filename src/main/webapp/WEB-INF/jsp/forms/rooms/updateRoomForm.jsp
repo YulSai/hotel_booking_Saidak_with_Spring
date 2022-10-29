@@ -1,49 +1,53 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}"/>
-<fmt:setBundle basename="pageMessage"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title><fmt:message key="msg.update.room.title"/></title>
+    <title><spring:message code="msg.update.room.title"/></title>
 </head>
 <body>
 <jsp:include page="../../navbar.jsp"/>
-<h1><fmt:message key="msg.update.room.title"/></h1>
+<h1><spring:message code="msg.update.room.title"/></h1>
 <p>${requestScope.message}</p>
-<form method="post" action="/rooms/update/${requestScope.room.id}">
-    <label for="room_number-input"><fmt:message key="msg.number"/> </label>
-    <input id="room_number-input" name="number" type="text" value="${requestScope.room.number}"/>
+<form:form method="post" action="/rooms/update/${requestScope.room.id}" modelAttribute="roomDto">
+    <form:errors path="number" cssClass="error-block"/>
+    <form:label path="number" for="room_number-input"><spring:message code="msg.number"/> </form:label>
+    <form:input id="room_number-input" path="number" type="text" value="${requestScope.room.number}"/>
     <br/>
-    <select name="type" required="required">
-        <option value="${requestScope.room.type}">${requestScope.room.type}</option>
-        <option value="STANDARD"><fmt:message key="msg.standard"/></option>
-        <option value="COMFORT"><fmt:message key="msg.comfort"/></option>
-        <option value="LUX"><fmt:message key="msg.lux"/></option>
-        <option value="PRESIDENT"><fmt:message key="msg.president"/></option>
-    </select>
+    <form:errors path="type" cssClass="error-block"/>
+    <form:select path="type" required="required">
+        <form:option value="${requestScope.room.type}">${requestScope.room.type}</form:option>
+        <form:option value="STANDARD"><spring:message code="msg.standard"/></form:option>
+        <form:option value="COMFORT"><spring:message code="msg.comfort"/></form:option>
+        <form:option value="LUX"><spring:message code="msg.lux"/></form:option>
+        <form:option value="PRESIDENT"><spring:message code="msg.president"/></form:option>
+    </form:select>
     <br/>
-    <select name="capacity" required="required">
-        <option value="${requestScope.room.capacity}">${requestScope.room.capacity}</option>
-        <option value="SINGLE"><fmt:message key="msg.single"/></option>
-        <option value="DOUBLE"><fmt:message key="msg.double"/></option>
-        <option value="TRIPLE"><fmt:message key="msg.triple"/></option>
-        <option value="FAMILY"><fmt:message key="msg.family"/></option>
-    </select>
+    <form:errors path="capacity" cssClass="error-block"/>
+    <form:select path="capacity" required="required">
+        <form:option value="${requestScope.room.capacity}">${requestScope.room.capacity}</form:option>
+        <form:option value="SINGLE"><spring:message code="msg.single"/></form:option>
+        <form:option value="DOUBLE"><spring:message code="msg.double"/></form:option>
+        <form:option value="TRIPLE"><spring:message code="msg.triple"/></form:option>
+        <form:option value="FAMILY"><spring:message code="msg.family"/></form:option>
+    </form:select>
     <br/>
-    <select name="status" required="required">
-        <option value="${requestScope.room.status}">${requestScope.room.status}</option>
-        <option value="AVAILABLE"><fmt:message key="msg.available"/></option>
-        <option value="UNAVAILABLE"><fmt:message key="msg.unavailable"/></option>
-    </select>
+    <form:errors path="status" cssClass="error-block"/>
+    <form:select path="status" required="required">
+        <form:option value="${requestScope.room.status}">${requestScope.room.status}</form:option>
+        <form:option value="AVAILABLE"><spring:message code="msg.available"/></form:option>
+        <form:option value="UNAVAILABLE"><spring:message code="msg.unavailable"/></form:option>
+    </form:select>
     <br/>
-    <label for="price-input"><fmt:message key="msg.price"/>USD: </label>
-    <input id="price-input" name="price" type="number" min="1" max="9999" value="${requestScope.room.price}"/>
+    <form:errors path="price" cssClass="error-block"/>
+    <form:label path="price" for="price-input"><spring:message code="msg.price"/>USD: </form:label>
+    <form:input id="price-input" path="price" type="text" value="${requestScope.room.price}"/>
     <br/>
-    <input type="submit" value="<fmt:message key="msg.update"/>"/>
-</form>
+    <input type="submit" value="<spring:message code="msg.update"/>"/>
+</form:form>
 </body>
 </html>

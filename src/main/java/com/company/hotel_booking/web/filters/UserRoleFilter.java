@@ -1,7 +1,6 @@
 //package com.company.hotel_booking.web.filters;
 //
 //import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-//import com.company.hotel_booking.web.controller.util.SecurityLevel;
 //import com.company.hotel_booking.utils.managers.MessageManager;
 //import com.company.hotel_booking.utils.managers.PagesManager;
 //import com.company.hotel_booking.service.dto.UserDto;

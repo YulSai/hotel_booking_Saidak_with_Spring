@@ -1,6 +1,7 @@
 package com.company.hotel_booking.data.converter;
 
 import com.company.hotel_booking.data.entity.Room;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -12,6 +13,7 @@ import java.util.stream.Stream;
 @Converter(autoApply = true)
 public class RoomStatusConverter implements AttributeConverter<Room.RoomStatus, Long> {
     @Override
+    @LogInvocation
     public Long convertToDatabaseColumn(Room.RoomStatus status) {
         if (status == null) {
             return null;
@@ -20,6 +22,7 @@ public class RoomStatusConverter implements AttributeConverter<Room.RoomStatus, 
     }
 
     @Override
+    @LogInvocation
     public Room.RoomStatus convertToEntityAttribute(Long id) {
         if (id == null) {
             return null;
