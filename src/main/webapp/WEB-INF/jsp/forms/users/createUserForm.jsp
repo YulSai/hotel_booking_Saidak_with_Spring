@@ -35,7 +35,7 @@
     <spring:message code="msg.create.user.phone.format" var="placeholder_phone_number"/>
     <form:label path="phoneNumber" for="phone_number-input"><spring:message code="msg.create.user.phone"/></form:label>
     <form:input id="phone_number-input" path="phoneNumber" type="tel" min="10"
-           placeholder='${placeholder_password}'/>
+           placeholder='${placeholder_phone_number}'/>
     <br/>
     <label for="avatar_input"><spring:message code="msg.user.avatar"/></label>
     <input id="avatar_input" name="avatarFile" type="file" accept="image/*"/>
