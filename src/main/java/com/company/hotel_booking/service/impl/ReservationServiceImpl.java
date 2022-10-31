@@ -6,12 +6,14 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.RoomRepository;
-import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.service.dto.UserDto;
+import com.company.hotel_booking.utils.exceptions.reservations.ReservationDeleteException;
+import com.company.hotel_booking.utils.exceptions.reservations.ReservationNotFoundException;
+import com.company.hotel_booking.utils.exceptions.reservations.ReservationServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +42,7 @@ public class ReservationServiceImpl implements ReservationService {
     @ServiceEx
     public ReservationDto findById(Long id) {
         return mapper.toDto(reservationRepository.findById(id).orElseThrow(
-                () -> new ServiceException("msg.reservation.error.find.by.id")));
+                () -> new ReservationNotFoundException("msg.reservation.error.find.by.id")));
     }
 
     @Override
@@ -50,7 +52,7 @@ public class ReservationServiceImpl implements ReservationService {
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException("msg.reservation.error.create");
+            throw new ReservationServiceException("msg.reservation.error.create");
         }
         return reservation;
     }
@@ -106,7 +108,7 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto update(ReservationDto entity) {
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException("msg.reservation.error.update");
+            throw new ReservationServiceException("msg.reservation.error.update");
         }
         return reservation;
     }
@@ -117,7 +119,7 @@ public class ReservationServiceImpl implements ReservationService {
     public void delete(ReservationDto reservationDto) {
         reservationRepository.delete(mapper.toEntity(reservationDto));
         if (reservationRepository.existsById(reservationDto.getId())) {
-            throw new ServiceException("msg.reservation.error.delete");
+            throw new ReservationDeleteException("msg.reservation.error.delete");
         }
     }
 

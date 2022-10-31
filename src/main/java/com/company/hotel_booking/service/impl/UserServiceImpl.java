@@ -1,17 +1,21 @@
 package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.service.mapper.UserMapper;
+import com.company.hotel_booking.utils.aspects.logging.annotations.ImageUploadingEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.UserRepository;
 import com.company.hotel_booking.data.entity.User;
-import com.company.hotel_booking.utils.exceptions.LoginUserException;
-import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.utils.DigestUtil;
+import com.company.hotel_booking.utils.exceptions.ImageUploadingException;
+import com.company.hotel_booking.utils.exceptions.LoginException;
+import com.company.hotel_booking.utils.exceptions.users.UserAlreadyExistsException;
+import com.company.hotel_booking.utils.exceptions.users.UserDeleteException;
+import com.company.hotel_booking.utils.exceptions.users.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @ServiceEx
     public UserDto findById(Long id) {
         return mapper.toDto(userRepository.findById(id).orElseThrow(() ->
-                new ServiceException("msg.user.error.find.by.id")));
+                new UserNotFoundException("msg.user.error.find.by.id")));
     }
 
     @Override
@@ -47,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @ServiceEx
     public UserDto create(UserDto userDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new ServiceException("msg.user.error.create.exists");
+            throw new UserAlreadyExistsException("msg.user.error.create.exists");
         }
         String hashPassword = digestUtil.hash(userDto.getPassword());
         userDto.setPassword(hashPassword);
@@ -60,7 +64,7 @@ public class UserServiceImpl implements UserService {
     public UserDto update(UserDto userDto) {
         User existing = userRepository.findByEmail(userDto.getEmail()).get();
         if (existing != null && !existing.getId().equals(userDto.getId())) {
-            throw new ServiceException("msg.user.error.update.exists");
+            throw new UserAlreadyExistsException("msg.user.error.update.exists");
         }
         return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }
@@ -72,7 +76,7 @@ public class UserServiceImpl implements UserService {
         String existPassword = userRepository.findById(userDto.getId()).get().getPassword();
         String hashPassword = digestUtil.hash(userDto.getPassword());
         if (hashPassword.equals(existPassword)) {
-            throw new ServiceException("msg.user.error.new.password");
+            throw new UserAlreadyExistsException("msg.user.error.new.password");
         }
         userDto.setPassword(hashPassword);
         return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
@@ -85,12 +89,12 @@ public class UserServiceImpl implements UserService {
         if (reservationRepository.findByUserId(userDto.getId()).isEmpty()) {
             userRepository.delete(mapper.toEntity(userDto));
             if (userRepository.existsById(userDto.getId())) {
-                throw new ServiceException("msg.user.error.delete");
+                throw new UserDeleteException("msg.user.error.delete");
             }
         } else {
             userRepository.block(userDto.getId());
             if (userRepository.existsById(userDto.getId())) {
-                throw new ServiceException("msg.user.error.delete");
+                throw new UserDeleteException("msg.user.error.delete");
             }
         }
     }
@@ -110,7 +114,7 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .filter(u -> u.getEmail().equals(email) && u.getPassword().equals(digestUtil.hash(password)))
                 .findFirst()
-                .orElseThrow(LoginUserException::new));
+                .orElseThrow(LoginException::new));
     }
 
     @Override
@@ -137,6 +141,8 @@ public class UserServiceImpl implements UserService {
      * @param avatarFile MultipartFile avatar
      * @return name of file as String
      */
+    @LogInvocationServer
+    @ImageUploadingEx
     private String getAvatarPath(MultipartFile avatarFile) {
         String avatarName;
         try {
@@ -153,7 +159,7 @@ public class UserServiceImpl implements UserService {
                 avatarName = "defaultAvatar.png";
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ImageUploadingException("msg.user.error.uploading.image", e);
         }
         return avatarName;
     }
