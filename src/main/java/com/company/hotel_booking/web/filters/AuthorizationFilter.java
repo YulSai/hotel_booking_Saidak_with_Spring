@@ -17,12 +17,19 @@ import java.io.IOException;
  */
 @RequiredArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
-   private final MessageSource messageManager;
+    private final MessageSource messageManager;
 
     @Override
     @LogInvocation
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getServletPath().startsWith("users/create");
+        String path = request.getServletPath();
+        return path.startsWith("/users/create") ||
+                path.startsWith("/rooms/search_available_rooms") ||
+                path.startsWith("/rooms/rooms_available") ||
+                path.startsWith("/reservations/add_booking") ||
+                path.startsWith("/reservations/booking") ||
+                path.startsWith("/reservations/clean_booking") ||
+                path.startsWith("/reservations/delete_booking/*");
     }
 
     @LogInvocation
