@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controller.utils;
+package com.company.hotel_booking.web.controllers.utils;
 
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import org.springframework.data.domain.Page;
@@ -15,6 +15,25 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class PagingUtil {
+
+    /**
+     * Method gets Pageable for REST API
+     *
+     * @param req    HttpServletRequest
+     * @param sortBy properties for sorting
+     * @return Paging
+     */
+    @LogInvocation
+    public Pageable getPagingRest(HttpServletRequest req, String sortBy) {
+        String limitStr = req.getParameter("limit");
+        String offsetStr = req.getParameter("page");
+
+        int limit = limitStr == null ? 10 : Integer.parseInt(limitStr);
+        int page = offsetStr == null ? 1 : Integer.parseInt(offsetStr);
+
+        Sort sort = Sort.by(Sort.Direction.ASC, sortBy);
+        return PageRequest.of(page, limit, sort);
+    }
 
     /**
      * Method gets Pageable
