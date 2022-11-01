@@ -10,10 +10,10 @@
     <title><spring:message code="msg.users.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <p>${requestScope.message}</p>
 <table class="first">
-    <jsp:include page="../pagination.jsp"/>
+    <jsp:include page="../../pagination.jsp"/>
     <tr>
         <th>#</th>
         <th><spring:message code="msg.user.first.name"/></th>

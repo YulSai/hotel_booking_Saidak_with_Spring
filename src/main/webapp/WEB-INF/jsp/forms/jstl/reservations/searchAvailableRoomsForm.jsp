@@ -9,7 +9,7 @@
     <title><spring:message code="msg.search.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.search.title"/></h1>
 <p>${requestScope.message}</p>
 <form method="post" action="/rooms/search_available_rooms">

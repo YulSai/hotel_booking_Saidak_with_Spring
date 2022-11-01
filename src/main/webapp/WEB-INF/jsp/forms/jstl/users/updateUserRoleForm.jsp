@@ -10,7 +10,7 @@
     <title><spring:message code="msg.update.user.role.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.update.user.role.title"/></h1>
 <p>${requestScope.message}</p>
 <form method="post" action="/users/update_role/${requestScope.user.id}" enctype="multipart/form-data">

@@ -10,12 +10,12 @@
     <title><spring:message code="msg.available.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1 id="title"><spring:message code="msg.available.detail"/></h1>
 <h2>${sessionScope.check_in} - ${sessionScope.check_out}</h2>
 <p>${requestScope.message}</p>
 <table>
-    <jsp:include page="../pagination.jsp"/>
+    <jsp:include page="../../pagination.jsp"/>
     <tr>
         <th>#</th>
         <th><spring:message code="msg.number"/></th>

@@ -10,7 +10,7 @@
     <title><spring:message code="msg.user"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <p>${requestScope.message}</p>
 </body>
 </html>

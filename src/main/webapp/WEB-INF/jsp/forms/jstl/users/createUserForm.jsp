@@ -10,7 +10,7 @@
     <title><spring:message code="msg.create.new.user.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <p>${requestScope.message}</p>
 <h1><spring:message code="msg.create.new.user.title"/></h1>
 <form:form action="/users/create" enctype="multipart/form-data" method="post" modelAttribute="userDto">

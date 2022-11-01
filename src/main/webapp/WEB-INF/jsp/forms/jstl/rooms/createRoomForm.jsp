@@ -10,7 +10,7 @@
     <title><spring:message code="msg.create.new.room.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.create.new.room.title"/></h1>
 <p>${requestScope.message}</p>
 <form:form method="post" action="/rooms/create" modelAttribute="roomDto">

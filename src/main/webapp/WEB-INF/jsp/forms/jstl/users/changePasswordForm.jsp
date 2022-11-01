@@ -11,7 +11,7 @@
     <title><spring:message code="msg.update.user.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.update.user.title"/></h1>
 <p>${requestScope.message}</p>
 <form:form method="post" action="/users/change_password/${user.id}" modelAttribute="userDto">

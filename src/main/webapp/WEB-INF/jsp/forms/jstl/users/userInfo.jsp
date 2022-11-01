@@ -11,7 +11,7 @@
     <title><spring:message code="msg.user"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.user.title"/></h1>
 <p>${requestScope.message}</p>
 <table class="first">

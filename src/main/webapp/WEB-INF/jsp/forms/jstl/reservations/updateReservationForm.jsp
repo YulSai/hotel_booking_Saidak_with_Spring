@@ -9,7 +9,7 @@
     <title><spring:message code="msg.reservation.update.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.reservation.update.title"/></h1>
 <p>${requestScope.message}</p>
 <form method="post" action="/reservations/update/${requestScope.reservation.id}">

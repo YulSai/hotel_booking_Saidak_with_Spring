@@ -9,7 +9,7 @@
     <title><spring:message code="msg.booking.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1 id="title"><spring:message code="msg.booking.your"/></h1>
 <c:if test="${requestScope.booking == null}">
     <h2><spring:message code="msg.booking.no.booking"/></h2>

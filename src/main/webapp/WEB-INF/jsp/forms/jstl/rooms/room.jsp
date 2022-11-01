@@ -10,7 +10,7 @@
     <title><spring:message code="msg.room.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.room.title"/></h1>
 <p>${requestScope.message}</p>
 <table class="first">

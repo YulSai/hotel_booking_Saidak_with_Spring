@@ -10,11 +10,11 @@
     <title><spring:message code="msg.reservation.title"/></title>
 </head>
 <body>
-<jsp:include page="../../navbar.jsp"/>
+<jsp:include page="../../../navbar.jsp"/>
 <h1><spring:message code="msg.reservation.detail"/></h1>
 <p>${requestScope.message}</p>
 <table class="first">
-    <jsp:include page="../pagination.jsp"/>
+    <jsp:include page="../../pagination.jsp"/>
     <tr>
         <th><spring:message code="msg.id"/></th>
         <th><spring:message code="msg.item"/></th>
