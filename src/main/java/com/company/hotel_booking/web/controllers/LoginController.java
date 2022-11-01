@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controller;
+package com.company.hotel_booking.web.controllers;
 
 import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;

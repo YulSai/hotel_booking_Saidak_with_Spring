@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controller;
+package com.company.hotel_booking.web.controllers;
 
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
@@ -6,7 +6,7 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.utils.managers.PagesManager;
-import com.company.hotel_booking.web.controller.utils.PagingUtil;
+import com.company.hotel_booking.web.controllers.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -108,6 +108,14 @@ public class ReservationController {
         session.setAttribute("message", messageManager
                 .getMessage("msg.reservation.updated", null, locale));
         return "redirect:/reservations/" + updated.getId();
+    }
+
+    @LogInvocation
+    @GetMapping("/delete/{id}")
+    public String deleteReservation(@PathVariable Long id, Model model, Locale locale) {
+        model.addAttribute("message", messageManager
+                .getMessage("msg.delete.not.available", null, locale));
+        return PagesManager.PAGE_ERROR;
     }
 
     @LogInvocation

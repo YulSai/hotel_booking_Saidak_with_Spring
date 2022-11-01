@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controller;
+package com.company.hotel_booking.web.controllers;
 
 import com.company.hotel_booking.utils.managers.PagesManager;
 import org.springframework.stereotype.Controller;
