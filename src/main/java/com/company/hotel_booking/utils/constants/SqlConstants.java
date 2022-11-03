@@ -1,9 +1,9 @@
-package com.company.hotel_booking.utils.managers;
+package com.company.hotel_booking.utils.constants;
 
 /**
  * Class with SQL constants
  */
-public class SqlManager {
+public class SqlConstants {
     // SQL
     // Reservation
     public static final String SQL_RESERVATION_DELETE = "UPDATE reservations SET deleted = true WHERE id=?";
@@ -31,4 +31,5 @@ public class SqlManager {
     // User
     public static final String SQL_USER_DELETE = "UPDATE users SET deleted = true WHERE id=?";
     public static final String SQL_USER_BLOCK = "update User SET block = true where id = :id";
+    public static final String SQL_USER_CHECK_BLOCK = "from User where id = :id and block = false";
 }
