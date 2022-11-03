@@ -1,9 +1,9 @@
-package com.company.hotel_booking.utils.managers;
+package com.company.hotel_booking.utils.constants;
 
 /**
  * Class with page constants
  */
-public class PagesManager {
+public class PagesConstants {
     // JSP
     // Index
     public static final String PAGE_INDEX = "index";

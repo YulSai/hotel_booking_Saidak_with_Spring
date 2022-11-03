@@ -1,9 +1,9 @@
-package com.company.hotel_booking.utils.managers;
+package com.company.hotel_booking.utils.constants;
 
 /**
  * Class with Regex constants for validation
  */
-public class ValidationManager {
+public class ValidationConstants {
     public static final String NAME = "^[A-Za-z-А-Яа-я]+";
     public static final String PASSWORD = "[A-Za-z0-9_]+";
     public static final String PHONE = "\\+{1}[0-9]{10,15}";
