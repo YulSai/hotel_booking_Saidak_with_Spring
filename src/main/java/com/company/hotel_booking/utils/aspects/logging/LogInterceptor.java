@@ -2,7 +2,6 @@ package com.company.hotel_booking.utils.aspects.logging;
 
 import com.company.hotel_booking.utils.exceptions.ImageUploadingException;
 import com.company.hotel_booking.utils.exceptions.LoginException;
-import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -49,15 +48,6 @@ public class LogInterceptor {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
-    }
-
-    @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx)",
-            throwing = "e")
-    public void afterThrowingNotFound(JoinPoint jp, NotFoundException e) {
-        String className = jp.getSignature().getDeclaringTypeName();
-        String methodName = jp.getSignature().getName();
-        log.error(
-                "Incorrect address entered. Class " + className + " method " + methodName + " error. Exception is " + e);
     }
 
     @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.ImageUploadingEx)",
