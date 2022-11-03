@@ -4,11 +4,11 @@ import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.managers.PagesManager;
+import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @Controller
@@ -34,12 +33,11 @@ import java.util.Map;
 public class ReservationController {
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
-    private final MessageSource messageManager;
+    private final MessageSource messageSource;
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/all")
-    public String getAllReservations(HttpServletRequest req, HttpSession session, Model model, Locale locale) {
+    public String getAllReservations(HttpServletRequest req, HttpSession session, Model model) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
@@ -51,40 +49,41 @@ public class ReservationController {
         }
 
         if (reservations.isEmpty()) {
-            model.addAttribute("message", messageManager.getMessage("msg.empty", null, locale));
-            return PagesManager.PAGE_RESERVATIONS;
+            model.addAttribute("message",
+                    messageSource.getMessage("msg.empty", null, LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_RESERVATIONS;
         }
 
         pagingUtil.setTotalPages(req, reservationsDtoPage, "reservations/all");
         model.addAttribute("reservations", reservations);
-        return PagesManager.PAGE_RESERVATIONS;
+        return PagesConstants.PAGE_RESERVATIONS;
     }
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/{id}")
     public String getReservationById(@PathVariable Long id, Model model) {
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
-        return PagesManager.PAGE_RESERVATION;
+        return PagesConstants.PAGE_RESERVATION;
     }
 
     @LogInvocation
     @GetMapping("/create")
-    public String createReservation(HttpSession session, Locale locale) {
+    public String createReservation(HttpSession session) {
         UserDto user = (UserDto) session.getAttribute("user");
         LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
         LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
         if (user == null) {
-            session.setAttribute("message", messageManager.getMessage("msg.login", null, locale));
-            return PagesManager.PAGE_LOGIN;
+            session.setAttribute("message",
+                    messageSource.getMessage("msg.login", null, LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_LOGIN;
         } else {
             @SuppressWarnings("unchecked")
             Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
             ReservationDto created = reservationService.processReservationCreation(booking, user, checkIn, checkOut);
             session.removeAttribute("booking");
-            session.setAttribute("message", messageManager
-                    .getMessage("msg.reservation.created", null, locale));
+            session.setAttribute("message", messageSource
+                    .getMessage("msg.reservation.created", null, LocaleContextHolder.getLocale()));
             return "redirect:/reservations/" + created.getId();
         }
     }
@@ -94,37 +93,37 @@ public class ReservationController {
     public String updateReservationForm(@PathVariable Long id, Model model) {
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
-        return PagesManager.PAGE_UPDATE_RESERVATION;
+        return PagesConstants.PAGE_UPDATE_RESERVATION;
     }
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    public String updateReservation(@PathVariable Long id, @RequestParam String status,
-                                    HttpSession session, Locale locale) {
+    public String updateReservation(@PathVariable Long id, @RequestParam String status, HttpSession session) {
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
 
         ReservationDto updated = reservationService.update(reservation);
-        session.setAttribute("message", messageManager
-                .getMessage("msg.reservation.updated", null, locale));
+        session.setAttribute("message", messageSource
+                .getMessage("msg.reservation.updated", null, LocaleContextHolder.getLocale()));
         return "redirect:/reservations/" + updated.getId();
     }
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteReservation(@PathVariable Long id, Model model, Locale locale) {
-        model.addAttribute("message", messageManager
-                .getMessage("msg.delete.not.available", null, locale));
-        return PagesManager.PAGE_ERROR;
+    public String deleteReservation(@PathVariable Long id, Model model) {
+        model.addAttribute("message", messageSource
+                .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
     @GetMapping("/cancel_reservation/{id}")
-    public String cancelReservation(@PathVariable Long id, HttpSession session, Locale locale) {
+    public String cancelReservation(@PathVariable Long id, HttpSession session) {
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.REJECTED);
         ReservationDto updated = reservationService.update(reservation);
-        session.setAttribute("message", messageManager.getMessage("msg.reservations.cancel", null, locale));
+        session.setAttribute("message",
+                messageSource.getMessage("msg.reservations.cancel", null, LocaleContextHolder.getLocale()));
         return "redirect:/reservations/" + updated.getId();
     }
 
@@ -154,14 +153,14 @@ public class ReservationController {
         @SuppressWarnings("unchecked")
         Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
         if (booking == null) {
-            return PagesManager.PAGE_BOOKING;
+            return PagesConstants.PAGE_BOOKING;
         } else {
             UserDto user = (UserDto) session.getAttribute("user");
             LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
             LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
             ReservationDto processed = reservationService.processBooking(booking, user, checkIn, checkOut);
             model.addAttribute("booking", processed);
-            return PagesManager.PAGE_BOOKING;
+            return PagesConstants.PAGE_BOOKING;
         }
     }
 
@@ -169,7 +168,7 @@ public class ReservationController {
     @GetMapping("/clean_booking")
     public String cleanBooking(HttpSession session) {
         session.removeAttribute("booking");
-        return PagesManager.PAGE_BOOKING;
+        return PagesConstants.PAGE_BOOKING;
     }
 
     @LogInvocation
@@ -190,14 +189,14 @@ public class ReservationController {
     @LogInvocation
     @GetMapping("/user_reservations/{id}")
     public String getAllReservationsByUser(@PathVariable Long id, HttpServletRequest req,
-                                           HttpSession session, Model model, Locale locale) {
+                                           HttpSession session, Model model) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, id);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
         if (reservations.isEmpty()) {
-            model.addAttribute("message", messageManager
-                    .getMessage("msg.reservations.no", null, locale));
-            return PagesManager.PAGE_RESERVATIONS;
+            model.addAttribute("message", messageSource
+                    .getMessage("msg.reservations.no", null, LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_RESERVATIONS;
         } else {
             UserDto user = (UserDto) session.getAttribute("user");
             if ("CLIENT".equals(user.getRole().toString())) {
@@ -206,7 +205,7 @@ public class ReservationController {
             }
             pagingUtil.setTotalPages(req, reservationsDtoPage, "reservations/user_reservations");
             model.addAttribute("reservations", reservations);
-            return PagesManager.PAGE_RESERVATIONS;
+            return PagesConstants.PAGE_RESERVATIONS;
         }
     }
 }

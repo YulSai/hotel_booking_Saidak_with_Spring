@@ -4,7 +4,6 @@ import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,6 @@ public class ReservationRestController {
     private final PagingUtil pagingUtil;
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping
     public Page getAllReservations(HttpServletRequest req, HttpSession session) {
         Pageable pageable = pagingUtil.getPagingRest(req, "id");
@@ -46,7 +44,6 @@ public class ReservationRestController {
     }
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/{id}")
     public ReservationDto getReservationById(@PathVariable Long id) {
         return reservationService.findById(id);
