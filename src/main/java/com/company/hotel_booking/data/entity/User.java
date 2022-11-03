@@ -1,6 +1,6 @@
 package com.company.hotel_booking.data.entity;
 
-import com.company.hotel_booking.utils.managers.SqlManager;
+import com.company.hotel_booking.utils.constants.SqlConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -26,7 +26,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = SqlManager.SQL_USER_DELETE)
+@SQLDelete(sql = SqlConstants.SQL_USER_DELETE)
 @Where(clause = "deleted = false")
 public class User {
 
@@ -45,6 +45,7 @@ public class User {
     private String email;
 
     @Column(name = "password")
+    @ToString.Exclude
     private String password;
 
     @Column(name = "phone_number")

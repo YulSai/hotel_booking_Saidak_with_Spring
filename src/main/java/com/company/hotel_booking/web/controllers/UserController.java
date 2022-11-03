@@ -5,11 +5,11 @@ import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.managers.PagesManager;
+import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/users")
@@ -35,10 +34,9 @@ public class UserController {
     private final UserService userService;
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
-    private final MessageSource messageManager;
+    private final MessageSource messageSource;
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/all")
     public String getAllUsers(Model model, HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPaging(req, "lastName");
@@ -46,11 +44,10 @@ public class UserController {
         List<UserDto> users = usersDtoPage.toList();
         pagingUtil.setTotalPages(req, usersDtoPage, "users/all");
         model.addAttribute("users", users);
-        return PagesManager.PAGE_USERS;
+        return PagesConstants.PAGE_USERS;
     }
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id, HttpSession session, Model model) {
         UserDto user;
@@ -61,7 +58,7 @@ public class UserController {
             user = userService.findById(id);
         }
         model.addAttribute("user", user);
-        return PagesManager.PAGE_USER;
+        return PagesConstants.PAGE_USER;
     }
 
     @ModelAttribute
@@ -72,21 +69,21 @@ public class UserController {
     @LogInvocation
     @GetMapping("/create")
     public String createUserForm() {
-        return PagesManager.PAGE_CREATE_USER;
+        return PagesConstants.PAGE_CREATE_USER;
     }
 
     @LogInvocation
     @PostMapping("/create")
     public String createUser(@ModelAttribute @Valid UserDto userDto, Errors errors, HttpSession session,
-                             MultipartFile avatarFile,
-                             Locale locale) {
+                             MultipartFile avatarFile) {
         if (errors.hasErrors()) {
-            return PagesManager.PAGE_CREATE_USER;
+            return PagesConstants.PAGE_CREATE_USER;
         }
         userDto.setRole(UserDto.RoleDto.CLIENT);
         UserDto created = userService.processCreateUser(userDto, avatarFile);
         session.setAttribute("user", created);
-        session.setAttribute("message", messageManager.getMessage("msg.user.created", null, locale));
+        session.setAttribute("message",
+                messageSource.getMessage("msg.user.created", null, LocaleContextHolder.getLocale()));
         return "redirect:/users/" + created.getId();
     }
 
@@ -95,32 +92,34 @@ public class UserController {
     public String updateUserForm(@PathVariable Long id, Model model) {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
-        return PagesManager.PAGE_UPDATE_USERS;
+        return PagesConstants.PAGE_UPDATE_USERS;
     }
 
     @LogInvocation
     @PostMapping("/update/{id}")
     public String updateUser(@ModelAttribute @Valid UserDto userDto, Errors errors, MultipartFile avatarFile,
-                             HttpSession session, Locale locale) {
+                             HttpSession session) {
         if (errors.hasErrors()) {
-            return PagesManager.PAGE_UPDATE_USERS;
+            return PagesConstants.PAGE_UPDATE_USERS;
         }
         UserDto updated = userService.processUserUpdates(userDto, avatarFile);
-        session.setAttribute("message", messageManager.getMessage("msg.user.updated", null, locale));
+        session.setAttribute("message",
+                messageSource.getMessage("msg.user.updated", null, LocaleContextHolder.getLocale()));
         return "redirect:/users/" + updated.getId();
     }
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id, Model model, Locale locale) {
+    public String deleteUser(@PathVariable Long id, Model model) {
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);
             reservationService.update(reservation);
         }
         userService.delete(userService.findById(id));
-        model.addAttribute("message", messageManager.getMessage("msg.user.deleted", null, locale));
-        return PagesManager.PAGE_DELETE_USER;
+        model.addAttribute("message",
+                messageSource.getMessage("msg.user.deleted", null, LocaleContextHolder.getLocale()));
+        return PagesConstants.PAGE_DELETE_USER;
     }
 
     @LogInvocation
@@ -128,19 +127,18 @@ public class UserController {
     public String changePasswordForm(@PathVariable Long id, Model model) {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
-        return PagesManager.PAGE_CHANGE_PASSWORD;
+        return PagesConstants.PAGE_CHANGE_PASSWORD;
     }
 
     @LogInvocation
     @PostMapping("/change_password/{id}")
-    public String changePassword(@ModelAttribute @Valid UserDto userdto, Errors errors, HttpSession session,
-                                 Locale locale) {
+    public String changePassword(@ModelAttribute @Valid UserDto userdto, Errors errors, HttpSession session) {
         if (errors.hasErrors()) {
-            return PagesManager.PAGE_CHANGE_PASSWORD;
+            return PagesConstants.PAGE_CHANGE_PASSWORD;
         }
         UserDto updated = userService.changePassword(userdto);
-        session.setAttribute("message", messageManager
-                .getMessage("msg.user.password.change", null, locale));
+        session.setAttribute("message",
+                messageSource.getMessage("msg.user.password.change", null, LocaleContextHolder.getLocale()));
         return "redirect:/users/" + updated.getId();
     }
 
@@ -149,14 +147,27 @@ public class UserController {
     public String updateUserRoleForm(@PathVariable Long id, Model model) {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
-        return PagesManager.PAGE_UPDATE_USERS_ROLE;
+        return PagesConstants.PAGE_UPDATE_USERS_ROLE;
     }
 
     @LogInvocation
     @PostMapping("/update_role/{id}")
-    public String updateUserRole(@ModelAttribute UserDto user, HttpSession session, Locale locale) {
+    public String updateUserRole(@ModelAttribute UserDto user, HttpSession session) {
         UserDto updated = userService.update(user);
-        session.setAttribute("message", messageManager.getMessage("msg.user.updated", null, locale));
+        session.setAttribute("message",
+                messageSource.getMessage("msg.user.updated", null, LocaleContextHolder.getLocale()));
         return "redirect:/users/" + updated.getId();
+    }
+
+    @LogInvocation
+    @GetMapping("/js/all")
+    public String getAllUsers() {
+        return PagesConstants.PAGE_USERS_JS;
+    }
+
+    @LogInvocation
+    @GetMapping("/js/{id}")
+    public String getUserById(@PathVariable Long id) {
+        return PagesConstants.PAGE_USER_JS;
     }
 }

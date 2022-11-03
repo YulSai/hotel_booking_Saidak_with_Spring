@@ -21,7 +21,7 @@
         }
     </script>
 
-    <title><spring:message code="msg.users.title"/></title>
+    <title><spring:message code="msg.users.title.rest"/></title>
 
 </head>
 <body>

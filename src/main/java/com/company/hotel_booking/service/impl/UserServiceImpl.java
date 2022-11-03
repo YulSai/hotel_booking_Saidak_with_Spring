@@ -1,25 +1,28 @@
 package com.company.hotel_booking.service.impl;
 
+import com.company.hotel_booking.data.entity.User;
+import com.company.hotel_booking.data.repository.ReservationRepository;
+import com.company.hotel_booking.data.repository.UserRepository;
+import com.company.hotel_booking.service.api.UserService;
+import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.mapper.UserMapper;
+import com.company.hotel_booking.service.utils.DigestUtil;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ImageUploadingEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
-import com.company.hotel_booking.data.repository.ReservationRepository;
-import com.company.hotel_booking.data.repository.UserRepository;
-import com.company.hotel_booking.data.entity.User;
-import com.company.hotel_booking.service.api.UserService;
-import com.company.hotel_booking.service.dto.UserDto;
-import com.company.hotel_booking.service.utils.DigestUtil;
 import com.company.hotel_booking.utils.exceptions.ImageUploadingException;
 import com.company.hotel_booking.utils.exceptions.LoginException;
 import com.company.hotel_booking.utils.exceptions.users.UserAlreadyExistsException;
 import com.company.hotel_booking.utils.exceptions.users.UserDeleteException;
 import com.company.hotel_booking.utils.exceptions.users.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -37,13 +40,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final DigestUtil digestUtil;
+    private final MessageSource messageSource;
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public UserDto findById(Long id) {
         return mapper.toDto(userRepository.findById(id).orElseThrow(() ->
-                new UserNotFoundException("msg.user.error.find.by.id")));
+                new UserNotFoundException(messageSource.getMessage("msg.user.error.find.by.id", null,
+                        LocaleContextHolder.getLocale()))));
     }
 
     @Override
@@ -64,7 +69,9 @@ public class UserServiceImpl implements UserService {
     public UserDto update(UserDto userDto) {
         User existing = userRepository.findByEmail(userDto.getEmail()).get();
         if (existing != null && !existing.getId().equals(userDto.getId())) {
-            throw new UserAlreadyExistsException("msg.user.error.update.exists");
+            throw new UserAlreadyExistsException(
+                    messageSource.getMessage("msg.user.error.update.exists", null,
+                            LocaleContextHolder.getLocale()));
         }
         return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }
@@ -76,7 +83,8 @@ public class UserServiceImpl implements UserService {
         String existPassword = userRepository.findById(userDto.getId()).get().getPassword();
         String hashPassword = digestUtil.hash(userDto.getPassword());
         if (hashPassword.equals(existPassword)) {
-            throw new UserAlreadyExistsException("msg.user.error.new.password");
+            throw new UserAlreadyExistsException(messageSource.getMessage("msg.user.error.new.password", null,
+                    LocaleContextHolder.getLocale()));
         }
         userDto.setPassword(hashPassword);
         return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
@@ -85,16 +93,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @LogInvocationServer
     @ServiceEx
+    @Transactional
     public void delete(UserDto userDto) {
         if (reservationRepository.findByUserId(userDto.getId()).isEmpty()) {
             userRepository.delete(mapper.toEntity(userDto));
-            if (userRepository.existsById(userDto.getId())) {
-                throw new UserDeleteException("msg.user.error.delete");
+            if (userRepository.findById(userDto.getId()).isPresent()) {
+                throw new UserDeleteException(messageSource.getMessage("msg.user.error.delete", null,
+                        LocaleContextHolder.getLocale()));
             }
         } else {
             userRepository.block(userDto.getId());
-            if (userRepository.existsById(userDto.getId())) {
-                throw new UserDeleteException("msg.user.error.delete");
+            if (userRepository.checkBlock(userDto.getId()).isPresent()) {
+                throw new UserDeleteException(messageSource.getMessage("msg.user.error.delete", null,
+                        LocaleContextHolder.getLocale()));
             }
         }
     }
@@ -159,7 +170,8 @@ public class UserServiceImpl implements UserService {
                 avatarName = "defaultAvatar.png";
             }
         } catch (IOException e) {
-            throw new ImageUploadingException("msg.user.error.uploading.image", e);
+            throw new ImageUploadingException(messageSource.getMessage("msg.user.error.uploading.image", null,
+                    LocaleContextHolder.getLocale()), e);
         }
         return avatarName;
     }

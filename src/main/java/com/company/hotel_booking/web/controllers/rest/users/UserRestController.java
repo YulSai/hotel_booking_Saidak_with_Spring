@@ -5,7 +5,6 @@ import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,7 +36,6 @@ public class UserRestController {
 
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping
     public Page<UserDto> getAllUsersJs(HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPagingRest(req, "lastName");
@@ -45,7 +43,6 @@ public class UserRestController {
     }
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/{id}")
     public UserDto getUserByIdJs(@PathVariable Long id, HttpSession session) {
         UserDto user;

@@ -1,52 +1,65 @@
 $(document).ready(function () {
     let totalPages = 1;
 
-    function fetchUsers(startPage) {
-        //get data from Backend's REST API
+    function getAllUsers(startPage) {
         $.ajax({
             type: "GET",
             url: "/api/users",
+            dataType: 'json',
             data: {
                 page: startPage,
                 size: 10
             },
+
             success: function (users) {
                 $('#usersTable tbody').empty();
-                // add table rows
                 users.content.forEach((user, index) => {
-                    $("tbody").append($(`<tr>
+                    userAddRow(user, index);
+                });
+
+                if (!$("ul.pagination").empty()) {
+                }
+
+                if ($("ul.pagination li").length - 2 !== users.totalPages) {
+                    buildPagination(users);
+                }
+            },
+
+            error: function (request, message, error) {
+                handleException(request, message, error);
+            }
+        });
+    }
+
+    function userAddRow(user, index) {
+        return $("tbody").append($(`<tr>
                      <td>${index + 1}</td>
-                     <td><a href="/users/${user.id}">${user.firstName}</a></td>
-                     <td><a href="/users/${user.id}">${user.lastName}</a></td>
+                     <td><a href="/users/js/${user.id}">${user.firstName}</a></td>
+                     <td><a href="/users/js/${user.id}">${user.lastName}</a></td>
                      <td>${user.email}</td>
                      <td>${user.phoneNumber}</td>
                      <td>${user.role.toString().toLowerCase()}</td>
                      <td><li><a href="/users/update_role/${user.id}">${user_update_role}</a> </li></td>
                      <td><li><a href="/users/delete/${user.id}">${user_delete}</a></li></td>
                      </tr>`));
-                });
-
-                if ( !$('ul.pagination').empty()){
-
-                }
-
-                if ($('ul.pagination li').length - 2 !== users.totalPages) {
-                    buildPagination(users);
-                }
-             },
-            error: function (e) {
-                alert("ERROR: ", e);
-                console.log("ERROR: ", e);
-            }
-        });
     }
+
+    function handleException(request, message, error) {
+        let msg = "";
+        msg += request.status + "\n";
+        msg += request.statusText + "\n";
+        if (request.responseJSON != null) {
+            msg += request.responseJSON.Message + "\n";
+        }
+        alert(msg);
+    }
+
 
     function buildPagination(users) {
         totalPages = users.totalPages;
         let pageNumber = users.pageable.pageNumber;
         const numLinks = 10;
 
-        // print 'previous' link only if not on page one
         let first = '';
         let prev = '';
         if (pageNumber > 0) {
@@ -89,8 +102,8 @@ $(document).ready(function () {
         // return the page navigation link
         pagingLink = first + prev + pagingLink + next + last;
 
-        if ( !$('ul.pagination').empty()){
-            $('ul.pagination').clear();
+        if (!$("ul.pagination").empty()) {
+            $("ul.pagination").clear();
         }
         $("ul.pagination").append(pagingLink);
     }
@@ -106,20 +119,20 @@ $(document).ready(function () {
 
         if (val.toUpperCase() === "« FIRST") {
             currentActive = $("li.active");
-            fetchUsers(0);
+            getAllUsers(0);
             $("li.active").removeClass("active");
             // add .active to next-pagination li
             currentActive.next().addClass("active");
         } else if (val.toUpperCase() === "LAST »") {
             startPage = totalPages - 1;
-            fetchUsers(startPage);
+            getAllUsers(startPage);
             $("li.active").removeClass("active");
         } else if (val.toUpperCase() === "NEXT ›") {
             let activeValue = parseInt($("ul.pagination li.active").text());
             if (activeValue < totalPages) {
                 currentActive = $("li.active");
                 startPage = activeValue;
-                fetchUsers(startPage);
+                getAllUsers(startPage);
                 // remove .active class for the old li tag
                 $("li.active").removeClass("active");
                 // add .active to next-pagination li
@@ -130,7 +143,7 @@ $(document).ready(function () {
             if (activeValue > 1) {
                 // get the previous page
                 startPage = activeValue - 2;
-                fetchUsers(startPage);
+                getAllUsers(startPage);
                 currentActive = $("li.active");
                 currentActive.removeClass("active");
                 // add .active to previous-pagination li
@@ -138,7 +151,7 @@ $(document).ready(function () {
             }
         } else {
             startPage = parseInt(val - 1);
-            fetchUsers(startPage);
+            getAllUsers(startPage);
             // add focus to the li tag
             $("li.active").removeClass("active");
             $(this).parent().addClass("active");
@@ -147,7 +160,7 @@ $(document).ready(function () {
 
     (function () {
         // get first-page at initial time
-        fetchUsers(0);
+        getAllUsers(0);
     })();
 });
 

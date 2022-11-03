@@ -1,6 +1,6 @@
 package com.company.hotel_booking.service.dto;
 
-import com.company.hotel_booking.utils.managers.ValidationManager;
+import com.company.hotel_booking.utils.constants.ValidationConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,11 +24,11 @@ public class UserDto {
     private Long id;
 
     @NotBlank(message = "{msg.error.first.name.empty}")
-    @Pattern(regexp = ValidationManager.NAME, message = "{msg.error.first.name.format}")
+    @Pattern(regexp = ValidationConstants.NAME, message = "{msg.error.first.name.format}")
     private String firstName;
 
     @NotBlank(message = "{msg.error.last.name.empty}")
-    @Pattern(regexp = ValidationManager.NAME, message = "{msg.error.last.name.format}")
+    @Pattern(regexp = ValidationConstants.NAME, message = "{msg.error.last.name.format}")
     private String lastName;
 
     @NotBlank(message = "{msg.error.email.empty}")
@@ -36,12 +36,13 @@ public class UserDto {
     private String email;
 
     @NotBlank(message = "{msg.error.password.empty}")
-    @Pattern(regexp = ValidationManager.PASSWORD, message = "{msg.error.password.format}")
+    @Pattern(regexp = ValidationConstants.PASSWORD, message = "{msg.error.password.format}")
     @Size(min = 6, message = "{msg.error.password.length}")
+    @ToString.Exclude
     private String password;
 
     @NotBlank(message = "{msg.error.phone.empty}")
-    @Pattern(regexp = ValidationManager.PHONE, message = "{msg.error.phone.format}")
+    @Pattern(regexp = ValidationConstants.PHONE, message = "{msg.error.phone.format}")
     @Size(min = 10, message = "{msg.error.phone.length}")
     private String phoneNumber;
 
