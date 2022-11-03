@@ -3,9 +3,10 @@ package com.company.hotel_booking.web.controllers;
 import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.managers.PagesManager;
+import com.company.hotel_booking.utils.constants.PagesConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,40 +15,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Locale;
 
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
 
     private final UserService userService;
-    private final MessageSource messageManager;
+    private final MessageSource messageSource;
 
     @LogInvocation
     @GetMapping("/login")
     public String loginForm() {
-        return PagesManager.PAGE_LOGIN;
+        return PagesConstants.PAGE_LOGIN;
     }
 
     @LogInvocation
     @PostMapping("/login")
     public String login(HttpServletRequest req, @RequestParam String email, @RequestParam String password,
-                        HttpSession session, Model model, Locale locale) {
+                        HttpSession session, Model model) {
         if (email == null || ("").equals(email) || password == null || ("").equals(password)) {
-            model.addAttribute("message", messageManager
-                    .getMessage("msg.login.details", null, locale));
-            return PagesManager.PAGE_LOGIN;
+            model.addAttribute("message", messageSource
+                    .getMessage("msg.login.details", null, LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_LOGIN;
         }
         UserDto userDto = userService.login(email, password);
         session.setAttribute("user", userDto);
-        return PagesManager.PAGE_INDEX;
+        return PagesConstants.PAGE_INDEX;
     }
 
     @LogInvocation
     @GetMapping("/logout")
     public String logout(HttpServletRequest req) {
         req.getSession().removeAttribute("user");
-        // req.getSession().invalidate();
-        return PagesManager.PAGE_INDEX;
+        return PagesConstants.PAGE_INDEX;
     }
 }
