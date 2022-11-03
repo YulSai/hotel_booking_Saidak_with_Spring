@@ -4,11 +4,11 @@ import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
-import com.company.hotel_booking.utils.managers.PagesManager;
+import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/rooms")
@@ -34,10 +33,9 @@ import java.util.Locale;
 public class RoomController {
     private final RoomService roomService;
     private final PagingUtil pagingUtil;
-    private final MessageSource messageManager;
+    private final MessageSource messageSource;
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/all")
     public String getAllRooms(Model model, HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
@@ -45,38 +43,38 @@ public class RoomController {
         List<RoomDto> rooms = roomsDtoPage.toList();
         pagingUtil.setTotalPages(req, roomsDtoPage, "rooms/all");
         model.addAttribute("rooms", rooms);
-        return PagesManager.PAGE_ROOMS;
+        return PagesConstants.PAGE_ROOMS;
 
     }
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/{id}")
     public String getRoomById(@PathVariable Long id, Model model) {
         RoomDto room = roomService.findById(id);
         model.addAttribute("room", room);
-        return PagesManager.PAGE_ROOM;
+        return PagesConstants.PAGE_ROOM;
     }
 
     @ModelAttribute
-    public RoomDto roomDto(){
+    public RoomDto roomDto() {
         return new RoomDto();
     }
 
     @LogInvocation
     @GetMapping("/create")
     public String createRoomForm() {
-        return PagesManager.PAGE_CREATE_ROOM;
+        return PagesConstants.PAGE_CREATE_ROOM;
     }
 
     @LogInvocation
     @PostMapping("/create")
-    public String createRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session, Locale locale) {
-        if (errors.hasErrors()){
-            return PagesManager.PAGE_CREATE_ROOM;
+    public String createRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
+        if (errors.hasErrors()) {
+            return PagesConstants.PAGE_CREATE_ROOM;
         }
         RoomDto created = roomService.create(roomDto);
-        session.setAttribute("message", messageManager.getMessage("msg.room.created", null, locale));
+        session.setAttribute("message", messageSource
+                .getMessage("msg.room.created", null, LocaleContextHolder.getLocale()));
         return "redirect:/rooms/" + created.getId();
     }
 
@@ -85,64 +83,77 @@ public class RoomController {
     public String updateRoomForm(@PathVariable Long id, Model model) {
         RoomDto room = roomService.findById(id);
         model.addAttribute("room", room);
-        return PagesManager.PAGE_UPDATE_ROOM;
+        return PagesConstants.PAGE_UPDATE_ROOM;
     }
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session,
-                             Locale locale) {
-        if (errors.hasErrors()){
-            return PagesManager.PAGE_UPDATE_ROOM;
+    public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
+        if (errors.hasErrors()) {
+            return PagesConstants.PAGE_UPDATE_ROOM;
         }
         RoomDto updated = roomService.update(roomDto);
-        session.setAttribute("message", messageManager.getMessage("msg.room.updated", null, locale));
+        session.setAttribute("message",
+                messageSource.getMessage("msg.room.updated", null, LocaleContextHolder.getLocale()));
         return "redirect:/rooms/" + updated.getId();
     }
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteRoom(@PathVariable Long id, Model model, Locale locale) {
-        model.addAttribute("message", messageManager
-                .getMessage("msg.delete.not.available", null, locale));
-        return PagesManager.PAGE_ERROR;
+    public String deleteRoom(@PathVariable Long id, Model model) {
+        model.addAttribute("message", messageSource
+                .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
     @GetMapping("/search_available_rooms")
     public String searchAvailableRoomForm() {
-        return PagesManager.PAGE_SEARCH_AVAILABLE_ROOMS;
+        return PagesConstants.PAGE_SEARCH_AVAILABLE_ROOMS;
     }
 
     @LogInvocation
     @PostMapping("/search_available_rooms")
     public String searchAvailableRoom(HttpSession session, @RequestParam String check_in,
                                       @RequestParam String check_out, @RequestParam String type,
-                                      @RequestParam String capacity, Model model, Locale locale) {
+                                      @RequestParam String capacity, Model model) {
         LocalDate checkIn = LocalDate.parse(check_in);
         LocalDate checkOut = LocalDate.parse(check_out);
         if (checkOut.equals(checkIn) | checkOut.isBefore(checkIn)) {
-            model.addAttribute("message", messageManager
-                    .getMessage("msg.incorrect.date", null, locale));
-            return PagesManager.PAGE_SEARCH_AVAILABLE_ROOMS;
+            model.addAttribute("message", messageSource
+                    .getMessage("msg.incorrect.date", null, LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_SEARCH_AVAILABLE_ROOMS;
         } else {
             Long typeId = Room.RoomType.valueOf(type.toUpperCase()).getId();
             Long capacityId = Room.Capacity.valueOf(capacity.toUpperCase()).getId();
             List<RoomDto> roomsAvailable = roomService.findAvailableRooms(typeId, capacityId, checkIn, checkOut);
             if (roomsAvailable.isEmpty()) {
-                model.addAttribute("message", messageManager
-                        .getMessage("msg.search.no.available.rooms", null, locale));
+                model.addAttribute("message", messageSource
+                        .getMessage("msg.search.no.available.rooms", null, LocaleContextHolder.getLocale()));
             }
             session.setAttribute("rooms_available", roomsAvailable);
             session.setAttribute("check_in", checkIn);
             session.setAttribute("check_out", checkOut);
-            return PagesManager.PAGE_ROOMS_AVAILABLE;
+            return PagesConstants.PAGE_ROOMS_AVAILABLE;
         }
     }
 
     @LogInvocation
     @PostMapping("/rooms_available")
     public String getAvailableRoom() {
-        return PagesManager.PAGE_ROOMS_AVAILABLE;
+        return PagesConstants.PAGE_ROOMS_AVAILABLE;
+    }
+
+    @LogInvocation
+    @GetMapping("/js/all")
+    public String getAllRoomsJs() {
+        return PagesConstants.PAGE_ROOMS_JS;
+
+    }
+
+    @LogInvocation
+    @GetMapping("/js/{id}")
+    public String getRoomByIdJs(@PathVariable Long id) {
+        return PagesConstants.PAGE_ROOM_JS;
     }
 }

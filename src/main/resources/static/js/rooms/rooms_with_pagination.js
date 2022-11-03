@@ -2,42 +2,55 @@ $(document).ready(function () {
     let totalPages = 1;
 
     function fetchRooms(startPage) {
-        //get data from Backend's REST API
         $.ajax({
             type: "GET",
             url: "/api/rooms",
+            dataType: 'json',
             data: {
                 page: startPage,
                 size: 10
             },
+
             success: function (rooms) {
                 $('#roomsTable tbody').empty();
-                // add table rows
                 rooms.content.forEach((room, index) => {
-                    $("tbody").append($(`<tr>
-                     <td>${index + 1}</td>
-                     <td><a href="/rooms/${room.id}">${room.number}</a></td>
-                        <td>${room.type}</td>
-                        <td>${room.capacity}</td>
-                        <td>${room.status}</td>
-                        <td>${room.price}</td>
-                        <td><a href="/rooms/update/${room.id}">${room_update}</a></td>
-                     </tr>`));
+                    roomAddRows(room, index);
                 });
 
                 if ( !$('ul.pagination').empty()){
-
                 }
 
                 if ($('ul.pagination li').length - 2 !== rooms.totalPages) {
                     buildPagination(rooms);
                 }
              },
-            error: function (e) {
-                alert("ERROR: ", e);
-                console.log("ERROR: ", e);
+
+            error: function (request, message, error) {
+                handleException(request, message, error);
             }
         });
+    }
+
+    function roomAddRows(room, index) {
+        $("tbody").append($(`<tr>
+                     <td>${index + 1}</td>
+                     <td><a href="/rooms/js/${room.id}">${room.number}</a></td>
+                        <td>${room.type}</td>
+                        <td>${room.capacity}</td>
+                        <td>${room.status}</td>
+                        <td>${room.price}</td>
+                        <td><a href="/rooms/update/${room.id}">${room_update}</a></td>
+                     </tr>`));
+    }
+
+    function handleException(request, message, error) {
+        let msg = "";
+        msg += request.status + "\n";
+        msg += request.statusText + "\n";
+        if (request.responseJSON != null) {
+            msg += request.responseJSON.Message + "\n";
+        }
+        alert(msg);
     }
 
     function buildPagination(rooms) {
@@ -45,7 +58,6 @@ $(document).ready(function () {
         let pageNumber = rooms.pageable.pageNumber;
         const numLinks = 10;
 
-        // print 'previous' link only if not on page one
         let first = '';
         let prev = '';
         if (pageNumber > 0) {
@@ -54,11 +66,10 @@ $(document).ready(function () {
             }
             prev = '<li class="page-item"><a class="page-link">‹ Prev</a></li>';
         } else {
-            prev = ''; // on the page one, don't show 'previous' link
-            first = ''; // nor 'first page' link
+            prev = '';
+            first = '';
         }
 
-        // print 'next' link only if not on the last page
         let next = '';
         let last = '';
         if (pageNumber < totalPages) {
@@ -67,8 +78,8 @@ $(document).ready(function () {
                 last = '<li class="page-item"><a class="page-link">Last »</a></li>';
             }
         } else {
-            next = ''; // on the last page, don't show 'next' link
-            last = ''; // nor 'last page' link
+            next = '';
+            last = '';
         }
 
         let start = pageNumber - (pageNumber % numLinks) + 1;
@@ -79,7 +90,6 @@ $(document).ready(function () {
         for (let i = start; i <= end; i++) {
             if (i == pageNumber + 1) {
                 pagingLink += '<li class="page-item active"><a class="page-link"> ' + i + ' </a></li>';
-                // no need to create a link to current page
             } else {
                 pagingLink += '<li class="page-item"><a class="page-link"> ' + i + ' </a></li>';
             }

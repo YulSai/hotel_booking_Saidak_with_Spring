@@ -4,7 +4,6 @@ import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,6 @@ public class RoomRestController {
     private final PagingUtil pagingUtil;
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping
     public Page getAllRooms(HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPagingRest(req, "id");
@@ -40,7 +38,6 @@ public class RoomRestController {
     }
 
     @LogInvocation
-    @NotFoundEx
     @GetMapping("/{id}")
     public RoomDto getRoomById(@PathVariable Long id) {
         return roomService.findById(id);
@@ -58,8 +55,6 @@ public class RoomRestController {
         roomDto.setId(id);
         return roomService.update(roomDto);
     }
-
-
 
     @LogInvocation
     @PostMapping("/search_available_rooms")

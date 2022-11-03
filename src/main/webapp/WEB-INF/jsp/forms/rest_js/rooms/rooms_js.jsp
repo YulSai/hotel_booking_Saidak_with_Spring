@@ -19,7 +19,7 @@
         }
     </script>
 
-    <title><spring:message code="msg.rooms.title"/></title>
+    <title><spring:message code="msg.rooms.title.rest"/></title>
 </head>
 <body>
 <jsp:include page="../../../navbar.jsp"/>
