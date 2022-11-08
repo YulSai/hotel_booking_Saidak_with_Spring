@@ -40,7 +40,6 @@ public class PagesConstants {
     public static final String PAGE_DELETE_USER = "forms/jstl/users/deleteUser";
     public static final String PAGE_CHANGE_PASSWORD = "forms/jstl/users/changePasswordForm";
     public static final String PAGE_USERS_JS = "forms/rest_js/users/users_js";
-    public static final String PAGE_USER_JS = "forms/rest_js/users/userInfo_js";
 
     //Login
     public static final String PAGE_LOGIN = "forms/jstl/authorizations/loginForm";

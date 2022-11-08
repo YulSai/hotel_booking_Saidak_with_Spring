@@ -27,7 +27,6 @@
 <body>
 <jsp:include page="../../../navbar.jsp"/>
 <p>${requestScope.message}</p>
-<div class="query-string"  text="${request.queryString}"></div>
 <ul class="pagination" style="margin:20px 0; cursor: pointer;" text="${request.queryString}"></ul>
 <div class="container">
     <div class="row">

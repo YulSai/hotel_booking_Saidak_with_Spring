@@ -1,8 +1,6 @@
 package com.company.hotel_booking.web.controllers;
 
-import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.api.UserService;
-import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.constants.PagesConstants;
@@ -32,7 +30,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
     private final MessageSource messageSource;
 
@@ -111,12 +108,6 @@ public class UserController {
     @LogInvocation
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, Model model) {
-        List<ReservationDto> reservations = reservationService.findAllByUsers(id);
-        for (ReservationDto reservation : reservations) {
-            reservation.setStatus(ReservationDto.StatusDto.DELETED);
-            reservationService.update(reservation);
-        }
-        userService.delete(userService.findById(id));
         model.addAttribute("message",
                 messageSource.getMessage("msg.user.deleted", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_DELETE_USER;
@@ -163,19 +154,5 @@ public class UserController {
     @GetMapping("/js/all")
     public String getAllUsers() {
         return PagesConstants.PAGE_USERS_JS;
-    }
-
-    @LogInvocation
-    @GetMapping("/js/{id}")
-    public String getUserByIdJS(@PathVariable Long id, HttpSession session, Model model) {
-        UserDto user;
-        UserDto userDto = (UserDto) session.getAttribute("user");
-        if ("CLIENT".equals(userDto.getRole().toString())) {
-            user = userService.findById(userDto.getId());
-        } else {
-            user = userService.findById(id);
-        }
-        model.addAttribute("user", user);
-        return PagesConstants.PAGE_USER_JS;
     }
 }

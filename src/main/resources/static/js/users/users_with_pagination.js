@@ -1,10 +1,4 @@
-$(function() {
-    refresh();
-
-    function refresh() {
-        const queryString = $(".query-string").text();
-        $.get("/api/users?" + queryString, getAllUsers);
-    }
+$(document).ready(function () {
     let totalPages = 1;
 
     function getAllUsers(startPage) {
@@ -38,7 +32,7 @@ $(function() {
     }
 
     function userAddRow(user, index) {
-       const $row = $(`<tr>
+        const $row = $(`<tr>
                      <td>${index + 1}</td>
                      <td><a class="view">${user.firstName}</a></td>
                      <td><a class="view"">${user.lastName}</a></td>
@@ -46,15 +40,15 @@ $(function() {
                      <td>${user.phoneNumber}</td>
                      <td>${user.role.toString().toLowerCase()}</td>
                      <td>${user.block}</td>
-                     <td><button class="btn" class="edit">${user_update_role}</button></td>
-                     <td><button class="btn" class="delete">${user_delete}</button></td>
+                     <td><button class="btn" id="edit">${user_update_role}</button></td>
+                     <td><button class="btn" id="delete">${user_delete}</button></td>
                      </tr>`);
-        $row.find(".view").on("click", () => window.location.href = `/users/js/${user.id}`);
-        $row.find(".edit").on("click", () => window.location.href = `/users/update_role/${user.id}`);
-        $row.find(".delete").on("click", () => $.ajax({
+        $row.find("#view").on("click", () => window.location.href = `/users/${user.id}`);
+        $row.find("#edit").on("click", () => window.location.href = `/users/update_role/${user.id}`);
+        $row.find("#delete").on("click", () => $.ajax({
             url: `/api/users/${user.id}`,
             type: "DELETE",
-            success: refresh
+            success: window.location.href = `/users/delete/${user.id}`
         }));
         $("tbody").append($row);
 
@@ -173,5 +167,9 @@ $(function() {
             $(this).parent().addClass("active");
         }
     });
-});
 
+    (function () {
+        // get first-page at initial time
+        getAllUsers(0);
+    })();
+});
