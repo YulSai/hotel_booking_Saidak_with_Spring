@@ -4,6 +4,9 @@ package com.company.hotel_booking.utils.constants;
  * Class with page constants
  */
 public class PagesConstants {
+    // Images
+    public static final String LOCATION_IMAGES = "C:/Users/Yulia S/IdeaProjects/hotel_booking_Saidak/src/main/resources" +
+            "/static/images/avatars/";
     // JSP
     // Index
     public static final String PAGE_INDEX = "index";
