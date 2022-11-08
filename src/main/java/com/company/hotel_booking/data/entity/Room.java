@@ -1,6 +1,6 @@
 package com.company.hotel_booking.data.entity;
 
-import com.company.hotel_booking.utils.managers.SqlManager;
+import com.company.hotel_booking.utils.constants.SqlConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,7 +27,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "rooms")
-@SQLDelete(sql = SqlManager.SQL_ROOM_DELETE)
+@SQLDelete(sql = SqlConstants.SQL_ROOM_DELETE)
 @Where(clause = "deleted = false")
 public class Room {
     @Id

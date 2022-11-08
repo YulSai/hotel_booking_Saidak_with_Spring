@@ -1,6 +1,6 @@
 package com.company.hotel_booking.service.dto;
 
-import com.company.hotel_booking.utils.managers.ValidationManager;
+import com.company.hotel_booking.utils.constants.ValidationConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -42,7 +42,7 @@ public class RoomDto {
     private BigDecimal price;
 
     @NotBlank(message = "{msg.create.new.room.number.empty}")
-    @Pattern(regexp = ValidationManager.ROOM_NUMBER, message = "{msg.create.new.room.number.format}")
+    @Pattern(regexp = ValidationConstants.ROOM_NUMBER, message = "{msg.create.new.room.number.format}")
     private String number;
 
     public enum RoomStatusDto {

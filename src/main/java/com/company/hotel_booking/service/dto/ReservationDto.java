@@ -3,6 +3,7 @@ package com.company.hotel_booking.service.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
@@ -15,12 +16,14 @@ import java.util.Objects;
  */
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 public class ReservationDto {
     private Long id;
     private UserDto user;
     private BigDecimal totalCost;
     private StatusDto status;
+    @ToString.Exclude
     private List<ReservationInfoDto> details = new ArrayList<>();
 
     public void addDetails (ReservationInfoDto info){
@@ -46,15 +49,5 @@ public class ReservationDto {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "ReservationDto{" +
-                "id=" + id +
-                ", user=" + user +
-                ", totalCost=" + totalCost +
-                ", status=" + status +
-                '}';
     }
 }

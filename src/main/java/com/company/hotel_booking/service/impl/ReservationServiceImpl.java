@@ -1,18 +1,22 @@
 package com.company.hotel_booking.service.impl;
 
-import com.company.hotel_booking.service.mapper.ReservationMapper;
-import com.company.hotel_booking.service.mapper.RoomMapper;
-import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationRepository;
 import com.company.hotel_booking.data.repository.RoomRepository;
-import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.service.dto.UserDto;
+import com.company.hotel_booking.service.mapper.ReservationMapper;
+import com.company.hotel_booking.service.mapper.RoomMapper;
+import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
+import com.company.hotel_booking.utils.exceptions.reservations.ReservationDeleteException;
+import com.company.hotel_booking.utils.exceptions.reservations.ReservationNotFoundException;
+import com.company.hotel_booking.utils.exceptions.reservations.ReservationServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +25,9 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class object ReservationDTO with implementation of CRUD operation operations
@@ -34,13 +40,16 @@ public class ReservationServiceImpl implements ReservationService {
     private final RoomRepository roomRepository;
     private final ReservationMapper mapper;
     private final RoomMapper roomMapper;
+    private final MessageSource messageSource;
 
     @Override
     @LogInvocationServer
     @ServiceEx
     public ReservationDto findById(Long id) {
         return mapper.toDto(reservationRepository.findById(id).orElseThrow(
-                () -> new ServiceException("msg.reservation.error.find.by.id")));
+                () -> new ReservationNotFoundException(
+                        messageSource.getMessage("msg.reservation.error.find.by.id", null,
+                                LocaleContextHolder.getLocale()))));
     }
 
     @Override
@@ -50,7 +59,9 @@ public class ReservationServiceImpl implements ReservationService {
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException("msg.reservation.error.create");
+            throw new ReservationServiceException(
+                    messageSource.getMessage("msg.reservation.error.create", null,
+                            LocaleContextHolder.getLocale()));
         }
         return reservation;
     }
@@ -106,7 +117,9 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto update(ReservationDto entity) {
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {
-            throw new ServiceException("msg.reservation.error.update");
+            throw new ReservationServiceException(
+                    messageSource.getMessage("msg.reservation.error.update", null,
+                            LocaleContextHolder.getLocale()));
         }
         return reservation;
     }
@@ -117,7 +130,8 @@ public class ReservationServiceImpl implements ReservationService {
     public void delete(ReservationDto reservationDto) {
         reservationRepository.delete(mapper.toEntity(reservationDto));
         if (reservationRepository.existsById(reservationDto.getId())) {
-            throw new ServiceException("msg.reservation.error.delete");
+            throw new ReservationDeleteException(messageSource.getMessage("msg.reservation.error.delete", null,
+                    LocaleContextHolder.getLocale()));
         }
     }
 

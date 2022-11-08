@@ -11,6 +11,7 @@
     <c:if test="${sessionScope.user.role == 'ADMIN'}">
         <li><a href="/rooms/all"><spring:message code="msg.main.rooms"/></a></li>
         <li><a href="/users/all"><spring:message code="msg.main.users"/></a></li>
+        <li><a href="/users/js/all"><spring:message code="msg.main.users.rest"/></a></li>
         <li><a href="/reservations/all"><spring:message code="msg.main.reservations"/></a></li>
         <li><a href="/rooms/create"><spring:message code="msg.main.new.room"/></a></li>
     </c:if>

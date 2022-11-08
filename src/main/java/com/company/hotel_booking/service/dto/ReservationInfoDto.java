@@ -7,6 +7,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 /**
@@ -14,6 +15,7 @@ import org.hibernate.Hibernate;
  */
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 public class ReservationInfoDto {
     private Long id;
@@ -35,18 +37,5 @@ public class ReservationInfoDto {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "ReservationInfoDto{" +
-                "id=" + id +
-                ", reservation=" + reservation +
-                ", room=" + room +
-                ", checkIn=" + checkIn +
-                ", checkOut=" + checkOut +
-                ", nights=" + nights +
-                ", roomPrice=" + roomPrice +
-                '}';
     }
 }

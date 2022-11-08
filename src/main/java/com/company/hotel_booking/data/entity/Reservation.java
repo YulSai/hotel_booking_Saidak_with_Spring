@@ -1,9 +1,10 @@
 package com.company.hotel_booking.data.entity;
 
-import com.company.hotel_booking.utils.managers.SqlManager;
+import com.company.hotel_booking.utils.constants.SqlConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -28,10 +29,11 @@ import java.util.Objects;
  */
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 @Entity
 @Table(name = "reservations")
-@SQLDelete(sql = SqlManager.SQL_RESERVATION_DELETE)
+@SQLDelete(sql = SqlConstants.SQL_RESERVATION_DELETE)
 @Where(clause = "deleted = false")
 public class Reservation {
     @Id
@@ -50,6 +52,7 @@ public class Reservation {
     private Status status;
 
     @OneToMany(mappedBy = "reservation", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ToString.Exclude
     private List<ReservationInfo> details = new ArrayList<>();
 
     public void addDetails (ReservationInfo info){
@@ -85,15 +88,5 @@ public class Reservation {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "Reservation{" +
-                "id=" + id +
-                ", user=" + user +
-                ", totalCost=" + totalCost +
-                ", status=" + status +
-                '}';
     }
 }

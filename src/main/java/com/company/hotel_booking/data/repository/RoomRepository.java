@@ -1,7 +1,7 @@
 package com.company.hotel_booking.data.repository;
 
 import com.company.hotel_booking.data.entity.Room;
-import com.company.hotel_booking.utils.managers.SqlManager;
+import com.company.hotel_booking.utils.constants.SqlConstants;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -29,7 +29,7 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
      * @param check_out end date to search
      * @return list of on available rooms
      */
-    @Query(value = SqlManager.SQL_ROOM_FIND_AVAILABLE_ROOMS, nativeQuery = true)
+    @Query(value = SqlConstants.SQL_ROOM_FIND_AVAILABLE_ROOMS, nativeQuery = true)
     List<Room> findAvailableRooms(Long typeId, Long capacityId, LocalDate check_in, LocalDate check_out,
                                   LocalDate check_in_double, LocalDate check_out_double);
 }

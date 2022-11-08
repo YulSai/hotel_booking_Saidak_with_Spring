@@ -14,7 +14,7 @@ public class GeneralInterceptor implements HandlerInterceptor{
     @LogInvocation
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler){
-        log.info("Interceptor-PRE: " + request.getRequestURI() + " method: " + request.getMethod());
+        log.debug("Interceptor-PRE: " + request.getRequestURI() + " method: " + request.getMethod());
         return true;
     }
 
@@ -22,13 +22,13 @@ public class GeneralInterceptor implements HandlerInterceptor{
     @LogInvocation
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView){
-        log.info("Interceptor-POST: " + request.getRequestURI() + " method: " + request.getMethod());
+        log.debug("Interceptor-POST: " + request.getRequestURI() + " method: " + request.getMethod());
     }
 
     @Override
     @LogInvocation
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
                                 Exception ex){
-        log.info("Interceptor-AFTER: " + request.getRequestURI() + " method: " + request.getMethod());
+        log.debug("Interceptor-AFTER: " + request.getRequestURI() + " method: " + request.getMethod());
     }
 }
