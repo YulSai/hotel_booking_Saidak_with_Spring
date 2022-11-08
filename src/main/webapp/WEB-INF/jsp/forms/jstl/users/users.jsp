@@ -37,8 +37,8 @@
             <c:if test="${user.block == false}">
                 <td><spring:message code="msg.user.status.textA"/></td>
             </c:if>
-            <td><a href="/users/update_role/${user.id}"><spring:message code="msg.user.update.role"/></a></td>
-            <td><a href="/users/delete/${user.id}"><spring:message code="msg.user.delete"/></a></td>
+            <td><a class="btn" href="/users/update_role/${user.id}"><spring:message code="msg.user.update.role"/></a></td>
+            <td><a class="btn" href="/users/delete/${user.id}"><spring:message code="msg.user.delete"/></a></td>
         </tr>
     </c:forEach>
 </table>

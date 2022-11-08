@@ -31,7 +31,7 @@
             <td>${room.capacity}</td>
             <td>${room.status}</td>
             <td>${room.price}</td>
-            <td><a href="/rooms/update/${room.id}"><spring:message code="msg.update"/></a></td>
+            <td><a class="btn" href="/rooms/update/${room.id}"><spring:message code="msg.update"/></a></td>
         </tr>
     </c:forEach>
 </table>

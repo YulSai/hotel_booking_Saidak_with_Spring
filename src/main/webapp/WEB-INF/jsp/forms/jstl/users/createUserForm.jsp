@@ -40,7 +40,7 @@
     <label for="avatar_input"><spring:message code="msg.user.avatar"/></label>
     <input id="avatar_input" name="avatarFile" type="file" accept="image/*"/>
     <br/>
-    <form:button><spring:message code="msg.user.register"/></form:button>
+    <form:button class="btn"><spring:message code="msg.user.register"/></form:button>
 </form:form>
 </body>
 </html>

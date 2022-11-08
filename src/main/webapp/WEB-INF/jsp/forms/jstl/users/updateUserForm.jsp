@@ -42,7 +42,7 @@
         <br/>
         <input id="role-input-admin" name="role" type="hidden" value="${user.role}"/>
     </c:if>
-    <input type="submit" value="<spring:message code="msg.update.user.save"/>"/>
+    <input type="submit" class="btn" value="<spring:message code="msg.update.user.save"/>"/>
 </form:form>
 </body>
 </html>

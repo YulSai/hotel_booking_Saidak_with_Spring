@@ -47,7 +47,7 @@
     <form:label path="price" for="price-input"><spring:message code="msg.price"/></form:label>
     <form:input id="price-input" path="price" type="text"/>
     <br/>
-    <form:button><spring:message code="msg.create.new.room.register"/></form:button>
+    <form:button class="btn"><spring:message code="msg.create.new.room.register"/></form:button>
 </form:form>
 </body>
 </html>

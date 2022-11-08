@@ -48,7 +48,7 @@ $(document).ready(function () {
         $row.find("#delete").on("click", () => $.ajax({
             url: `/api/users/${user.id}`,
             type: "DELETE",
-            success: window.location.href = `/users/delete/${user.id}`
+            success: window.location.href = `/users/js/delete/${user.id}`
         }));
         $("tbody").append($row);
 

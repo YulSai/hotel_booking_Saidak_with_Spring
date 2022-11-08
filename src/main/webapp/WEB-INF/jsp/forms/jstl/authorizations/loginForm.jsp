@@ -25,10 +25,10 @@
     <input id="password-input" type="password" placeholder="<spring:message code="msg.login.enter.password"/>"
            name="password" min="6" autocomplete="current-password" required>
     <br/>
-    <button type="submit"><spring:message code="msg.login.login"/></button>
-    <button type="button"><a href="/users/create"><spring:message code="msg.login.new.user"/></a>
+    <button class="btn" type="submit"><spring:message code="msg.login.login"/></button>
+    <button class="btn" type="button"><a href="/users/create"><spring:message code="msg.login.new.user"/></a>
     </button>
-    <button type="button"><a href="/"><spring:message code="msg.cancel"/></a></button>
+    <button class="btn" type="button"><a href="/"><spring:message code="msg.cancel"/></a></button>
 </form>
 </body>
 </html>

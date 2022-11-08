@@ -28,7 +28,7 @@
                value="CLIENT" ${requestScope.user.role=='CLIENT' ? 'checked' : ''}/>
         <label for="role-input-client"><spring:message code="msg.update.user.client"/></label>
         <br/>
-    <input type="submit" value="<spring:message code="msg.update.user.save"/>"/>
+    <input class="btn" type="submit" value="<spring:message code="msg.update.user.save"/>"/>
 </form>
 </body>
 </html>

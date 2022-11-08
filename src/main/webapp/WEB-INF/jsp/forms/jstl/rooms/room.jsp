@@ -40,7 +40,7 @@
     </tr>
 </table>
 <ul>
-    <li><a href="/rooms/update/${requestScope.room.id}"><spring:message code="msg.room.update"/></a></li>
+    <li><a class="btn" href="/rooms/update/${requestScope.room.id}"><spring:message code="msg.room.update"/></a></li>
 </ul>
 </body>
 </html>

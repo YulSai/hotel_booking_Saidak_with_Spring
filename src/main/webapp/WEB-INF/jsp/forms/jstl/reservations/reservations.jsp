@@ -40,11 +40,11 @@
                 </table>
             <td>${reservation.status.toString().toLowerCase()}</td>
             <c:if test="${sessionScope.user.role == 'ADMIN'}">
-                <td><a href="/reservations/update/${reservation.id}"> <spring:message code="msg.reservations.update"/></a>
+                <td><a class="btn" href="/reservations/update/${reservation.id}"> <spring:message code="msg.reservations.update"/></a>
                 </td>
             </c:if>
             <c:if test="${sessionScope.user.role == 'CLIENT'}">
-                <td><a href="/reservations/cancel_reservation/${reservation.id}"> <spring:message code="msg.cancel"/></a>
+                <td><a class="btn" href="/reservations/cancel_reservation/${reservation.id}"> <spring:message code="msg.cancel"/></a>
                 </td>
             </c:if>
             </td>

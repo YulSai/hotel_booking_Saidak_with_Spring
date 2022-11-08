@@ -35,7 +35,7 @@
         <option value="FAMILY"><spring:message code="msg.family"/></option>
     </select>
     <br/>
-    <input type="submit" value="<spring:message code="msg.search.search"/>"/>
+    <input class="btn" type="submit" value="<spring:message code="msg.search.search"/>"/>
 </form>
 </body>
 </html>

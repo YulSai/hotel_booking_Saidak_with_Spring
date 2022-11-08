@@ -47,7 +47,7 @@
     <form:label path="price" for="price-input"><spring:message code="msg.price"/>USD: </form:label>
     <form:input id="price-input" path="price" type="text" value="${requestScope.room.price}"/>
     <br/>
-    <input type="submit" value="<spring:message code="msg.update"/>"/>
+    <input class="btn" type="submit" value="<spring:message code="msg.update"/>"/>
 </form:form>
 </body>
 </html>

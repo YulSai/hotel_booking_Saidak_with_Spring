@@ -53,15 +53,15 @@
 </table>
 <ul>
     <c:if test="${sessionScope.user.role == 'CLIENT'}">
-        <li><a href="/users/update/${requestScope.user.id}">
+        <li><a class="btn" href="/users/update/${requestScope.user.id}">
             <spring:message code="msg.user.update"/></a></li>
-        <li><a href="/users/change_password/${requestScope.user.id}"> <spring:message
+        <li><a class="btn" href="/users/change_password/${requestScope.user.id}"> <spring:message
                 code="msg.user.change.password"/></a></li>
     </c:if>
     <c:if test="${sessionScope.user.role == 'ADMIN'}">
-        <li><a href="/users/update_role/${requestScope.user.id}">
+        <li><a class="btn" href="/users/update_role/${requestScope.user.id}">
             <spring:message code="msg.user.update.role"/></a></li>
-        <li><a href="/users/delete/${requestScope.user.id}"> <spring:message code="msg.user.delete"/></a></li>
+        <li><a class="btn" href="/users/delete/${requestScope.user.id}"> <spring:message code="msg.user.delete"/></a></li>
     </c:if>
 </ul>
 </body>

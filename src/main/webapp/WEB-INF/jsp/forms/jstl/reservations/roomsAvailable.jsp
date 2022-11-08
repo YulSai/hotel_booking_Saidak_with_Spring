@@ -38,7 +38,7 @@
                     <input type="hidden" name="roomId" value="${room.id}">
                     <input type="hidden" name="check_in" value="${check_in}">
                     <input type="hidden" name="check_out" value="${check_out}">
-                    <input type="submit" value="<spring:message code="msg.available.book"/>">
+                    <input class="btn" type="submit" value="<spring:message code="msg.available.book"/>">
                 </form>
             </td>
         </tr>

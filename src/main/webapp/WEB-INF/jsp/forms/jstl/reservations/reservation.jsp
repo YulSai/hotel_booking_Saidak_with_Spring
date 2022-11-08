@@ -54,11 +54,11 @@
     <td>${requestScope.reservation.totalCost} USD</td>
     <td>${requestScope.reservation.status.toString().toLowerCase()}</td>
     <c:if test="${sessionScope.user.role == 'ADMIN'}">
-        <td><a href="/reservations/update/${requestScope.reservation.id}"> <spring:message code="msg.update"/></a>
+        <td><a class="btn" href="/reservations/update/${requestScope.reservation.id}"> <spring:message code="msg.update"/></a>
         </td>
     </c:if>
     <c:if test="${sessionScope.user.role == 'CLIENT'}">
-        <td><a href="/reservations/cancel_reservation/${requestScope.reservation.id}">
+        <td><a class="btn" href="/reservations/cancel_reservation/${requestScope.reservation.id}">
             <spring:message code="msg.cancel"/></a></td>
     </c:if>
 </table>

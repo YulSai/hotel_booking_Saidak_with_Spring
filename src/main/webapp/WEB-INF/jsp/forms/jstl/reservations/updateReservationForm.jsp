@@ -21,7 +21,7 @@
         <option value="REJECTED"><spring:message code="msg.reservation.update.rejected"/></option>
     </select>
     <br/>
-    <input type="submit" value="<spring:message code="msg.update.status"/>"/>
+    <input class="btn" type="submit" value="<spring:message code="msg.update.status"/>"/>
 </form>
 </body>
 </html>
