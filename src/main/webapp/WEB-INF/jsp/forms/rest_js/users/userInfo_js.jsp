@@ -25,6 +25,7 @@
         let user_update = "<spring:message code="msg.user.update"/>";
         let user_change_password = "<spring:message code="msg.user.change.password"/>";
         let user_role_session = "${sessionScope.user.role}";
+        let user_status = "<spring:message code="msg.user.status.textB"/>";
 
 
         function validate() {
@@ -40,6 +41,7 @@
             alert(user_update);
             alert(user_change_password);
             alert(user_role_session);
+            alert(user_status);
         }
     </script>
 

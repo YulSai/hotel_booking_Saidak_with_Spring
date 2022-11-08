@@ -1,4 +1,10 @@
-$(document).ready(function () {
+$(function() {
+    refresh();
+
+    function refresh() {
+        const queryString = $(".query-string").text();
+        $.get("/api/users?" + queryString, getAllUsers);
+    }
     let totalPages = 1;
 
     function getAllUsers(startPage) {
@@ -32,16 +38,26 @@ $(document).ready(function () {
     }
 
     function userAddRow(user, index) {
-        return $("tbody").append($(`<tr>
+       const $row = $(`<tr>
                      <td>${index + 1}</td>
-                     <td><a href="/users/js/${user.id}">${user.firstName}</a></td>
-                     <td><a href="/users/js/${user.id}">${user.lastName}</a></td>
+                     <td><a class="view">${user.firstName}</a></td>
+                     <td><a class="view"">${user.lastName}</a></td>
                      <td>${user.email}</td>
                      <td>${user.phoneNumber}</td>
                      <td>${user.role.toString().toLowerCase()}</td>
-                     <td><li><a href="/users/update_role/${user.id}">${user_update_role}</a> </li></td>
-                     <td><li><a href="/users/delete/${user.id}">${user_delete}</a></li></td>
-                     </tr>`));
+                     <td>${user.block}</td>
+                     <td><button class="btn" class="edit">${user_update_role}</button></td>
+                     <td><button class="btn" class="delete">${user_delete}</button></td>
+                     </tr>`);
+        $row.find(".view").on("click", () => window.location.href = `/users/js/${user.id}`);
+        $row.find(".edit").on("click", () => window.location.href = `/users/update_role/${user.id}`);
+        $row.find(".delete").on("click", () => $.ajax({
+            url: `/api/users/${user.id}`,
+            type: "DELETE",
+            success: refresh
+        }));
+        $("tbody").append($row);
+
     }
 
     function handleException(request, message, error) {
@@ -157,10 +173,5 @@ $(document).ready(function () {
             $(this).parent().addClass("active");
         }
     });
-
-    (function () {
-        // get first-page at initial time
-        getAllUsers(0);
-    })();
 });
 

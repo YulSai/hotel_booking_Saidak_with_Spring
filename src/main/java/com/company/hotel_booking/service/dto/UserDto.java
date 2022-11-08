@@ -48,6 +48,7 @@ public class UserDto {
 
     private RoleDto role;
     private String avatar;
+    private boolean block;
 
     public enum RoleDto {
         ADMIN,

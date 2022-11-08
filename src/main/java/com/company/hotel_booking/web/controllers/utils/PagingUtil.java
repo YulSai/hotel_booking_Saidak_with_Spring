@@ -29,7 +29,7 @@ public class PagingUtil {
         String offsetStr = req.getParameter("page");
 
         int limit = limitStr == null ? 10 : Integer.parseInt(limitStr);
-        int page = offsetStr == null ? 1 : Integer.parseInt(offsetStr);
+        int page = offsetStr == null ? 0 : Integer.parseInt(offsetStr);
 
         Sort sort = Sort.by(Sort.Direction.ASC, sortBy);
         return PageRequest.of(page, limit, sort);

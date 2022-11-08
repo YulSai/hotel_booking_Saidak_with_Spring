@@ -40,6 +40,16 @@
         <td><spring:message code="msg.user.role"/></td>
         <td>${requestScope.user.role.toString().toLowerCase()}</td>
     </tr>
+    <tr>
+        <td><spring:message code="msg.user.status"/></td>
+        <c:if test="${requestScope.user.block == true}">
+        <td><spring:message code="msg.user.status.textB"/></td>
+        </c:if>
+        <c:if test="${requestScope.user.block == false}">
+        <td><spring:message code="msg.user.status.textA"/></td>
+        </c:if>
+    </tr>
+
 </table>
 <ul>
     <c:if test="${sessionScope.user.role == 'CLIENT'}">

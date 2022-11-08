@@ -11,6 +11,7 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.ImageUploadin
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
+import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.utils.exceptions.ImageUploadingException;
 import com.company.hotel_booking.utils.exceptions.LoginException;
 import com.company.hotel_booking.utils.exceptions.users.UserAlreadyExistsException;
@@ -160,7 +161,7 @@ public class UserServiceImpl implements UserService {
             if (!avatarFile.isEmpty()) {
                 avatarName = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
                 String location = "avatars/";
-                File pathFile = new File(location);
+                File pathFile = new File(PagesConstants.LOCATION_IMAGES);
                 if (!pathFile.exists()) {
                     pathFile.mkdir();
                 }

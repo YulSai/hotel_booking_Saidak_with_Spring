@@ -167,7 +167,15 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/js/{id}")
-    public String getUserById(@PathVariable Long id) {
+    public String getUserByIdJS(@PathVariable Long id, HttpSession session, Model model) {
+        UserDto user;
+        UserDto userDto = (UserDto) session.getAttribute("user");
+        if ("CLIENT".equals(userDto.getRole().toString())) {
+            user = userService.findById(userDto.getId());
+        } else {
+            user = userService.findById(id);
+        }
+        model.addAttribute("user", user);
         return PagesConstants.PAGE_USER_JS;
     }
 }

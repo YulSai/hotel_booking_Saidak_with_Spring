@@ -21,6 +21,7 @@
         <th><spring:message code="msg.user.email"/></th>
         <th><spring:message code="msg.user.phone"/></th>
         <th><spring:message code="msg.user.role"/></th>
+        <th><spring:message code="msg.user.status"/></th>
     </tr>
     <c:forEach items="${requestScope.users}" var="user" varStatus="counter">
         <tr>
@@ -30,13 +31,14 @@
             <td><c:out value="${user.email}"/></td>
             <td>${user.phoneNumber}</td>
             <td>${user.role.toString().toLowerCase()}</td>
-            <td>
-                <li><a href="/users/update_role/${user.id}"><spring:message code="msg.user.update.role"/></a>
-                </li>
-            </td>
-            <td>
-                <li><a href="/users/delete/${user.id}"><spring:message code="msg.user.delete"/></a></li>
-            </td>
+            <c:if test="${user.block == true}">
+                <td><spring:message code="msg.user.status.textB"/></td>
+            </c:if>
+            <c:if test="${user.block == false}">
+                <td><spring:message code="msg.user.status.textA"/></td>
+            </c:if>
+            <td><a href="/users/update_role/${user.id}"><spring:message code="msg.user.update.role"/></a></td>
+            <td><a href="/users/delete/${user.id}"><spring:message code="msg.user.delete"/></a></td>
         </tr>
     </c:forEach>
 </table>

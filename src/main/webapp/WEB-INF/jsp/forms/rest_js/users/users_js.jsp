@@ -27,7 +27,8 @@
 <body>
 <jsp:include page="../../../navbar.jsp"/>
 <p>${requestScope.message}</p>
-<ul class="pagination" style="margin:20px 0; cursor: pointer;"></ul>
+<div class="query-string"  text="${request.queryString}"></div>
+<ul class="pagination" style="margin:20px 0; cursor: pointer;" text="${request.queryString}"></ul>
 <div class="container">
     <div class="row">
         <table class="first" id="usersTable">
@@ -39,6 +40,7 @@
                 <th><spring:message code="msg.user.email"/></th>
                 <th><spring:message code="msg.user.phone"/></th>
                 <th><spring:message code="msg.user.role"/></th>
+                <th><spring:message code="msg.user.status.textB"/></th>
             </tr>
             </thead>
             <tbody>
