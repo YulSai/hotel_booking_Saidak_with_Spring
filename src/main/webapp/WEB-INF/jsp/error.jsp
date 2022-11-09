@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <h1><spring:message code="msg.main.error"/></h1>
-<h2><spring:message code="msg.main.no.such.page"/></h2>
+<p><spring:message code="msg.main.no.such.page"/></p>
 <p>${requestScope.message}</p>
 </body>
 </html>

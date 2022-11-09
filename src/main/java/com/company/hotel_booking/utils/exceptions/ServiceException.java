@@ -1,6 +1,6 @@
 package com.company.hotel_booking.utils.exceptions;
 
-public class ServiceException extends RuntimeException {
+public class ServiceException extends AppException {
     public ServiceException() {
     }
 
