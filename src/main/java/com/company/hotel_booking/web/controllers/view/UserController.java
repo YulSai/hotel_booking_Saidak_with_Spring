@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controllers;
+package com.company.hotel_booking.web.controllers.view;
 
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.api.UserService;
@@ -161,9 +161,16 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/js/all")
-    public String getAllUsers() {
+    public String getAllUsersJs() {
         return PagesConstants.PAGE_USERS_JS;
     }
+
+    @LogInvocation
+    @GetMapping("/js/{id}")
+    public String getUserByIdJs(@PathVariable Long id) {
+        return PagesConstants.PAGE_USER_JS;
+    }
+
 
     @LogInvocation
     @GetMapping("/js/delete/{id}")

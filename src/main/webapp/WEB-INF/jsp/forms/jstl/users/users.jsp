@@ -11,6 +11,7 @@
 </head>
 <body>
 <jsp:include page="../../../navbar.jsp"/>
+<h1><spring:message code="msg.users.title"/></h1>
 <p>${requestScope.message}</p>
 <table class="first">
     <jsp:include page="../../pagination.jsp"/>

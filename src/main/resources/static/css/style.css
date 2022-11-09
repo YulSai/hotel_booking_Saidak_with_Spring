@@ -42,7 +42,7 @@ body {
     vertical-align: top;
 }
 .btn:hover {
-    background-color: #002fed;
+    background-color: #007bff;
 }
 .btn:active {
     background-color: #2f599e !important;
@@ -56,5 +56,5 @@ a {
     text-decoration: none;
 }
 a:hover {
-    border-bottom: 1px dashed blue;
+    border-bottom: #007bff;
 }

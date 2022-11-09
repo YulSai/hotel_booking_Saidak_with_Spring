@@ -1,8 +1,9 @@
-package com.company.hotel_booking.web.controllers;
+package com.company.hotel_booking.web.errorhandlers;
 
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.exceptions.ImageUploadingException;
-import com.company.hotel_booking.utils.exceptions.LoginException;
+import com.company.hotel_booking.utils.exceptions.NotFoundException;
+import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
+import com.company.hotel_booking.utils.exceptions.users.LoginException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import lombok.RequiredArgsConstructor;
@@ -24,22 +25,32 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
  */
 @RequiredArgsConstructor
 @Controller
-@ControllerAdvice
+@ControllerAdvice("com.company.hotel_booking.web.controllers.view")
 @RequestMapping("/error")
-public class ErrorController {
+public class ErrorHandler {
 
     private final MessageSource messageSource;
 
     @LogInvocation
     @GetMapping
-    public String error() {
-        return PagesConstants.PAGE_404;
+    public String error(Model model) {
+        model.addAttribute("message", messageSource
+                .getMessage("msg.main.no.such.page", null, LocaleContextHolder.getLocale()));
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleServiceException(ServiceException e, Model model) {
+        model.addAttribute("message", e.getMessage());
+        return PagesConstants.PAGE_ERROR;
+    }
+
+    @LogInvocation
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNotFoundException(NotFoundException e, Model model) {
         model.addAttribute("message", e.getMessage());
         return PagesConstants.PAGE_ERROR;
     }
@@ -64,6 +75,14 @@ public class ErrorController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleFormatException(MethodArgumentTypeMismatchException e, Model model) {
+        model.addAttribute("message", messageSource
+                .getMessage("msg.incorrect.format.url", null, LocaleContextHolder.getLocale()));
+        return PagesConstants.PAGE_ERROR;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleFormatException(NumberFormatException e, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.incorrect.format.url", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_ERROR;

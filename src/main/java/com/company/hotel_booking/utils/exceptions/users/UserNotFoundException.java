@@ -1,6 +1,8 @@
 package com.company.hotel_booking.utils.exceptions.users;
 
-public class UserNotFoundException extends UserServiceException{
+import com.company.hotel_booking.utils.exceptions.NotFoundException;
+
+public class UserNotFoundException extends NotFoundException {
     public UserNotFoundException(String message) {
         super(message);
     }
