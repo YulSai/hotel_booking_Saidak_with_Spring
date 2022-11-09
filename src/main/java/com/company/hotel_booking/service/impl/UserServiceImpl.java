@@ -12,8 +12,8 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation
 import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.utils.constants.PagesConstants;
-import com.company.hotel_booking.utils.exceptions.ImageUploadingException;
-import com.company.hotel_booking.utils.exceptions.LoginException;
+import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
+import com.company.hotel_booking.utils.exceptions.users.LoginException;
 import com.company.hotel_booking.utils.exceptions.users.UserAlreadyExistsException;
 import com.company.hotel_booking.utils.exceptions.users.UserDeleteException;
 import com.company.hotel_booking.utils.exceptions.users.UserNotFoundException;
@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @ServiceEx
     public UserDto findById(Long id) {
-        return mapper.toDto(userRepository.findById(id).orElseThrow(() ->
+        return mapper.toDto(userRepository.findById(id)
+                .orElseThrow(() ->
                 new UserNotFoundException(messageSource.getMessage("msg.user.error.find.by.id", null,
                         LocaleContextHolder.getLocale()))));
     }
@@ -141,7 +142,7 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @ServiceEx
     public UserDto processUserUpdates(UserDto userDto, MultipartFile avatarFile) {
-        if (!avatarFile.isEmpty()) {
+        if (avatarFile != null) {
             userDto.setAvatar(getAvatarPath(avatarFile));
         }
         return update(userDto);
@@ -158,7 +159,7 @@ public class UserServiceImpl implements UserService {
     private String getAvatarPath(MultipartFile avatarFile) {
         String avatarName;
         try {
-            if (!avatarFile.isEmpty()) {
+            if (avatarFile != null) {
                 avatarName = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
                 String location = "avatars/";
                 File pathFile = new File(PagesConstants.LOCATION_IMAGES);

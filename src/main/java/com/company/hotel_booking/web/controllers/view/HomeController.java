@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controllers;
+package com.company.hotel_booking.web.controllers.view;
 
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import org.springframework.stereotype.Controller;

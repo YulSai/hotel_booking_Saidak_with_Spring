@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controllers;
+package com.company.hotel_booking.web.controllers.view;
 
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.service.api.RoomService;

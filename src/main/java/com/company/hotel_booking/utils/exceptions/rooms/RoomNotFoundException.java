@@ -1,6 +1,8 @@
 package com.company.hotel_booking.utils.exceptions.rooms;
 
-public class RoomNotFoundException extends RoomServiceException {
+import com.company.hotel_booking.utils.exceptions.NotFoundException;
+
+public class RoomNotFoundException extends NotFoundException {
     public RoomNotFoundException(String message) {
         super(message);
     }

@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controllers;
+package com.company.hotel_booking.web.controllers.view;
 
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;

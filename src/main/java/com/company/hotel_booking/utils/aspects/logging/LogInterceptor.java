@@ -1,7 +1,7 @@
 package com.company.hotel_booking.utils.aspects.logging;
 
-import com.company.hotel_booking.utils.exceptions.ImageUploadingException;
-import com.company.hotel_booking.utils.exceptions.LoginException;
+import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
+import com.company.hotel_booking.utils.exceptions.users.LoginException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
