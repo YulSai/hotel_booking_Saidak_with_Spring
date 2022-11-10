@@ -57,7 +57,7 @@ public class RoomServiceImpl implements RoomService {
     @LogInvocationServer
     @ServiceEx
     public RoomDto update(RoomDto roomDto) {
-        Room existing = roomRepository.findByNumber((roomDto.getNumber())).get();
+        Room existing = roomRepository.findById((roomDto.getId())).get();
         if (existing != null && !existing.getId().equals(roomDto.getId())) {
             throw new RoomAlreadyExistsException(messageSource.getMessage("msg.room.error.update.exists", null,
                     LocaleContextHolder.getLocale()));

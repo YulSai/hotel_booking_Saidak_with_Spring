@@ -3,6 +3,7 @@ package com.company.hotel_booking.web.errorhandlers;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
+import com.company.hotel_booking.utils.exceptions.rest.MethodNotAllowedException;
 import com.company.hotel_booking.utils.exceptions.rest.ValidationException;
 import com.company.hotel_booking.utils.exceptions.rest.dto.ErrorDto;
 import com.company.hotel_booking.utils.exceptions.rest.dto.ValidationResultDto;
@@ -42,6 +43,13 @@ public class RestErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto error(NotFoundException e) {
+        return new ErrorDto(e.getMessage());
+    }
+
+    @LogInvocation
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public ErrorDto error(MethodNotAllowedException e) {
         return new ErrorDto(e.getMessage());
     }
 

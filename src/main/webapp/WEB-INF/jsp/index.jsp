@@ -12,6 +12,6 @@
 <p>${requestScope.message}</p>
 <spring:message code="msg.main.welcome.guest" var="guest"/>
 <h1><spring:message code="msg.main.welcome" /> ${sessionScope.user != null ? sessionScope.user.firstName : guest}!</h1>
-<img src="/images/mainImg.jpg" alt="hotel"/>
+<img src="/images/mainImg.jpg" alt="hotel" />
 </body>
 </html>
