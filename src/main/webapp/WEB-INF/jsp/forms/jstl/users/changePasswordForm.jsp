@@ -25,7 +25,7 @@
         <form:input id="role-input-admin" path="role" type="hidden" value="${requestScope.user.role}"/>
         <form:errors path="password" cssClass="error-block"/>
         <form:label path="password" for="password-input"><spring:message code="msg.create.user.password"/></form:label>
-        <form:input id="password-input" path="password" type="password" min="6" value="${requestScope.user.password}"/>
+        <form:input id="password-input" path="password" type="password" min="6"/>
     </c:if>
     <input class="btn" type="submit" value="<spring:message code="msg.update.user.save"/>"/>
 </form:form>

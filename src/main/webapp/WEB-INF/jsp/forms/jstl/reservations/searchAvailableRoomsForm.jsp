@@ -6,7 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="/js/lib/jquery-3.6.1.js"></script>
+    <script src="/js/date.js" defer></script>
+
     <title><spring:message code="msg.search.title"/></title>
+
 </head>
 <body>
 <jsp:include page="../../../navbar.jsp"/>
@@ -14,10 +18,10 @@
 <p>${requestScope.message}</p>
 <form method="post" action="/rooms/search_available_rooms">
     <label for="check_in"><spring:message code="msg.checkIn"/></label>
-    <input id="check_in" name="check_in" type="date" min="2022-10-27" max="2025-12-30">
+    <input id="check_in" name="check_in" type="date" min="" max="2025-12-30">
     <br/>
     <label for="check_out"><spring:message code="msg.checkOut"/></label>
-    <input id="check_out" name="check_out" type="date" min="2022-10-28" max="2025-12-31">
+    <input id="check_out" name="check_out" type="date" min="" max="2023-12-31">
     <br/>
     <select name="type" required="required">
         <option value=""><spring:message code="msg.choose.type"/></option>
