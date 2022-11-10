@@ -30,7 +30,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 path.startsWith("/reservations/add_booking") ||
                 path.startsWith("/reservations/booking") ||
                 path.startsWith("/reservations/clean_booking") ||
-                path.startsWith("/reservations/delete_booking/*");
+                path.startsWith("/reservations/delete_booking");
     }
 
     @Override

@@ -31,7 +31,7 @@
                 <td>${item.checkOut}</td>
                 <td>${requestScope.booking.status}</td>
                 <td><a href="/reservations/delete_booking/${item.room.id}">
-                    <input type="submit" value="<spring:message code="msg.delete"/>"></a>
+                    <input type="submit" class="btn" value="<spring:message code="msg.delete"/>"></a>
                 </td>
             </tr>
         </c:forEach>
@@ -40,8 +40,8 @@
         </tr>
 
     </table>
-    <a class="btn" href="/reservations/create"><input type="submit" value="<spring:message code="msg.booking.reserve"/>"></a>
-    <a class="btn" href="/reservations/clean_booking"><input type="submit" value="<spring:message code="msg.booking.clean"/>"></a>
+    <a href="/reservations/create"><input type="submit" class="btn" value="<spring:message code="msg.booking.reserve"/>"></a>
+    <a href="/reservations/clean_booking"><input type="submit" class="btn" value="<spring:message code="msg.booking.clean"/>"></a>
 </c:if>
 </body>
 </html>

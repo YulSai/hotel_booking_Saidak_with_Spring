@@ -142,6 +142,12 @@ public class RoomController {
     }
 
     @LogInvocation
+    @GetMapping("/rooms_available")
+    public String getAvailableRoomR() {
+        return PagesConstants.PAGE_ROOMS_AVAILABLE;
+    }
+
+    @LogInvocation
     @PostMapping("/rooms_available")
     public String getAvailableRoom() {
         return PagesConstants.PAGE_ROOMS_AVAILABLE;
