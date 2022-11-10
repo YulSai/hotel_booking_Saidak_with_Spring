@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class describing the object ErrorDto
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

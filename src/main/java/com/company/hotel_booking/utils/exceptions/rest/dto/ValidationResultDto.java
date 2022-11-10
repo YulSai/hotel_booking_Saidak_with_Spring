@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class describing the object ValidationResultDto
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ValidationResultDto extends ErrorDto{

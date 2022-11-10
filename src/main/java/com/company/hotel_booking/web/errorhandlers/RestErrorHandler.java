@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Class for processing errors from REST
+ */
 @RequiredArgsConstructor
 @Controller
 @RestControllerAdvice("com.company.hotel_booking.web.controllers.rest")

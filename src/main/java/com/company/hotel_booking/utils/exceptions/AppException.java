@@ -1,5 +1,8 @@
 package com.company.hotel_booking.utils.exceptions;
 
+/**
+ * Class of errors
+ */
 public class AppException extends RuntimeException{
     public AppException() {
     }
