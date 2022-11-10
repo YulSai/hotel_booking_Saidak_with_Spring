@@ -106,7 +106,7 @@ public class RoomController {
     public String deleteRoom(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
-        return PagesConstants.PAGE_ERROR;
+        return PagesConstants.PAGE_ERROR_HANDLER;
     }
 
     @LogInvocation
@@ -151,18 +151,5 @@ public class RoomController {
     @PostMapping("/rooms_available")
     public String getAvailableRoom() {
         return PagesConstants.PAGE_ROOMS_AVAILABLE;
-    }
-
-    @LogInvocation
-    @GetMapping("/js/all")
-    public String getAllRoomsJs() {
-        return PagesConstants.PAGE_ROOMS_JS;
-
-    }
-
-    @LogInvocation
-    @GetMapping("/js/{id}")
-    public String getRoomByIdJs(@PathVariable Long id) {
-        return PagesConstants.PAGE_ROOM_JS;
     }
 }

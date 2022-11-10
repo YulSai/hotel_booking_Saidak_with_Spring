@@ -113,7 +113,7 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id, Model model) {
+    public String deleteUser(@PathVariable Long id, Model model, HttpServletRequest req) {
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);
@@ -122,7 +122,7 @@ public class UserController {
         userService.delete(userService.findById(id));
         model.addAttribute("message",
                 messageSource.getMessage("msg.user.deleted", null, LocaleContextHolder.getLocale()));
-        return PagesConstants.PAGE_DELETE_USER;
+        return "redirect:" + req.getHeader("referer");
     }
 
     @LogInvocation
