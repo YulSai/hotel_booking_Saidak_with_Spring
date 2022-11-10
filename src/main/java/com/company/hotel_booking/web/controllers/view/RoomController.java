@@ -6,6 +6,7 @@ import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
+import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -37,10 +38,12 @@ public class RoomController {
     private final RoomService roomService;
     private final PagingUtil pagingUtil;
     private final MessageSource messageSource;
+    private final UserRoleUtil userRoleUtil;
 
     @LogInvocation
     @GetMapping("/all")
-    public String getAllRooms(Model model, HttpServletRequest req) {
+    public String getAllRooms(Model model, HttpServletRequest req, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<RoomDto> roomsDtoPage = roomService.findAllPages(pageable);
         List<RoomDto> rooms = roomsDtoPage.toList();
@@ -65,13 +68,15 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/create")
-    public String createRoomForm() {
+    public String createRoomForm(HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         return PagesConstants.PAGE_CREATE_ROOM;
     }
 
     @LogInvocation
     @PostMapping("/create")
     public String createRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CREATE_ROOM;
         }
@@ -83,7 +88,8 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    public String updateRoomForm(@PathVariable Long id, Model model) {
+    public String updateRoomForm(@PathVariable Long id, Model model, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         RoomDto room = roomService.findById(id);
         model.addAttribute("room", room);
         return PagesConstants.PAGE_UPDATE_ROOM;
@@ -92,6 +98,7 @@ public class RoomController {
     @LogInvocation
     @PostMapping("/update/{id}")
     public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_UPDATE_ROOM;
         }
@@ -103,7 +110,8 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteRoom(@PathVariable Long id, Model model) {
+    public String deleteRoom(@PathVariable Long id, Model model, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_ERROR_HANDLER;

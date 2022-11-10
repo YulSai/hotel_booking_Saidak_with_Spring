@@ -17,7 +17,7 @@ import java.io.IOException;
  * Class with filter for authorization
  */
 @RequiredArgsConstructor
-public class AuthorizationFilter extends OncePerRequestFilter {
+public class AuthenticationFilter extends OncePerRequestFilter {
     private final MessageSource messageManager;
 
     @Override

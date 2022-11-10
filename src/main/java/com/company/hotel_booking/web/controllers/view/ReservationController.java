@@ -6,6 +6,7 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
+import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -37,10 +38,12 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
     private final MessageSource messageSource;
+    private final UserRoleUtil userRoleUtil;
 
     @LogInvocation
     @GetMapping("/all")
     public String getAllReservations(HttpServletRequest req, HttpSession session, Model model) {
+        userRoleUtil.checkUserRoleClient(session);
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
@@ -64,7 +67,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/{id}")
-    public String getReservationById(@PathVariable Long id, Model model) {
+    public String getReservationById(@PathVariable Long id, Model model, HttpSession session) {
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
         return PagesConstants.PAGE_RESERVATION;
@@ -93,7 +96,8 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    public String updateReservationForm(@PathVariable Long id, Model model) {
+    public String updateReservationForm(@PathVariable Long id, Model model, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
         return PagesConstants.PAGE_UPDATE_RESERVATION;
@@ -102,6 +106,7 @@ public class ReservationController {
     @LogInvocation
     @PostMapping("/update/{id}")
     public String updateReservation(@PathVariable Long id, @RequestParam String status, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
 
@@ -113,7 +118,8 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteReservation(@PathVariable Long id, Model model) {
+    public String deleteReservation(@PathVariable Long id, Model model, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_ERROR;

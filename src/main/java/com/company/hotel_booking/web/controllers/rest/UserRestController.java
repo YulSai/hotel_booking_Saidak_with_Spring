@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controllers.rest.users;
+package com.company.hotel_booking.web.controllers.rest;
 
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.api.UserService;
@@ -7,6 +7,7 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.exceptions.rest.ValidationException;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
+import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,11 +42,12 @@ public class UserRestController {
     private final UserService userService;
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
+    private final UserRoleUtil userRoleUtil;
 
 
     @LogInvocation
     @GetMapping
-    public Page<UserDto> getAllUsersJs(HttpServletRequest req) {
+    public Page<UserDto> getAllUsersJs(HttpServletRequest req, HttpSession session) {
         Pageable pageable = pagingUtil.getPagingRest(req, "lastName");
         return userService.findAllPages(pageable);
     }
@@ -79,7 +81,8 @@ public class UserRestController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto, Errors errors,
-                                              MultipartFile avatarFile) {
+                                              MultipartFile avatarFile, HttpSession session) {
+        userRoleUtil.checkUserRoleAdmin(session);
         checkErrors(errors);
         userDto.setId(id);
         UserDto updated = userService.processUserUpdates(userDto, avatarFile);
@@ -90,7 +93,8 @@ public class UserRestController {
     @LogInvocation
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);

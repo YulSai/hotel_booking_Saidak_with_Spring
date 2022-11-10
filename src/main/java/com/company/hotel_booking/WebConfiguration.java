@@ -2,7 +2,7 @@ package com.company.hotel_booking;
 
 
 import com.company.hotel_booking.utils.constants.PagesConstants;
-import com.company.hotel_booking.web.filters.AuthorizationFilter;
+import com.company.hotel_booking.web.filters.AuthenticationFilter;
 import com.company.hotel_booking.web.interceptors.GeneralInterceptor;
 import com.company.hotel_booking.web.interceptors.MessageInterceptor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -76,9 +76,9 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean<AuthorizationFilter> authorizationFilter() {
+    public FilterRegistrationBean<AuthenticationFilter> authorizationFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean<>();
-        registration.setFilter(new AuthorizationFilter(messageSource()));
+        registration.setFilter(new AuthenticationFilter(messageSource()));
         registration.addUrlPatterns("/users/*", "/rooms/*", "/reservations/*");
         registration.setOrder(2);
         return registration;

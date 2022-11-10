@@ -7,6 +7,7 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
+import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -37,11 +38,13 @@ public class UserController {
     private final UserService userService;
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
+    private final UserRoleUtil userRoleUtil;
     private final MessageSource messageSource;
 
     @LogInvocation
     @GetMapping("/all")
-    public String getAllUsers(Model model, HttpServletRequest req) {
+    public String getAllUsers(Model model, HttpServletRequest req, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         Pageable pageable = pagingUtil.getPaging(req, "lastName");
         Page<UserDto> usersDtoPage = userService.findAllPages(pageable);
         List<UserDto> users = usersDtoPage.toList();
@@ -92,7 +95,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    public String updateUserForm(@PathVariable Long id, Model model) {
+    public String updateUserForm(@PathVariable Long id, Model model, HttpSession session) {
+        userRoleUtil.checkUserRoleAdmin(session);
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
         return PagesConstants.PAGE_UPDATE_USERS;
@@ -102,6 +106,7 @@ public class UserController {
     @PostMapping("/update/{id}")
     public String updateUser(@ModelAttribute @Valid UserDto userDto, Errors errors, MultipartFile avatarFile,
                              HttpSession session) {
+        userRoleUtil.checkUserRoleAdmin(session);
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_UPDATE_USERS;
         }
@@ -113,7 +118,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id, Model model, HttpServletRequest req) {
+    public String deleteUser(@PathVariable Long id, Model model, HttpServletRequest req, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);
@@ -127,7 +133,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/change_password/{id}")
-    public String changePasswordForm(@PathVariable Long id, Model model) {
+    public String changePasswordForm(@PathVariable Long id, Model model, HttpSession session) {
+        userRoleUtil.checkUserRoleAdmin(session);
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
         return PagesConstants.PAGE_CHANGE_PASSWORD;
@@ -136,6 +143,7 @@ public class UserController {
     @LogInvocation
     @PostMapping("/change_password/{id}")
     public String changePassword(@ModelAttribute @Valid UserDto userdto, Errors errors, HttpSession session) {
+        userRoleUtil.checkUserRoleAdmin(session);
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CHANGE_PASSWORD;
         }
@@ -147,7 +155,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/update_role/{id}")
-    public String updateUserRoleForm(@PathVariable Long id, Model model) {
+    public String updateUserRoleForm(@PathVariable Long id, Model model, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
         return PagesConstants.PAGE_UPDATE_USERS_ROLE;
@@ -156,6 +165,7 @@ public class UserController {
     @LogInvocation
     @PostMapping("/update_role/{id}")
     public String updateUserRole(@ModelAttribute UserDto user, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         UserDto updated = userService.update(user);
         session.setAttribute("message",
                 messageSource.getMessage("msg.user.updated", null, LocaleContextHolder.getLocale()));
@@ -164,7 +174,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/js/all")
-    public String getAllUsersJs() {
+    public String getAllUsersJs(HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         return PagesConstants.PAGE_USERS_JS;
     }
 

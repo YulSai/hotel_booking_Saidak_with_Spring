@@ -1,4 +1,4 @@
-package com.company.hotel_booking.web.controllers.rest.reservations;
+package com.company.hotel_booking.web.controllers.rest;
 
 import com.company.hotel_booking.service.api.ReservationService;
 import com.company.hotel_booking.service.dto.ReservationDto;
@@ -6,6 +6,7 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.exceptions.rest.MethodNotAllowedException;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
+import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -41,10 +42,12 @@ public class ReservationRestController {
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
     private final MessageSource messageSource;
+    private final UserRoleUtil userRoleUtil;
 
     @LogInvocation
     @GetMapping
     public Page<ReservationDto> getAllReservations(HttpServletRequest req, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         Pageable pageable = pagingUtil.getPagingRest(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
         UserDto user = (UserDto) session.getAttribute("user");
@@ -74,7 +77,8 @@ public class ReservationRestController {
     @LogInvocation
     @PutMapping("/{id}")
     public ReservationDto updateReservation(@PathVariable Long id, @RequestBody ReservationDto reservation,
-                                            @RequestParam String status) {
+                                            @RequestParam String status, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         reservation.setId(id);
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
         return reservationService.update(reservation);
@@ -83,7 +87,8 @@ public class ReservationRestController {
     @LogInvocation
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public void deleteRoom(@PathVariable Long id) {
+    public void deleteReservation(@PathVariable Long id, HttpSession session) {
+        userRoleUtil.checkUserRoleClient(session);
         throw new MethodNotAllowedException(messageSource.
                 getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
     }
