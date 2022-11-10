@@ -29,7 +29,6 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName(PagesConstants.PAGE_INDEX);
-        registry.addViewController("/login").setViewName(PagesConstants.PAGE_LOGIN);
     }
 
     @Bean
