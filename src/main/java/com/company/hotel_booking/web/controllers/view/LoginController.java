@@ -34,14 +34,14 @@ public class LoginController {
 
     @LogInvocation
     @PostMapping("/login")
-    public String login(HttpServletRequest req, @RequestParam String username, @RequestParam String password,
+    public String login(HttpServletRequest req, @RequestParam String email, @RequestParam String password,
                         HttpSession session, Model model) {
-        if (username == null || ("").equals(username) || password == null || ("").equals(password)) {
+        if (email == null || ("").equals(email) || password == null || ("").equals(password)) {
             model.addAttribute("message", messageSource
                     .getMessage("msg.login.details", null, LocaleContextHolder.getLocale()));
             return PagesConstants.PAGE_LOGIN;
         }
-        UserDto userDto = userService.login(username, password);
+        UserDto userDto = userService.login(email, password);
         session.setAttribute("user", userDto);
         return PagesConstants.PAGE_INDEX;
     }
