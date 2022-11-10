@@ -8,6 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Interceptor for monitoring the work of methods
+ */
 @Log4j2
 public class GeneralInterceptor implements HandlerInterceptor{
     @Override

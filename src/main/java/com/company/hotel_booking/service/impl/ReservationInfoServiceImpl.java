@@ -2,6 +2,7 @@ package com.company.hotel_booking.service.impl;
 
 import com.company.hotel_booking.service.mapper.ReservationInfoMapper;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.data.repository.ReservationInfoRepository;
 import com.company.hotel_booking.service.api.ReservationInfoService;
@@ -30,7 +31,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
 
     @Override
     @LogInvocationServer
-    @ServiceEx
+    @NotFoundEx
     public ReservationInfoDto findById(Long id) {
         return mapper.toDto(reservationInfoRepository.findById(id).orElseThrow(
                 () -> new ReservationInfoNotFoundException(
@@ -40,6 +41,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
 
     @Override
     @LogInvocationServer
+    @ServiceEx
     @Transactional
     public ReservationInfoDto create(ReservationInfoDto entity) {
         ReservationInfoDto info = mapper.toDto(reservationInfoRepository.save(mapper.toEntity(entity)));
@@ -53,6 +55,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
 
     @Override
     @LogInvocationServer
+    @ServiceEx
     public ReservationInfoDto update(ReservationInfoDto entity) {
         ReservationInfoDto info = mapper.toDto(reservationInfoRepository.save(mapper.toEntity(entity)));
         if (info == null) {

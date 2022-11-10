@@ -1,5 +1,6 @@
 package com.company.hotel_booking.utils.aspects.logging;
 
+import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
 import com.company.hotel_booking.utils.exceptions.users.LoginException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 /**
- *
+ * Class for logging
  */
 @Component
 @Aspect
@@ -45,6 +46,14 @@ public class LogInterceptor {
     @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx)",
             throwing = "e")
     public void afterThrowingService(JoinPoint jp, ServiceException e) {
+        String className = jp.getSignature().getDeclaringTypeName();
+        String methodName = jp.getSignature().getName();
+        log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
+    }
+
+    @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx)",
+            throwing = "e")
+    public void afterThrowingService(JoinPoint jp, NotFoundException e) {
         String className = jp.getSignature().getDeclaringTypeName();
         String methodName = jp.getSignature().getName();
         log.error("Class " + className + " method " + methodName + " error. Exception is " + e);

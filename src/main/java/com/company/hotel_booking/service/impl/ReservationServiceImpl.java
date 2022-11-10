@@ -10,6 +10,7 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.mapper.ReservationMapper;
 import com.company.hotel_booking.service.mapper.RoomMapper;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.utils.exceptions.reservations.ReservationDeleteException;
 import com.company.hotel_booking.utils.exceptions.reservations.ReservationNotFoundException;
@@ -44,7 +45,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @LogInvocationServer
-    @ServiceEx
+    @NotFoundEx
     public ReservationDto findById(Long id) {
         return mapper.toDto(reservationRepository.findById(id).orElseThrow(
                 () -> new ReservationNotFoundException(
@@ -55,6 +56,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @LogInvocationServer
     @Transactional
+    @ServiceEx
     public ReservationDto create(ReservationDto entity) {
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
@@ -114,6 +116,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @LogInvocationServer
     @Transactional
+    @ServiceEx
     public ReservationDto update(ReservationDto entity) {
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
         if (reservation == null) {

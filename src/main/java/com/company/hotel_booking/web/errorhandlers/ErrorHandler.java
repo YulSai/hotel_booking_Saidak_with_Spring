@@ -21,7 +21,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 
 /**
- * Class for processing HttpServletRequest "error"
+ * Class for processing errors from View
  */
 @RequiredArgsConstructor
 @Controller

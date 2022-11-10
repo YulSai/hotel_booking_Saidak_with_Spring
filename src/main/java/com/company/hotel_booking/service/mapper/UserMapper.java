@@ -7,6 +7,9 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+/**
+ * Interface for mapping between User and UserDto
+ */
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 

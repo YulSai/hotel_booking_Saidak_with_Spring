@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Class for processing HttpServletRequest "language"
+ */
 @Controller
 @RequestMapping("/language")
 @RequiredArgsConstructor

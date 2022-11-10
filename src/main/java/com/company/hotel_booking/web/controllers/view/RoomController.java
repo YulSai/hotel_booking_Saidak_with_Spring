@@ -27,6 +27,9 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Class for processing HttpServletRequest "rooms"
+ */
 @Controller
 @RequestMapping("/rooms")
 @RequiredArgsConstructor

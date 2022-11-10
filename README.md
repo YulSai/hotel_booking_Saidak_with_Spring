@@ -39,10 +39,10 @@ Change of languages (RU and EN) is implemented.
 📚 Database Requirements
 </h2>
 <p>
-• Information about the subject area should be stored in the database<br>
+• Information about the subject area should be stored in the database. Used PostgreSQL.<br>
 • If the data in the database is stored in Cyrillic, it is recommended to use utf-8 encoding<br>
 • Hibernate database access technology<br>
-• To work with the database in the application, a thread-safe connection pool must be implemented, the use of synchronized and volatile is prohibited.<br>
+• To work with the database in the application used Spring boot (Hikari auto).<br>
 • When designing a database, it is recommended to use no more than 5-8 tables<br>
 </p>
 
@@ -55,16 +55,16 @@ Change of languages (RU and EN) is implemented.
 </h2>
 <p>
 • Implement the application using Spring Framework and JSP technologies.<br>
-• The application architecture must conform to the Layered architecture and MVC patterns. Controller can only be of two kinds: role controller or application controller.<br>
+• The application architecture must conform to the Layered architecture and MVC patterns.<br>
 • Application interface must be localized; choice of languages: EN|RU etc.<br>
-• The application must correctly handle emerging exceptions, including keeping their log. Use Log4J2 as a logger and with Spring AOP<br>
+• The application must correctly handle emerging exceptions, including keeping their log. Use Log4J2 as a logger and Spring AOP<br>
 • Classes and other entities of the application must be properly structured into packages and have a name that reflects their functionality.<br>
 • To store user information between requests, use a session.<br>
 • Apply filters and interceptors to intercept and modify request and response objects.<br>
-• Spring tags must be used when implementing JSP pages, scriptlets are not allowed.<br>
+• Spring tags must be used when implementing JSP pages.<br>
 • Implement protection against re-execution of the request by pressing F5 and from js injection.<br>
 • Viewing "long lists" is desirable to organize in page-by-page mode.<br>
-• Validate input data on controllers using Java Validation API.<br>
+• Validate input data on controllers using Spring Boot Validation.<br>
 • Documentation for the project must be prepared in accordance with the requirements of javadoc.<br>
 • Code formatting must comply with the Java Code Convention.<br>
 • When deploying the application, it is allowed to use Maven technology.<br>

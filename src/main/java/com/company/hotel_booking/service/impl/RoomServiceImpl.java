@@ -6,6 +6,7 @@ import com.company.hotel_booking.service.api.RoomService;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.service.mapper.RoomMapper;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
+import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.utils.exceptions.rooms.RoomAlreadyExistsException;
 import com.company.hotel_booking.utils.exceptions.rooms.RoomDeleteException;
@@ -34,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @LogInvocationServer
-    @ServiceEx
+    @NotFoundEx
     public RoomDto findById(Long id) {
         return mapper.toDto(roomRepository.findById(id).orElseThrow(
                 () -> new RoomNotFoundException(messageSource.getMessage("msg.room.error.find.by.id", null,

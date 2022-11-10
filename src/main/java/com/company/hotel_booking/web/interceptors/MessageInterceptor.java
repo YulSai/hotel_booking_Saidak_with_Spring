@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Interceptor for handling messages passed to the session
+ */
 @Log4j2
 public class MessageInterceptor implements HandlerInterceptor {
     @Override

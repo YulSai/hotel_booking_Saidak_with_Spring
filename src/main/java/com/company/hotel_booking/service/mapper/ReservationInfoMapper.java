@@ -8,6 +8,9 @@ import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+/**
+ * Interface for mapping between ReservationInfo and ReservationInfoDto
+ */
 @Mapper(componentModel = "spring", uses = {RoomMapper.class},
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface ReservationInfoMapper {
