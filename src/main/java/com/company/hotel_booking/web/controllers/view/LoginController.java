@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Class for processing HttpServletRequest "login"
+ */
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
@@ -31,14 +34,14 @@ public class LoginController {
 
     @LogInvocation
     @PostMapping("/login")
-    public String login(HttpServletRequest req, @RequestParam String email, @RequestParam String password,
+    public String login(HttpServletRequest req, @RequestParam String username, @RequestParam String password,
                         HttpSession session, Model model) {
-        if (email == null || ("").equals(email) || password == null || ("").equals(password)) {
+        if (username == null || ("").equals(username) || password == null || ("").equals(password)) {
             model.addAttribute("message", messageSource
                     .getMessage("msg.login.details", null, LocaleContextHolder.getLocale()));
             return PagesConstants.PAGE_LOGIN;
         }
-        UserDto userDto = userService.login(email, password);
+        UserDto userDto = userService.login(username, password);
         session.setAttribute("user", userDto);
         return PagesConstants.PAGE_INDEX;
     }

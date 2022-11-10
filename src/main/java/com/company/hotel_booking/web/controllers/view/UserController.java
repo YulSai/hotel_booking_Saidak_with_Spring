@@ -27,6 +27,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Class for processing HttpServletRequest "users"
+ */
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor

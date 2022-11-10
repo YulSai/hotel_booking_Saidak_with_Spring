@@ -7,6 +7,9 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 
+/**
+ * Interface for mapping between Reservation and ReservationDto
+ */
 @Mapper(componentModel = "spring", uses = {UserMapper.class, ReservationInfoMapper.class},
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface ReservationMapper {

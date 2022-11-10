@@ -10,6 +10,7 @@ import com.company.hotel_booking.service.utils.DigestUtil;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ImageUploadingEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
+import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @LogInvocationServer
-    @ServiceEx
+    @NotFoundEx
     public UserDto findById(Long id) {
         return mapper.toDto(userRepository.findById(id)
                 .orElseThrow(() ->
@@ -58,7 +59,8 @@ public class UserServiceImpl implements UserService {
     @ServiceEx
     public UserDto create(UserDto userDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("msg.user.error.create.exists");
+            throw new UserAlreadyExistsException(messageSource.getMessage("msg.user.error.create.exists", null,
+                    LocaleContextHolder.getLocale()));
         }
         String hashPassword = digestUtil.hash(userDto.getPassword());
         userDto.setPassword(hashPassword);

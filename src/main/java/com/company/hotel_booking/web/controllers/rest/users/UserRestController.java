@@ -31,6 +31,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class for processing HttpServletRequest "api/users"
+ */
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -96,18 +99,32 @@ public class UserRestController {
         userService.delete(userService.findById(id));
     }
 
+    /**
+     * Method checks for validation errors on the object
+     * @param errors validation errors
+     */
     private void checkErrors(Errors errors) {
         if (errors.hasErrors()) {
             throw new ValidationException(errors);
         }
     }
 
+    /**
+     * Method build ResponseEntity object
+     * @param user object UserDto
+     * @return ResponseEntity User object
+     */
     private ResponseEntity<UserDto> buildResponseCreated(UserDto user) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .location(getLocation(user))
                 .body(user);
     }
 
+    /**
+     * Method gets url for object
+     * @param user object UserDto
+     * @return url
+     */
     private URI getLocation(UserDto user) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/users/js/{id}")
