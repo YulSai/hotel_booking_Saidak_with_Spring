@@ -1,6 +1,7 @@
 package com.company.hotel_booking.web.errorhandlers;
 
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
+import com.company.hotel_booking.utils.exceptions.ForbiddenException;
 import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.utils.exceptions.rest.MethodNotAllowedException;
@@ -56,10 +57,19 @@ public class RestErrorHandler {
     @LogInvocation
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDto error(ForbiddenException e) {
+        return new ErrorDto(messageSource
+                .getMessage("msg.insufficient.rights", null,  LocaleContextHolder.getLocale()));
+    }
+
+    @LogInvocation
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto error(NumberFormatException e) {
         return new ErrorDto(messageSource
                 .getMessage("msg.incorrect.format.url", null,  LocaleContextHolder.getLocale()));
     }
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)

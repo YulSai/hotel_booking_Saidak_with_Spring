@@ -1,6 +1,7 @@
 package com.company.hotel_booking.web.errorhandlers;
 
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
+import com.company.hotel_booking.utils.exceptions.ForbiddenException;
 import com.company.hotel_booking.utils.exceptions.NotFoundException;
 import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
 import com.company.hotel_booking.utils.exceptions.users.LoginException;
@@ -66,6 +67,15 @@ public class ErrorHandler {
 
     @LogInvocation
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleForbiddenException(ForbiddenException e, Model model) {
+        model.addAttribute("message", messageSource
+                .getMessage("msg.insufficient.rights", null, LocaleContextHolder.getLocale()));
+        return PagesConstants.PAGE_ERROR_HANDLER;
+    }
+
+    @LogInvocation
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleImageUploadingException(ImageUploadingException e, Model model) {
         model.addAttribute("message", e.getMessage());
@@ -74,7 +84,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleFormatException(MethodArgumentTypeMismatchException e, Model model) {
+    public String handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.incorrect.format.url", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_ERROR_HANDLER;
@@ -82,7 +92,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleFormatException(NumberFormatException e, Model model) {
+    public String handleNumberFormatException(NumberFormatException e, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.incorrect.format.url", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_ERROR_HANDLER;
