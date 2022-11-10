@@ -2,8 +2,10 @@ package com.company.hotel_booking;
 
 
 import com.company.hotel_booking.utils.constants.PagesConstants;
+import com.company.hotel_booking.web.filters.AuthorizationFilter;
 import com.company.hotel_booking.web.interceptors.GeneralInterceptor;
 import com.company.hotel_booking.web.interceptors.MessageInterceptor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -74,12 +76,12 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(messageInterceptor());
     }
 
-//    @Bean
-//    public FilterRegistrationBean<AuthorizationFilter> authorizationFilter() {
-//        FilterRegistrationBean registration = new FilterRegistrationBean<>();
-//        registration.setFilter(new AuthorizationFilter(messageSource()));
-//        registration.addUrlPatterns("/users/*", "/rooms/*", "/reservations/*");
-//        registration.setOrder(2);
-//        return registration;
-//    }
+    @Bean
+    public FilterRegistrationBean<AuthorizationFilter> authorizationFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean<>();
+        registration.setFilter(new AuthorizationFilter(messageSource()));
+        registration.addUrlPatterns("/users/*", "/rooms/*", "/reservations/*");
+        registration.setOrder(2);
+        return registration;
+    }
 }
