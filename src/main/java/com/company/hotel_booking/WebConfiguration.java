@@ -76,7 +76,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean<AuthenticationFilter> authorizationFilter() {
+    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean<>();
         registration.setFilter(new AuthenticationFilter(messageSource()));
         registration.addUrlPatterns("/users/*", "/rooms/*", "/reservations/*");

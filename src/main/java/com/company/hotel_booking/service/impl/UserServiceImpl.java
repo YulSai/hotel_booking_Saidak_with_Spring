@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService {
     private String getAvatarPath(MultipartFile avatarFile) {
         String avatarName;
         try {
-            if (avatarFile != null) {
+            if (avatarFile.getSize() > 0) {
                 avatarName = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
                 String location = "avatars/";
                 File pathFile = new File(PagesConstants.LOCATION_IMAGES);
