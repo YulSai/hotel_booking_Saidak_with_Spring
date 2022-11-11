@@ -41,6 +41,7 @@ public class ReservationInfo {
     private Long id;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")
+    @ToString.Exclude
     private Reservation reservation;
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "room_id")

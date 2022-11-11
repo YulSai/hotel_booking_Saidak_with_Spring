@@ -19,6 +19,7 @@ import org.hibernate.Hibernate;
 @RequiredArgsConstructor
 public class ReservationInfoDto {
     private Long id;
+    @ToString.Exclude
     private ReservationDto reservation;
     private RoomDto room;
     private LocalDate checkIn;

@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @ServiceEx
     public UserDto update(UserDto userDto) {
-        User existing = userRepository.findByEmail(userDto.getEmail()).get();
+        User existing = userRepository.findByEmail(userDto.getEmail()).orElse(null);
         if (existing != null && !existing.getId().equals(userDto.getId())) {
             throw new UserAlreadyExistsException(
                     messageSource.getMessage("msg.user.error.update.exists", null,

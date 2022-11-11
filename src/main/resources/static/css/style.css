@@ -50,11 +50,3 @@ body {
 .btn:focus-visible {
     box-shadow: 0 0 0 3px lightskyblue;
 }
-
-a {
-    color: #000000;
-    text-decoration: none;
-}
-a:hover {
-    border-bottom: #007bff;
-}

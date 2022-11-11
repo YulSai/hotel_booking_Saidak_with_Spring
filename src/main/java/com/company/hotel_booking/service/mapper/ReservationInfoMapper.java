@@ -4,15 +4,13 @@ import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.service.dto.ReservationInfoDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
-import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
  * Interface for mapping between ReservationInfo and ReservationInfoDto
  */
-@Mapper(componentModel = "spring", uses = {RoomMapper.class},
-        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
+@Mapper(componentModel = "spring", uses = {RoomMapper.class})
 public interface ReservationInfoMapper {
 
     /**

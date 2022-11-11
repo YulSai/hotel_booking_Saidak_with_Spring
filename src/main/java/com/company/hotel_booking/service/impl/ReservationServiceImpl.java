@@ -77,7 +77,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<ReservationInfoDto> details = new ArrayList<>();
         booking.forEach((roomId, quantity) -> {
             ReservationInfoDto info = new ReservationInfoDto();
-            RoomDto room = roomMapper.toDto(roomRepository.findById(roomId).get());
+            RoomDto room = roomMapper.toDto(roomRepository.findById(roomId).orElse(null));
             info.setRoom(room);
             info.setCheckIn(checkIn);
             info.setCheckOut(checkOut);
