@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @LogInvocationServer
+    @Transactional
     @ServiceEx
     public RoomDto create(RoomDto roomDto) {
         if (roomRepository.findByNumber(roomDto.getNumber()).isPresent()) {
@@ -55,6 +57,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @LogInvocationServer
+    @Transactional
     @ServiceEx
     public RoomDto update(RoomDto roomDto) {
         Room existing = roomRepository.findById((roomDto.getId())).get();
@@ -67,6 +70,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @LogInvocationServer
+    @Transactional
     @ServiceEx
     public void delete(RoomDto roomDto) {
         roomRepository.delete(mapper.toEntity(roomDto));

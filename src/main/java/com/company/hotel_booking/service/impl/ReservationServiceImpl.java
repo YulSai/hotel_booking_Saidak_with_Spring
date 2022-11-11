@@ -55,7 +55,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @LogInvocationServer
-    @Transactional
     @ServiceEx
     public ReservationDto create(ReservationDto entity) {
         entity.setStatus(ReservationDto.StatusDto.CONFIRMED);
@@ -115,7 +114,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @LogInvocationServer
-    @Transactional
     @ServiceEx
     public ReservationDto update(ReservationDto entity) {
         ReservationDto reservation = mapper.toDto(reservationRepository.save(mapper.toEntity(entity)));
@@ -129,6 +127,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @LogInvocationServer
+    @Transactional
     @ServiceEx
     public void delete(ReservationDto reservationDto) {
         reservationRepository.delete(mapper.toEntity(reservationDto));
