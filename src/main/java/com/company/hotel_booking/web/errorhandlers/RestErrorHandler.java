@@ -8,6 +8,7 @@ import com.company.hotel_booking.utils.exceptions.rest.MethodNotAllowedException
 import com.company.hotel_booking.utils.exceptions.rest.ValidationException;
 import com.company.hotel_booking.utils.exceptions.rest.dto.ErrorDto;
 import com.company.hotel_booking.utils.exceptions.rest.dto.ValidationResultDto;
+import com.company.hotel_booking.utils.exceptions.users.ClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -84,6 +85,12 @@ public class RestErrorHandler {
     public ErrorDto error(Exception e) {
         return new ErrorDto(messageSource
                 .getMessage("msg.internal.error", null,  LocaleContextHolder.getLocale()));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDto error(ClientException e) {
+        return new ErrorDto(e.getMessage());
     }
 
     @LogInvocation
