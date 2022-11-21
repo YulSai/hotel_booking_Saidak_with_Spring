@@ -19,4 +19,4 @@ VALUES
 ((SELECT id FROM users u WHERE u.email='sophia_mckenzie@kwontol.com'),200, (SELECT id FROM reservation_statuses s WHERE s.name='CONFIRMED')),
 ((SELECT id FROM users u WHERE u.email='sophia_mckenzie@kwontol.com'), 900, (SELECT id FROM reservation_statuses s WHERE s.name='CONFIRMED')),
 ((SELECT id FROM users u WHERE u.email='john-paul_blake@fleckens.hu'), 800, (SELECT id FROM reservation_statuses s WHERE s.name='IN_PROGRESS')),
- ((SELECT id FROM users u WHERE u.email='nannie_crawford@dayrep.com'), 3500, (SELECT id FROM reservation_statuses s WHERE s.name='CONFIRMED'));
+((SELECT id FROM users u WHERE u.email='nannie_crawford@dayrep.com'), 1750, (SELECT id FROM reservation_statuses s WHERE s.name='CONFIRMED'));
