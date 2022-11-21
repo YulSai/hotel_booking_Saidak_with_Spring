@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,6 +24,16 @@ import java.util.Objects;
 public class UserDto {
     private Long id;
 
+    @NotBlank(message = "{msg.error.username.empty}")
+    @Pattern(regexp = ValidationConstants.USERNAME, message = "{msg.error.username.format}")
+    private String username;
+
+    @NotBlank(message = "{msg.error.password.empty}")
+    @Pattern(regexp = ValidationConstants.PASSWORD, message = "{msg.error.password.format}")
+    @Size(min = 6, message = "{msg.error.password.length}")
+    @ToString.Exclude
+    private String password;
+
     @NotBlank(message = "{msg.error.first.name.empty}")
     @Pattern(regexp = ValidationConstants.NAME, message = "{msg.error.first.name.format}")
     private String firstName;
@@ -35,12 +46,6 @@ public class UserDto {
     @Email(message = "{msg.error.email.format}")
     private String email;
 
-    @NotBlank(message = "{msg.error.password.empty}")
-    @Pattern(regexp = ValidationConstants.PASSWORD, message = "{msg.error.password.format}")
-    @Size(min = 6, message = "{msg.error.password.length}")
-    @ToString.Exclude
-    private String password;
-
     @NotBlank(message = "{msg.error.phone.empty}")
     @Pattern(regexp = ValidationConstants.PHONE, message = "{msg.error.phone.format}")
     @Size(min = 10, message = "{msg.error.phone.length}")
@@ -49,12 +54,6 @@ public class UserDto {
     private RoleDto role;
     private String avatar;
     private boolean block;
-
-    public enum RoleDto {
-        ADMIN,
-        CLIENT,
-        GUEST
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -67,5 +66,16 @@ public class UserDto {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public enum RoleDto implements GrantedAuthority {
+        ROLE_ADMIN,
+        ROLE_CLIENT,
+        ROLE_GUEST;
+
+        @Override
+        public String getAuthority() {
+            return name();
+        }
     }
 }

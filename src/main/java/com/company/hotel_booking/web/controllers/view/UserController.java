@@ -7,12 +7,13 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
-import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -38,13 +39,12 @@ public class UserController {
     private final UserService userService;
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
-    private final UserRoleUtil userRoleUtil;
     private final MessageSource messageSource;
 
     @LogInvocation
     @GetMapping("/all")
-    public String getAllUsers(Model model, HttpServletRequest req, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getAllUsers(Model model, HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPaging(req, "lastName");
         Page<UserDto> usersDtoPage = userService.findAllPages(pageable);
         List<UserDto> users = usersDtoPage.toList();
@@ -55,10 +55,11 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/{id}")
-    public String getUserById(@PathVariable Long id, HttpSession session, Model model) {
+    public String getUserById(@PathVariable Long id, Model model) {
         UserDto user;
-        UserDto userDto = (UserDto) session.getAttribute("user");
-        if ("CLIENT".equals(userDto.getRole().toString())) {
+        UserDto userDto = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
+                .getName());
+        if ("ROLE_CLIENT".equals(userDto.getRole().toString())) {
             user = userService.findById(userDto.getId());
         } else {
             user = userService.findById(id);
@@ -85,9 +86,7 @@ public class UserController {
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CREATE_USER;
         }
-        userDto.setRole(UserDto.RoleDto.CLIENT);
         UserDto created = userService.processCreateUser(userDto, avatarFile);
-        session.setAttribute("user", created);
         session.setAttribute("message",
                 messageSource.getMessage("msg.user.created", null, LocaleContextHolder.getLocale()));
         return "redirect:/users/" + created.getId();
@@ -95,8 +94,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    public String updateUserForm(@PathVariable Long id, Model model, HttpSession session) {
-        userRoleUtil.checkUserRoleAdmin(session);
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public String updateUserForm(@PathVariable Long id, Model model) {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
         return PagesConstants.PAGE_UPDATE_USERS;
@@ -104,9 +103,9 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public String updateUser(@ModelAttribute @Valid UserDto userDto, Errors errors, MultipartFile avatarFile,
                              HttpSession session) {
-        userRoleUtil.checkUserRoleAdmin(session);
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_UPDATE_USERS;
         }
@@ -118,8 +117,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id, Model model, HttpServletRequest req, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteUser(@PathVariable Long id, Model model, HttpServletRequest req) {
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);
@@ -133,8 +132,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/change_password/{id}")
-    public String changePasswordForm(@PathVariable Long id, Model model, HttpSession session) {
-        userRoleUtil.checkUserRoleAdmin(session);
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public String changePasswordForm(@PathVariable Long id, Model model) {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
         return PagesConstants.PAGE_CHANGE_PASSWORD;
@@ -142,8 +141,8 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/change_password/{id}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public String changePassword(@ModelAttribute @Valid UserDto userdto, Errors errors, HttpSession session) {
-        userRoleUtil.checkUserRoleAdmin(session);
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CHANGE_PASSWORD;
         }
@@ -155,8 +154,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/update_role/{id}")
-    public String updateUserRoleForm(@PathVariable Long id, Model model, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateUserRoleForm(@PathVariable Long id, Model model) {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
         return PagesConstants.PAGE_UPDATE_USERS_ROLE;
@@ -164,8 +163,8 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/update_role/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateUserRole(@ModelAttribute UserDto user, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
         UserDto updated = userService.update(user);
         session.setAttribute("message",
                 messageSource.getMessage("msg.user.updated", null, LocaleContextHolder.getLocale()));
@@ -174,8 +173,8 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/js/all")
-    public String getAllUsersJs(HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getAllUsersJs() {
         return PagesConstants.PAGE_USERS_JS;
     }
 
@@ -188,6 +187,7 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/js/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteUserJs(@PathVariable Long id, Model model) {
         model.addAttribute("message",
                 messageSource.getMessage("msg.user.deleted", null, LocaleContextHolder.getLocale()));

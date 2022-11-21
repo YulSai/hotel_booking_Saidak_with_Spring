@@ -15,12 +15,12 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
-     * Method finds user in the data source by email
+     * Method finds user in the data source by username
      *
-     * @param email for search
+     * @param username for search
      * @return user
      */
-    Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
 
     /**
      * Method is used for saving updating Entity objects with status Block in the data source

@@ -7,7 +7,6 @@ import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation
 import com.company.hotel_booking.utils.exceptions.rest.MethodNotAllowedException;
 import com.company.hotel_booking.utils.exceptions.rest.ValidationException;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
-import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
@@ -45,7 +43,6 @@ public class RoomRestController {
     private final RoomService roomService;
     private final PagingUtil pagingUtil;
     private final MessageSource messageSource;
-    private final UserRoleUtil userRoleUtil;
 
     @LogInvocation
     @GetMapping
@@ -81,8 +78,7 @@ public class RoomRestController {
     @LogInvocation
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public void deleteRoom(@PathVariable Long id, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    public void deleteRoom(@PathVariable Long id) {
         throw new MethodNotAllowedException (messageSource.
                 getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
     }

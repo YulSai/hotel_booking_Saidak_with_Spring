@@ -8,13 +8,12 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface UserService extends AbstractService<Long, UserDto> {
     /**
-     * Method is used for user authentication
+     * Method finds a user in the database by username
      *
-     * @param email    user email
-     * @param password user password
+     * @param username    user username
      * @return User if found
      */
-    UserDto login(String email, String password);
+    UserDto findByUsername(String username);
 
     /**
      * Method replaces the old password with the new one entered by the user
