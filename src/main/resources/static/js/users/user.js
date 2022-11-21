@@ -1,3 +1,6 @@
+import {prepareCsrfRequestHeaders} from "../utils/headers.js";
+
+
 $(document).ready(function () {
     let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
@@ -47,9 +50,11 @@ $(document).ready(function () {
                 <button class="btn" class="edit">${user_update_role}</button>
                 <button class="btn" class="delete">${user_delete}</button>`);
             $row.find(".edit").on("click", () => window.location.href = `/users/update_role/${user.id}`);
+            const headers = prepareCsrfRequestHeaders();
             $row.find(".delete").on("click", () => $.ajax({
                 url: `/api/users/${user.id}`,
                 type: "DELETE",
+                headers,
                 success: window.location.href = `/users/js/delete/${user.id}`
             }));
 

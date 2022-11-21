@@ -2,9 +2,12 @@
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf_token" content="${_csrf.token}"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <link rel="stylesheet" type="text/css" href="/css/login.css">
@@ -52,17 +55,17 @@
 
 </table>
 <ul>
-    <c:if test="${sessionScope.user.role == 'CLIENT'}">
+    <sec:authorize access="hasRole('ROLE_CLIENT')">
         <li><a class="btn" href="/users/update/${requestScope.user.id}">
             <spring:message code="msg.user.update"/></a></li>
-        <li><a class="btn" href="/users/change_password/${requestScope.user.id}"> <spring:message
+        <li><a class="btn" href="/users/change_password/${user.id}"> <spring:message
                 code="msg.user.change.password"/></a></li>
-    </c:if>
-    <c:if test="${sessionScope.user.role == 'ADMIN'}">
+    </sec:authorize>
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
         <li><a class="btn" href="/users/update_role/${requestScope.user.id}">
             <spring:message code="msg.user.update.role"/></a></li>
         <li><a class="btn" href="/users/delete/${requestScope.user.id}"> <spring:message code="msg.user.delete"/></a></li>
-    </c:if>
+    </sec:authorize>
 </ul>
 </body>
 </html>

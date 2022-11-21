@@ -5,12 +5,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf_token" content="${_csrf.token}"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <link rel="stylesheet" type="text/css" href="/css/login.css">
 
     <script src="/js/lib/jquery-3.6.1.js"></script>
-    <script src="/js/users/user.js" defer></script>
+    <script type="module" src="/js/users/user.js" defer></script>
 
     <script type="text/javascript">
         let user_field = "<spring:message code="msg.field"/>";

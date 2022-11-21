@@ -1,3 +1,5 @@
+import {prepareCsrfRequestHeaders} from "../utils/headers.js";
+
 $(function() {
     refresh();
 
@@ -40,9 +42,11 @@ $(function() {
 			`);
         $row.find("#view").on("click", () => window.location.href = `/users/js/${user.id}`);
         $row.find("#edit").on("click", () => window.location.href = `/users/update_role/${user.id}`);
+        const headers = prepareCsrfRequestHeaders();
         $row.find("#delete").on("click", () => $.ajax({
             url: `/api/users/${user.id}`,
             type: "DELETE",
+            headers,
             success: refresh
         }));
         $tbody.append($row);

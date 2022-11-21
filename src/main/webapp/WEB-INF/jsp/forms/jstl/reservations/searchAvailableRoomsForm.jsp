@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <script src="/js/lib/jquery-3.6.1.js"></script>
-    <script src="/js/date.js" defer></script>
+    <script src="/js/utils/date.js" defer></script>
 
     <title><spring:message code="msg.search.title"/></title>
 
@@ -17,6 +17,7 @@
 <h1><spring:message code="msg.search.title"/></h1>
 <p>${requestScope.message}</p>
 <form method="post" action="/rooms/search_available_rooms">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <label for="check_in"><spring:message code="msg.checkIn"/></label>
     <input id="check_in" name="check_in" type="date" min="" max="2025-12-30">
     <br/>

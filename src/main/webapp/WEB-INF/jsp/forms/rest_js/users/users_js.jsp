@@ -4,11 +4,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
+  <meta name="_csrf_token" content="${_csrf.token}"/>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <link rel="stylesheet" type="text/css" href="/css/tables.css">
   <link rel="stylesheet" type="text/css" href="/css/rest/pages_for_rest.css">
   <script src="/js/lib/jquery-3.6.1.js"></script>
-  <script src="/js/users/users.js" defer></script>
+  <script type="module" src="/js/users/users.js" defer></script>
 
 
   <script type="text/javascript">

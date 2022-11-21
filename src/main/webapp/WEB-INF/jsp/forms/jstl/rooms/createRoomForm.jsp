@@ -14,6 +14,7 @@
 <h1><spring:message code="msg.create.new.room.title"/></h1>
 <p>${requestScope.message}</p>
 <form:form method="post" action="/rooms/create" modelAttribute="roomDto">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <form:errors path="number" cssClass="error-block"/>
     <form:label for="room_number-input" path="number"><spring:message code="msg.number"/></form:label>
     <form:input id="room_number-input" path="number" type="text"/>

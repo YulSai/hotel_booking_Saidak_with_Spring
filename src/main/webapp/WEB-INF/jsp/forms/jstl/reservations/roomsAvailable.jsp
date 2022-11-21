@@ -2,9 +2,12 @@
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf_token" content="${_csrf.token}"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><spring:message code="msg.available.title"/></title>
@@ -34,12 +37,12 @@
             <td>${room.status}</td>
             <td>${room.price}</td>
             <td>
-                <form method="post" action="/reservations/add_booking">
+                <form:form method="post" action="/reservations/add_booking">
                     <input type="hidden" name="roomId" value="${room.id}">
                     <input type="hidden" name="check_in" value="${check_in}">
                     <input type="hidden" name="check_out" value="${check_out}">
                     <input class="btn" type="submit" value="<spring:message code="msg.available.book"/>">
-                </form>
+                </form:form>
             </td>
         </tr>
     </c:forEach>

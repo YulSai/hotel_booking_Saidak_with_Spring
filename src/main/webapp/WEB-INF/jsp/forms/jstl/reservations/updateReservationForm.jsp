@@ -13,6 +13,7 @@
 <h1><spring:message code="msg.reservation.update.title"/></h1>
 <p>${requestScope.message}</p>
 <form method="post" action="/reservations/update/${requestScope.reservation.id}">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <br/>
     <select name="status" required="required">
         <option value=""><spring:message code="msg.reservation.update.choose"/></option>
