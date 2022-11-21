@@ -27,7 +27,6 @@ public class SqlConstants {
                     "WHERE i.room_id = r.id AND rv.status_id=2 " +
                     "AND ((? between i.check_in AND i.check_out) OR (? between i.check_in AND i.check_out) " +
                     "OR ((? < i.check_in) AND (? > i.check_out))))";
-
     // User
     public static final String SQL_USER_DELETE = "UPDATE users SET deleted = true WHERE id=?";
     public static final String SQL_USER_BLOCK = "update User SET block = true where id = :id";
