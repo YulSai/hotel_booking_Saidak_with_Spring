@@ -79,8 +79,7 @@ public class User {
 
     public enum Role implements GrantedAuthority {
         ROLE_ADMIN(1L),
-        ROLE_CLIENT(2L),
-        ROLE_GUEST(3L);
+        ROLE_CLIENT(2L);
 
         private final Long id;
 
