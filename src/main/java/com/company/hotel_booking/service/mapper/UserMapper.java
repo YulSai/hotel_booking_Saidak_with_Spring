@@ -3,7 +3,6 @@ package com.company.hotel_booking.service.mapper;
 import com.company.hotel_booking.data.entity.User;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -20,7 +19,6 @@ public interface UserMapper {
      * @return object UserDto
      */
     @LogInvocationServer
-    @ServiceEx
     @Mapping(source = "role", target = "role")
     UserDto toDto(User user);
 
@@ -31,7 +29,6 @@ public interface UserMapper {
      * @return object User
      */
     @LogInvocationServer
-    @ServiceEx
     @Mapping(source = "role", target = "role")
     User toEntity (UserDto userDto);
 

@@ -3,7 +3,6 @@ package com.company.hotel_booking.service.mapper;
 import com.company.hotel_booking.data.entity.Reservation;
 import com.company.hotel_booking.service.dto.ReservationDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 
@@ -21,7 +20,6 @@ public interface ReservationMapper {
      * @return object ReservationDto
      */
     @LogInvocationServer
-    @ServiceEx
     ReservationDto toDto(Reservation reservation);
 
     /**
@@ -31,6 +29,5 @@ public interface ReservationMapper {
      * @return object Reservation
      */
     @LogInvocationServer
-    @ServiceEx
     Reservation toEntity(ReservationDto reservationDto);
 }
