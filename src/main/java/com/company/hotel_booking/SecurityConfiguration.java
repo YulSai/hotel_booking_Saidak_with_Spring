@@ -63,7 +63,7 @@ public class SecurityConfiguration {
                 .mvcMatchers(HttpMethod.POST, "/users/**", "/rooms/**", "/reservations/**", "/api/**")
                 .authenticated()
                 .mvcMatchers(HttpMethod.PUT, "/api/**").authenticated()
-                .mvcMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.DELETE, "/api/**").authenticated()
 
                 .anyRequest().denyAll()
                 .and()
