@@ -13,9 +13,11 @@
 </head>
 <body>
 <jsp:include page="../../../navbar.jsp"/>
+<h1><spring:message code="msg.rooms.title"/></h1>
 <p>${requestScope.message}</p>
 <table class="first">
     <jsp:include page="../../pagination.jsp"/>
+    <c:if test="${requestScope.rooms} != null">
     <tr>
         <th>#</th>
         <th><spring:message code="msg.number"/></th>
@@ -25,7 +27,8 @@
         <th><spring:message code="msg.price"/>USD</th>
         <th><spring:message code="msg.action"/></th>
     </tr>
-    <c:forEach items="${rooms}" var="room" varStatus="counter">
+    </c:if>
+    <c:forEach items="${requestScope.rooms}" var="room" varStatus="counter">
         <tr>
             <td>${counter.count}</td>
             <td><a href="/rooms/${room.id}">${room.number}</a></td>

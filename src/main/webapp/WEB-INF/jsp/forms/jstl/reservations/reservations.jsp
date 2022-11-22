@@ -19,6 +19,7 @@
 <p>${requestScope.message}</p>
 <table class="first">
     <jsp:include page="../../pagination.jsp"/>
+    <c:if test="${requestScope.rooms} != null">
     <tr>
         <th>#</th>
         <th><spring:message code="msg.user"/></th>
@@ -26,6 +27,7 @@
         <th><spring:message code="msg.status"/></th>
         <th><spring:message code="msg.action"/></th>
     </tr>
+    </c:if>
     <c:forEach items="${requestScope.reservations}" var="reservation" varStatus="counter">
         <tr>
             <td><a href="/reservations/${reservation.id}">${counter.count}</a></td>

@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -15,10 +16,8 @@
 <p>${requestScope.message}</p>
 <form:form method="post" action="/rooms/update/${requestScope.room.id}" modelAttribute="roomDto">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-    <form:errors path="number" cssClass="error-block"/>
-    <form:label path="number" for="room_number-input"><spring:message code="msg.number"/> </form:label>
-    <form:input id="room_number-input" path="number" type="text" value="${requestScope.room.number}"/>
-    <br/>
+    <h2><spring:message code="msg.number"/> ${requestScope.room.number}</h2>
+    <form:input id="room_number-input" path="number" type="hidden" value="${requestScope.room.number}"/>
     <form:errors path="type" cssClass="error-block"/>
     <form:select path="type" required="required">
         <form:option value="${requestScope.room.type}">${requestScope.room.type}</form:option>

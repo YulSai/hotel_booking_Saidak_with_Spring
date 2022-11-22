@@ -18,6 +18,7 @@
 <p>${requestScope.message}</p>
 <table class="first">
     <jsp:include page="../../pagination.jsp"/>
+    <c:if test="${requestScope.users} != null">
     <tr>
         <th>#</th>
         <th><spring:message code="msg.user.first.name"/></th>
@@ -27,6 +28,7 @@
         <th><spring:message code="msg.user.role"/></th>
         <th><spring:message code="msg.user.status"/></th>
     </tr>
+    </c:if>
     <c:forEach items="${requestScope.users}" var="user" varStatus="counter">
         <tr>
             <td>${counter.count}</td>
@@ -46,5 +48,6 @@
         </tr>
     </c:forEach>
 </table>
+
 </body>
 </html>
