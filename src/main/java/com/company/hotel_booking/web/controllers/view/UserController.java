@@ -48,6 +48,11 @@ public class UserController {
         Pageable pageable = pagingUtil.getPaging(req, "lastName");
         Page<UserDto> usersDtoPage = userService.findAllPages(pageable);
         List<UserDto> users = usersDtoPage.toList();
+        if (users.isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.users.no.users", null,
+                    LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_USERS;
+        }
         pagingUtil.setTotalPages(req, usersDtoPage, "users/all");
         model.addAttribute("users", users);
         return PagesConstants.PAGE_USERS;
@@ -55,6 +60,7 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CLIENT')")
     public String getUserById(@PathVariable Long id, Model model) {
         UserDto user;
         UserDto userDto = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
@@ -105,8 +111,9 @@ public class UserController {
     @PostMapping("/update/{id}")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public String updateUser(@ModelAttribute @Valid UserDto userDto, Errors errors, MultipartFile avatarFile,
-                             HttpSession session) {
+                             HttpSession session, Model model) {
         if (errors.hasErrors()) {
+            model.addAttribute("user", userDto);
             return PagesConstants.PAGE_UPDATE_USERS;
         }
         UserDto updated = userService.processUserUpdates(userDto, avatarFile);
@@ -180,6 +187,7 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/js/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CLIENT')")
     public String getUserByIdJs(@PathVariable Long id) {
         return PagesConstants.PAGE_USER_JS;
     }

@@ -48,6 +48,11 @@ public class ReservationController {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
+        if (reservations.isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.reservations.no", null,
+                    LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_RESERVATIONS;
+        }
 
         UserDto user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
                 .getName());
@@ -82,19 +87,13 @@ public class ReservationController {
                 .getName());
         LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
         LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
-        if (user == null) {
-            session.setAttribute("message",
-                    messageSource.getMessage("msg.login", null, LocaleContextHolder.getLocale()));
-            return PagesConstants.PAGE_LOGIN;
-        } else {
-            @SuppressWarnings("unchecked")
-            Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
-            ReservationDto created = reservationService.processReservationCreation(booking, user, checkIn, checkOut);
-            session.removeAttribute("booking");
-            session.setAttribute("message", messageSource
-                    .getMessage("msg.reservation.created", null, LocaleContextHolder.getLocale()));
-            return "redirect:/reservations/" + created.getId();
-        }
+        @SuppressWarnings("unchecked")
+        Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
+        ReservationDto created = reservationService.processReservationCreation(booking, user, checkIn, checkOut);
+        session.removeAttribute("booking");
+        session.setAttribute("message", messageSource
+                .getMessage("msg.reservation.created", null, LocaleContextHolder.getLocale()));
+        return "redirect:/reservations/" + created.getId();
     }
 
     @LogInvocation

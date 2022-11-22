@@ -45,6 +45,11 @@ public class RoomController {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<RoomDto> roomsDtoPage = roomService.findAllPages(pageable);
         List<RoomDto> rooms = roomsDtoPage.toList();
+        if (rooms.isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.rooms.no.rooms", null,
+                    LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_ROOMS;
+        }
         pagingUtil.setTotalPages(req, roomsDtoPage, "rooms/all");
         model.addAttribute("rooms", rooms);
         return PagesConstants.PAGE_ROOMS;
@@ -96,8 +101,9 @@ public class RoomController {
     @LogInvocation
     @PostMapping("/update/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
+    public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, Model model, HttpSession session) {
         if (errors.hasErrors()) {
+            model.addAttribute("room", roomDto);
             return PagesConstants.PAGE_UPDATE_ROOM;
         }
         RoomDto updated = roomService.update(roomDto);
