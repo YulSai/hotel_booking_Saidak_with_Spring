@@ -40,6 +40,12 @@ public class ErrorHandler {
     }
 
     @LogInvocation
+    @GetMapping("/accessDenied")
+    public String errorAccessDenied(Model model) {
+        return PagesConstants.PAGE_ERROR_ACCESS;
+    }
+
+    @LogInvocation
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleServiceException(ServiceException e, Model model) {

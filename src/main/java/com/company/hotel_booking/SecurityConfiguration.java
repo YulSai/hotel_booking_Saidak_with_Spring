@@ -1,12 +1,11 @@
 package com.company.hotel_booking;
 
+import com.company.hotel_booking.web.errorhandlers.ErrorAccessDeniedHandler;
 import com.company.hotel_booking.web.usersSecurity.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
@@ -51,7 +51,7 @@ public class SecurityConfiguration {
 
                 //Authentication/Authorization filtering for URL/HTTP methods
                 .authorizeRequests()
-                .mvcMatchers("/", "/login*", "/error", "/rooms/search_available_rooms",
+                .mvcMatchers("/", "/login*", "/error/**", "/rooms/search_available_rooms",
                         "/reservations/booking", "/rooms/rooms_available", "/reservations/clean_booking",
                         "/reservations/delete_booking/**", "/users/create", "/language",
                         "/css/**", "/js/**", "/images/**").permitAll()
@@ -63,9 +63,12 @@ public class SecurityConfiguration {
                 .mvcMatchers(HttpMethod.POST, "/users/**", "/rooms/**", "/reservations/**", "/api/**")
                 .authenticated()
                 .mvcMatchers(HttpMethod.PUT, "/api/**").authenticated()
-                .mvcMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
 
                 .anyRequest().denyAll()
+                .and()
+
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .and()
 
                 //Username/Password login via Basic auth
@@ -114,14 +117,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
-    @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
     }
 
-
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new ErrorAccessDeniedHandler();
+    }
 }
