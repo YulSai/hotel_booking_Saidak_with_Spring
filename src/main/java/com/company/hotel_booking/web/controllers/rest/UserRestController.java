@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class UserRestController {
 
     @LogInvocation
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<UserDto> getAllUsersJs(HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPagingRest(req, "lastName");
         return userService.findAllPages(pageable);
@@ -52,6 +54,7 @@ public class UserRestController {
 
     @LogInvocation
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public UserDto getUserByIdJs(@PathVariable Long id, HttpSession session) {
         UserDto user;
         UserDto userDto = (UserDto) session.getAttribute("user");
@@ -69,7 +72,7 @@ public class UserRestController {
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto, Errors errors, HttpSession session,
                                               MultipartFile avatarFile) {
         checkErrors(errors);
-        userDto.setRole(UserDto.RoleDto.ROLE_CLIENT);
+        userDto.setRole(UserDto.RoleDto.CLIENT);
         UserDto created = userService.processCreateUser(userDto, avatarFile);
         session.setAttribute("user", created);
         return buildResponseCreated(created);
@@ -78,6 +81,7 @@ public class UserRestController {
     @LogInvocation
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto, Errors errors,
                                               MultipartFile avatarFile) {
         checkErrors(errors);
@@ -90,6 +94,7 @@ public class UserRestController {
     @LogInvocation
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(@PathVariable Long id) {
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {

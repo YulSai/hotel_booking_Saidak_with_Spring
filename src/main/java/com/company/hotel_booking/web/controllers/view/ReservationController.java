@@ -44,6 +44,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public String getAllReservations(HttpServletRequest req, Model model) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
@@ -74,6 +75,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public String getReservationById(@PathVariable Long id, Model model) {
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
@@ -82,6 +84,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public String createReservation(HttpSession session) {
         UserDto user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
                 .getName());
@@ -98,7 +101,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateReservationForm(@PathVariable Long id, Model model) {
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
@@ -107,7 +110,7 @@ public class ReservationController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateReservation(@PathVariable Long id, @RequestParam String status, HttpSession session) {
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
@@ -120,7 +123,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteReservation(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
@@ -129,7 +132,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/cancel_reservation/{id}")
-    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public String cancelReservation(@PathVariable Long id, HttpSession session) {
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.REJECTED);
@@ -199,6 +202,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/user_reservations/{id}")
+    @PreAuthorize("hasRole('CLIENT')")
     public String getAllReservationsByUser(@PathVariable Long id, HttpServletRequest req, Model model) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, id);

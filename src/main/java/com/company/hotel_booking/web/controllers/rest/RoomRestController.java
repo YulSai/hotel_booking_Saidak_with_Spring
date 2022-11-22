@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +47,7 @@ public class RoomRestController {
 
     @LogInvocation
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public Page<RoomDto> getAllRoomsJs(HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPagingRest(req, "id");
         return roomService.findAllPages(pageable);
@@ -54,12 +56,14 @@ public class RoomRestController {
 
     @LogInvocation
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public RoomDto getRoomByIdJs(@PathVariable Long id) {
         return roomService.findById(id);
     }
 
     @LogInvocation
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomDto> createRoom(@RequestBody @Valid RoomDto roomDto, Errors errors) {
         checkErrors(errors);
         RoomDto created = roomService.create(roomDto);
@@ -68,6 +72,7 @@ public class RoomRestController {
 
     @LogInvocation
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomDto> updateRoom(@PathVariable Long id, @RequestBody @Valid RoomDto roomDto, Errors errors) {
         checkErrors(errors);
         roomDto.setId(id);
@@ -77,6 +82,7 @@ public class RoomRestController {
 
     @LogInvocation
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public void deleteRoom(@PathVariable Long id) {
         throw new MethodNotAllowedException (messageSource.

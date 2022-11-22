@@ -41,6 +41,7 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public String getAllRooms(Model model, HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<RoomDto> roomsDtoPage = roomService.findAllPages(pageable);
@@ -58,6 +59,7 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public String getRoomById(@PathVariable Long id, Model model) {
         RoomDto room = roomService.findById(id);
         model.addAttribute("room", room);
@@ -71,14 +73,14 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/create")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createRoomForm() {
         return PagesConstants.PAGE_CREATE_ROOM;
     }
 
     @LogInvocation
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CREATE_ROOM;
@@ -91,7 +93,7 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateRoomForm(@PathVariable Long id, Model model) {
         RoomDto room = roomService.findById(id);
         model.addAttribute("room", room);
@@ -100,7 +102,7 @@ public class RoomController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, Model model, HttpSession session) {
         if (errors.hasErrors()) {
             model.addAttribute("room", roomDto);
@@ -114,7 +116,7 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteRoom(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));

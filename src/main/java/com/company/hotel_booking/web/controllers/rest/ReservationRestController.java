@@ -12,6 +12,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class ReservationRestController {
 
     @LogInvocation
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public Page<ReservationDto> getAllReservations(HttpServletRequest req, HttpSession session) {
         Pageable pageable = pagingUtil.getPagingRest(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
@@ -56,12 +58,14 @@ public class ReservationRestController {
 
     @LogInvocation
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public ReservationDto getReservationById(@PathVariable Long id) {
         return reservationService.findById(id);
     }
 
     @LogInvocation
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
     public ReservationDto createReservation(HttpSession session) {
         UserDto user = (UserDto) session.getAttribute("user");
         LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
@@ -73,6 +77,7 @@ public class ReservationRestController {
 
     @LogInvocation
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ReservationDto updateReservation(@PathVariable Long id, @RequestBody ReservationDto reservation,
                                             @RequestParam String status) {
         reservation.setId(id);
@@ -83,6 +88,7 @@ public class ReservationRestController {
     @LogInvocation
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteReservation(@PathVariable Long id) {
         throw new MethodNotAllowedException(messageSource.
                 getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
@@ -90,6 +96,7 @@ public class ReservationRestController {
 
     @LogInvocation
     @PutMapping("/cancel_reservation/{id}")
+    @PreAuthorize("hasRole('CLIENT')")
     public ReservationDto cancelReservation(@PathVariable Long id, @RequestBody ReservationDto reservation) {
         reservation.setId(id);
         reservation.setStatus(ReservationDto.StatusDto.REJECTED);
@@ -140,6 +147,7 @@ public class ReservationRestController {
 
     @LogInvocation
     @GetMapping("/user_reservations/{id}")
+    @PreAuthorize("hasRole('CLIENT')")
     public Page<ReservationDto> getAllReservationsByUser(@PathVariable Long id, HttpServletRequest req,
                                                          HttpSession session) {
         Pageable pageable = pagingUtil.getPagingRest(req, "id");
