@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,8 +41,8 @@ public class ErrorHandler {
     }
 
     @LogInvocation
-    @GetMapping("/accessDenied")
-    public String errorAccessDenied(Model model) {
+    @GetMapping("/errorAccessDenied")
+    public String errorAccessDenied() {
         return PagesConstants.PAGE_ERROR_ACCESS;
     }
 
@@ -101,5 +102,12 @@ public class ErrorHandler {
         model.addAttribute("message", messageSource
                 .getMessage("msg.data.error", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_ERROR_HANDLER;
+    }
+
+    @LogInvocation
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleAccessDeniedException(AccessDeniedException e, Model model) {
+        return PagesConstants.PAGE_ERROR_ACCESS;
     }
 }
