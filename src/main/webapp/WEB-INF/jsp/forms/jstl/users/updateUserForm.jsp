@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,8 @@
 <p>${requestScope.message}</p>
 <form:form method="post" action="/users/update/${requestScope.user.id}"
            enctype="multipart/form-data" modelAttribute="userDto">
-    <c:if test="${sessionScope.user.role == 'CLIENT'}">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+    <sec:authorize access="hasRole('ROLE_CLIENT')">
         <form:errors path="firstName" cssClass="error-block"/>
         <form:label path="firstName" for="first_name-input"><spring:message code="msg.create.user.first.name"/></form:label>
         <form:input id="first_name-input" path="firstName" type="text" value="${requestScope.user.firstName}"/>
@@ -27,7 +29,11 @@
         <br/>
         <form:errors path="email" cssClass="error-block"/>
         <form:label path="email" for="email-input"><spring:message code="msg.create.user.email"/></form:label>
-        <input id="email-input" name="email" type="email" value="<c:out value="${requestScope.user.email}"/>"/>
+        <form:input id="email-input" path="email" type="email" value="${requestScope.user.email}"/>
+        <br/>
+        <form:errors path="username" cssClass="error-block"/>
+        <label for="username-input"><spring:message code="msg.create.user.username"/></label>
+        <input id="username-input" name="username" type="text" value="<c:out value="${requestScope.user.username}"/>"/>
         <br/>
         <form:input id="password-input" path="password" type="hidden" min="6" value="${requestScope.user.password}"/>
 
@@ -41,7 +47,7 @@
         <input id="avatar_input" name="avatarFile" type="file" accept="image/*"/>
         <br/>
         <input id="role-input-admin" name="role" type="hidden" value="${user.role}"/>
-    </c:if>
+    </sec:authorize>
     <input type="submit" class="btn" value="<spring:message code="msg.update.user.save"/>"/>
 </form:form>
 </body>

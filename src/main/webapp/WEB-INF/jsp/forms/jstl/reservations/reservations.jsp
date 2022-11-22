@@ -2,9 +2,12 @@
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf_token" content="${_csrf.token}"/>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
@@ -16,6 +19,7 @@
 <p>${requestScope.message}</p>
 <table class="first">
     <jsp:include page="../../pagination.jsp"/>
+    <c:if test="${requestScope.rooms} != null">
     <tr>
         <th>#</th>
         <th><spring:message code="msg.user"/></th>
@@ -23,6 +27,7 @@
         <th><spring:message code="msg.status"/></th>
         <th><spring:message code="msg.action"/></th>
     </tr>
+    </c:if>
     <c:forEach items="${requestScope.reservations}" var="reservation" varStatus="counter">
         <tr>
             <td><a href="/reservations/${reservation.id}">${counter.count}</a></td>
@@ -39,14 +44,14 @@
                     <spring:message code="msg.cost"/>${reservation.totalCost} USD
                 </table>
             <td>${reservation.status.toString().toLowerCase()}</td>
-            <c:if test="${sessionScope.user.role == 'ADMIN'}">
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <td><a class="btn" href="/reservations/update/${reservation.id}"> <spring:message code="msg.reservations.update"/></a>
                 </td>
-            </c:if>
-            <c:if test="${sessionScope.user.role == 'CLIENT'}">
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_CLIENT')">
                 <td><a class="btn" href="/reservations/cancel_reservation/${reservation.id}"> <spring:message code="msg.cancel"/></a>
                 </td>
-            </c:if>
+            </sec:authorize>
             </td>
         </tr>
     </c:forEach>

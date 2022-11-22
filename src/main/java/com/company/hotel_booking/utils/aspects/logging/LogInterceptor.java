@@ -1,9 +1,8 @@
 package com.company.hotel_booking.utils.aspects.logging;
 
 import com.company.hotel_booking.utils.exceptions.NotFoundException;
-import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
-import com.company.hotel_booking.utils.exceptions.users.LoginException;
 import com.company.hotel_booking.utils.exceptions.ServiceException;
+import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -33,14 +32,6 @@ public class LogInterceptor {
         String methodName = jp.getSignature().getName();
         Object[] args = jp.getArgs();
         log.debug("Calling a service method " + methodName + " with " + Arrays.toString(args));
-    }
-
-    @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx)",
-            throwing = "e")
-    public void afterThrowingLogin(JoinPoint jp, LoginException e) {
-        String className = jp.getSignature().getDeclaringTypeName();
-        String methodName = jp.getSignature().getName();
-        log.error("Class " + className + " method " + methodName + " error. Exception is " + e);
     }
 
     @AfterThrowing(value = "@annotation(com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx)",

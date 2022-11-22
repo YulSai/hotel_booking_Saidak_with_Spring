@@ -6,10 +6,8 @@ import com.company.hotel_booking.data.repository.UserRepository;
 import com.company.hotel_booking.service.api.UserService;
 import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.service.mapper.UserMapper;
-import com.company.hotel_booking.service.utils.DigestUtil;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ImageUploadingEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.utils.aspects.logging.annotations.LoginEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.NotFoundEx;
 import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import com.company.hotel_booking.utils.constants.PagesConstants;
@@ -23,6 +21,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,11 +36,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    private final UserMapper mapper;
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
-    private final DigestUtil digestUtil;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserMapper mapper;
     private final MessageSource messageSource;
 
     @Override
@@ -58,12 +56,12 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @ServiceEx
     public UserDto create(UserDto userDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new UserAlreadyExistsException(messageSource.getMessage("msg.user.error.create.exists", null,
                     LocaleContextHolder.getLocale()));
         }
-        String hashPassword = digestUtil.hash(userDto.getPassword());
-        userDto.setPassword(hashPassword);
+        userDto.setRole(UserDto.RoleDto.ROLE_CLIENT);
+        userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }
 
@@ -71,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @ServiceEx
     public UserDto update(UserDto userDto) {
-        User existing = userRepository.findByEmail(userDto.getEmail()).orElse(null);
+        User existing = userRepository.findByUsername(userDto.getUsername()).orElse(null);
         if (existing != null && !existing.getId().equals(userDto.getId())) {
             throw new UserAlreadyExistsException(
                     messageSource.getMessage("msg.user.error.update.exists", null,
@@ -81,11 +79,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto findByUsername(String username) {
+        return mapper.toDto(userRepository.findByUsername(username).orElseThrow(LoginException::new));
+    }
+
+    @Override
     @LogInvocationServer
     @ServiceEx
     public UserDto changePassword(UserDto userDto) {
-        String existPassword = userRepository.findById(userDto.getId()).get().getPassword();
-        String hashPassword = digestUtil.hash(userDto.getPassword());
+        User user = userRepository.findById(userDto.getId()).orElse(null);
+        assert user != null;
+        String existPassword = user.getPassword();
+        String hashPassword = userDto.getPassword();
         if (hashPassword.equals(existPassword)) {
             throw new UserAlreadyExistsException(messageSource.getMessage("msg.user.error.new.password", null,
                     LocaleContextHolder.getLocale()));
@@ -119,17 +124,6 @@ public class UserServiceImpl implements UserService {
     public Page<UserDto> findAllPages(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .map(mapper::toDto);
-    }
-
-    @Override
-    @LogInvocationServer
-    @LoginEx
-    public UserDto login(String email, String password) {
-        return mapper.toDto(userRepository.findByEmail(email)
-                .stream()
-                .filter(u -> u.getEmail().equals(email) && u.getPassword().equals(digestUtil.hash(password)))
-                .findFirst()
-                .orElseThrow(LoginException::new));
     }
 
     @Override

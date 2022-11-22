@@ -2,9 +2,12 @@
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf_token" content="${_csrf.token}"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><spring:message code="msg.reservation.title"/></title>
@@ -53,14 +56,14 @@
     </td>
     <td>${requestScope.reservation.totalCost} USD</td>
     <td>${requestScope.reservation.status.toString().toLowerCase()}</td>
-    <c:if test="${sessionScope.user.role == 'ADMIN'}">
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
         <td><a class="btn" href="/reservations/update/${requestScope.reservation.id}"> <spring:message code="msg.update"/></a>
         </td>
-    </c:if>
-    <c:if test="${sessionScope.user.role == 'CLIENT'}">
+    </sec:authorize>
+    <sec:authorize access="hasRole('ROLE_CLIENT')">
         <td><a class="btn" href="/reservations/cancel_reservation/${requestScope.reservation.id}">
             <spring:message code="msg.cancel"/></a></td>
-    </c:if>
+    </sec:authorize>
 </table>
 </body>
 </html>

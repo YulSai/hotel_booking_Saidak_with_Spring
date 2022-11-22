@@ -6,12 +6,12 @@ import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
-import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -38,15 +38,18 @@ public class RoomController {
     private final RoomService roomService;
     private final PagingUtil pagingUtil;
     private final MessageSource messageSource;
-    private final UserRoleUtil userRoleUtil;
 
     @LogInvocation
     @GetMapping("/all")
-    public String getAllRooms(Model model, HttpServletRequest req, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    public String getAllRooms(Model model, HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<RoomDto> roomsDtoPage = roomService.findAllPages(pageable);
         List<RoomDto> rooms = roomsDtoPage.toList();
+        if (rooms.isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.rooms.no.rooms", null,
+                    LocaleContextHolder.getLocale()));
+            return PagesConstants.PAGE_ROOMS;
+        }
         pagingUtil.setTotalPages(req, roomsDtoPage, "rooms/all");
         model.addAttribute("rooms", rooms);
         return PagesConstants.PAGE_ROOMS;
@@ -68,15 +71,15 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/create")
-    public String createRoomForm(HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String createRoomForm() {
         return PagesConstants.PAGE_CREATE_ROOM;
     }
 
     @LogInvocation
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String createRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CREATE_ROOM;
         }
@@ -88,8 +91,8 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    public String updateRoomForm(@PathVariable Long id, Model model, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String updateRoomForm(@PathVariable Long id, Model model) {
         RoomDto room = roomService.findById(id);
         model.addAttribute("room", room);
         return PagesConstants.PAGE_UPDATE_ROOM;
@@ -97,9 +100,10 @@ public class RoomController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, Model model, HttpSession session) {
         if (errors.hasErrors()) {
+            model.addAttribute("room", roomDto);
             return PagesConstants.PAGE_UPDATE_ROOM;
         }
         RoomDto updated = roomService.update(roomDto);
@@ -110,8 +114,8 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    public String deleteRoom(@PathVariable Long id, Model model, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String deleteRoom(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_ERROR_HANDLER;
@@ -130,7 +134,7 @@ public class RoomController {
                                       @RequestParam String capacity, Model model) {
         LocalDate checkIn = LocalDate.parse(check_in);
         LocalDate checkOut = LocalDate.parse(check_out);
-        if (checkOut.equals(checkIn) | checkOut.isBefore(checkIn)) {
+        if (checkOut.equals(checkIn) || checkOut.isBefore(checkIn)) {
             model.addAttribute("message", messageSource
                     .getMessage("msg.incorrect.date", null, LocaleContextHolder.getLocale()));
             return PagesConstants.PAGE_SEARCH_AVAILABLE_ROOMS;

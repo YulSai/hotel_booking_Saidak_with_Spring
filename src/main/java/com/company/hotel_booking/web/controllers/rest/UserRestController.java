@@ -7,7 +7,6 @@ import com.company.hotel_booking.service.dto.UserDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
 import com.company.hotel_booking.utils.exceptions.rest.ValidationException;
 import com.company.hotel_booking.web.controllers.utils.PagingUtil;
-import com.company.hotel_booking.web.controllers.utils.UserRoleUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,12 +41,11 @@ public class UserRestController {
     private final UserService userService;
     private final ReservationService reservationService;
     private final PagingUtil pagingUtil;
-    private final UserRoleUtil userRoleUtil;
 
 
     @LogInvocation
     @GetMapping
-    public Page<UserDto> getAllUsersJs(HttpServletRequest req, HttpSession session) {
+    public Page<UserDto> getAllUsersJs(HttpServletRequest req) {
         Pageable pageable = pagingUtil.getPagingRest(req, "lastName");
         return userService.findAllPages(pageable);
     }
@@ -71,7 +69,7 @@ public class UserRestController {
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto, Errors errors, HttpSession session,
                                               MultipartFile avatarFile) {
         checkErrors(errors);
-        userDto.setRole(UserDto.RoleDto.CLIENT);
+        userDto.setRole(UserDto.RoleDto.ROLE_CLIENT);
         UserDto created = userService.processCreateUser(userDto, avatarFile);
         session.setAttribute("user", created);
         return buildResponseCreated(created);
@@ -81,8 +79,7 @@ public class UserRestController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto, Errors errors,
-                                              MultipartFile avatarFile, HttpSession session) {
-        userRoleUtil.checkUserRoleAdmin(session);
+                                              MultipartFile avatarFile) {
         checkErrors(errors);
         userDto.setId(id);
         UserDto updated = userService.processUserUpdates(userDto, avatarFile);
@@ -93,8 +90,7 @@ public class UserRestController {
     @LogInvocation
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id, HttpSession session) {
-        userRoleUtil.checkUserRoleClient(session);
+    public void deleteUser(@PathVariable Long id) {
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);

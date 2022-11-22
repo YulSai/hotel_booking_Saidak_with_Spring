@@ -1,12 +1,11 @@
 package com.company.hotel_booking.web.errorhandlers;
 
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocation;
-import com.company.hotel_booking.utils.exceptions.ForbiddenException;
+import com.company.hotel_booking.utils.constants.PagesConstants;
 import com.company.hotel_booking.utils.exceptions.NotFoundException;
+import com.company.hotel_booking.utils.exceptions.ServiceException;
 import com.company.hotel_booking.utils.exceptions.users.ImageUploadingException;
 import com.company.hotel_booking.utils.exceptions.users.LoginException;
-import com.company.hotel_booking.utils.exceptions.ServiceException;
-import com.company.hotel_booking.utils.constants.PagesConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -41,6 +40,12 @@ public class ErrorHandler {
     }
 
     @LogInvocation
+    @GetMapping("/accessDenied")
+    public String errorAccessDenied(Model model) {
+        return PagesConstants.PAGE_ERROR_ACCESS;
+    }
+
+    @LogInvocation
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleServiceException(ServiceException e, Model model) {
@@ -63,15 +68,6 @@ public class ErrorHandler {
         model.addAttribute("message", messageSource
                 .getMessage("msg.incorrect.email.password", null, LocaleContextHolder.getLocale()));
         return PagesConstants.PAGE_LOGIN;
-    }
-
-    @LogInvocation
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String handleForbiddenException(ForbiddenException e, Model model) {
-        model.addAttribute("message", messageSource
-                .getMessage("msg.insufficient.rights", null, LocaleContextHolder.getLocale()));
-        return PagesConstants.PAGE_ERROR_HANDLER;
     }
 
     @LogInvocation

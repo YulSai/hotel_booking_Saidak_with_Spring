@@ -3,7 +3,6 @@ package com.company.hotel_booking.service.mapper;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.service.dto.RoomDto;
 import com.company.hotel_booking.utils.aspects.logging.annotations.LogInvocationServer;
-import com.company.hotel_booking.utils.aspects.logging.annotations.ServiceEx;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -20,7 +19,6 @@ public interface RoomMapper {
      * @return object RoomDto
      */
     @LogInvocationServer
-    @ServiceEx
     @Mapping(source = "type", target = "type")
     @Mapping(source = "capacity", target = "capacity")
     @Mapping(source = "status", target = "status")
@@ -33,7 +31,6 @@ public interface RoomMapper {
      * @return object Room
      */
     @LogInvocationServer
-    @ServiceEx
     @Mapping(source = "type", target = "type")
     @Mapping(source = "capacity", target = "capacity")
     @Mapping(source = "status", target = "status")

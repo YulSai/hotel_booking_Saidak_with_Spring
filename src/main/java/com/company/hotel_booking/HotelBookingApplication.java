@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Class Spring configuration and entry-point
+ * Class Spring configuration with entry-point
  */
 @SpringBootApplication
 public class HotelBookingApplication implements WebMvcConfigurer {

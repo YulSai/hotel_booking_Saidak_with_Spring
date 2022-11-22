@@ -14,6 +14,7 @@ public class PagesConstants {
     // Error
     public static final String PAGE_ERROR = "error";
     public static final String PAGE_ERROR_HANDLER = "error_handler";
+    public static final String PAGE_ERROR_ACCESS = "errorAccessDenied";
 
     // Reservation
     public static final String PAGE_RESERVATIONS = "forms/jstl/reservations/reservations";
@@ -28,8 +29,6 @@ public class PagesConstants {
     public static final String PAGE_UPDATE_ROOM = "forms/jstl/rooms/updateRoomForm";
     public static final String PAGE_SEARCH_AVAILABLE_ROOMS = "forms/jstl/reservations/searchAvailableRoomsForm";
     public static final String PAGE_ROOMS_AVAILABLE = "forms/jstl/reservations/roomsAvailable";
-    public static final String PAGE_ROOMS_JS = "forms/rest_js/rooms/rooms_js";
-    public static final String PAGE_ROOM_JS = "forms/rest_js/rooms/room_js";
 
     // User
     public static final String PAGE_USERS = "forms/jstl/users/users";

@@ -2,9 +2,12 @@
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf_token" content="${_csrf.token}"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><spring:message code="msg.users.title"/></title>
@@ -15,6 +18,7 @@
 <p>${requestScope.message}</p>
 <table class="first">
     <jsp:include page="../../pagination.jsp"/>
+    <c:if test="${requestScope.users} != null">
     <tr>
         <th>#</th>
         <th><spring:message code="msg.user.first.name"/></th>
@@ -24,6 +28,7 @@
         <th><spring:message code="msg.user.role"/></th>
         <th><spring:message code="msg.user.status"/></th>
     </tr>
+    </c:if>
     <c:forEach items="${requestScope.users}" var="user" varStatus="counter">
         <tr>
             <td>${counter.count}</td>
@@ -43,5 +48,6 @@
         </tr>
     </c:forEach>
 </table>
+
 </body>
 </html>

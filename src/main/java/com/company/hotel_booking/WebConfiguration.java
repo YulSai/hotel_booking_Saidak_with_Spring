@@ -2,10 +2,8 @@ package com.company.hotel_booking;
 
 
 import com.company.hotel_booking.utils.constants.PagesConstants;
-import com.company.hotel_booking.web.filters.AuthenticationFilter;
 import com.company.hotel_booking.web.interceptors.GeneralInterceptor;
 import com.company.hotel_booking.web.interceptors.MessageInterceptor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +27,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName(PagesConstants.PAGE_INDEX);
+        registry.addViewController("/login").setViewName(PagesConstants.PAGE_LOGIN);
     }
 
     @Bean
@@ -73,14 +72,5 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/**");
         registry.addInterceptor(localeInterceptor());
         registry.addInterceptor(messageInterceptor());
-    }
-
-    @Bean
-    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter() {
-        FilterRegistrationBean registration = new FilterRegistrationBean<>();
-        registration.setFilter(new AuthenticationFilter(messageSource()));
-        registration.addUrlPatterns("/users/*", "/rooms/*", "/reservations/*");
-        registration.setOrder(2);
-        return registration;
     }
 }
