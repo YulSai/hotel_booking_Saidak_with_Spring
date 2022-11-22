@@ -60,7 +60,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     @ServiceEx
     public RoomDto update(RoomDto roomDto) {
-        Room existing = roomRepository.findById((roomDto.getId())).orElse(null);
+        Room existing = roomRepository.findByNumber((roomDto.getNumber())).orElse(null);
         if (existing != null && !existing.getId().equals(roomDto.getId())) {
             throw new RoomAlreadyExistsException(messageSource.getMessage("msg.room.error.update.exists", null,
                     LocaleContextHolder.getLocale()));
