@@ -69,8 +69,8 @@ public class UserDto {
     }
 
     public enum RoleDto implements GrantedAuthority {
-        ROLE_ADMIN,
-        ROLE_CLIENT;
+        ADMIN,
+        CLIENT;
 
         @Override
         public String getAuthority() {

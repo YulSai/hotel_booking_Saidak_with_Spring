@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException(messageSource.getMessage("msg.user.error.create.exists", null,
                     LocaleContextHolder.getLocale()));
         }
-        userDto.setRole(UserDto.RoleDto.ROLE_CLIENT);
+        userDto.setRole(UserDto.RoleDto.CLIENT);
         userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         return mapper.toDto(userRepository.save(mapper.toEntity(userDto)));
     }

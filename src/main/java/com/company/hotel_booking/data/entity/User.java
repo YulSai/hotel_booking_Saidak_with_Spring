@@ -78,8 +78,8 @@ public class User {
     }
 
     public enum Role implements GrantedAuthority {
-        ROLE_ADMIN(1L),
-        ROLE_CLIENT(2L);
+        ADMIN(1L),
+        CLIENT(2L);
 
         private final Long id;
 

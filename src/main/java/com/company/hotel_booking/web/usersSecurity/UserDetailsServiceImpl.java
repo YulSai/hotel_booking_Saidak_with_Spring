@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         final UserDto user = userService.findByUsername(username);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getAuthority()));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getAuthority()));
         return new UserAuthenticated(user.getUsername(), user.getPassword(),
                 grantedAuthorities, user.getId(), user.getFirstName());
     }

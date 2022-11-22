@@ -25,10 +25,10 @@
                value="${requestScope.user.phoneNumber}"/>
         <input id="avatar_input" name="avatar" type="hidden" value="${requestScope.user.avatar}"/>
         <input id="role-input-admin" name="role" type="radio"
-               value="ROLE_ADMIN" ${requestScope.user.role=='ROLE_ADMIN' ? 'checked' : ''}/>
+               value="ADMIN" ${requestScope.user.role=='ADMIN' ? 'checked' : ''}/>
         <label for="role-input-admin"><spring:message code="msg.update.user.admin"/></label>
         <input id="role-input-client" name="role" type="radio"
-               value="ROLE_CLIENT" ${requestScope.user.role=='ROLE_CLIENT' ? 'checked' : ''}/>
+               value="CLIENT" ${requestScope.user.role=='CLIENT' ? 'checked' : ''}/>
         <label for="role-input-client"><spring:message code="msg.update.user.client"/></label>
         <br/>
     <input class="btn" type="submit" value="<spring:message code="msg.update.user.save"/>"/>
