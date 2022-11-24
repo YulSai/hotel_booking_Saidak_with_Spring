@@ -13,7 +13,6 @@ public class PagesConstants {
 
     // Error
     public static final String PAGE_ERROR = "error";
-    public static final String PAGE_ERROR_HANDLER = "error_handler";
     public static final String PAGE_ERROR_ACCESS = "errorAccessDenied";
 
     // Reservation

@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                 .mvcMatchers("/", "/login*", "/error/**", "/rooms/search_available_rooms",
                         "/reservations/booking", "/rooms/rooms_available", "/reservations/clean_booking",
                         "/reservations/delete_booking/**", "/users/create", "/language",
-                        "/css/**", "/js/**", "/images/**").permitAll()
+                        "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/users/create", "/rooms/search_available_rooms",
                         "/rooms/rooms_available", "/reservations/add_booking").permitAll()
 

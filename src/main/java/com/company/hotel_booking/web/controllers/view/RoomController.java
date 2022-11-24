@@ -120,7 +120,7 @@ public class RoomController {
     public String deleteRoom(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
-        return PagesConstants.PAGE_ERROR_HANDLER;
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
