@@ -17,8 +17,7 @@
 <h1 id="title"><spring:message code="msg.available.detail"/></h1>
 <h2>${sessionScope.check_in} - ${sessionScope.check_out}</h2>
 <p>${requestScope.message}</p>
-<table>
-    <jsp:include page="../../pagination.jsp"/>
+<table class="first">
     <tr>
         <th>#</th>
         <th><spring:message code="msg.number"/></th>
