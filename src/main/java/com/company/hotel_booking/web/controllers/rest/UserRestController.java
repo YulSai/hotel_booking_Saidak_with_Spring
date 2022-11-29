@@ -72,7 +72,6 @@ public class UserRestController {
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto, Errors errors, HttpSession session,
                                               MultipartFile avatarFile) {
         checkErrors(errors);
-        userDto.setRole(UserDto.RoleDto.CLIENT);
         UserDto created = userService.processCreateUser(userDto, avatarFile);
         session.setAttribute("user", created);
         return buildResponseCreated(created);
@@ -80,12 +79,11 @@ public class UserRestController {
 
     @LogInvocation
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto, Errors errors,
                                               MultipartFile avatarFile) {
         checkErrors(errors);
-        userDto.setId(id);
         UserDto updated = userService.processUserUpdates(userDto, avatarFile);
         return buildResponseCreated(updated);
 
