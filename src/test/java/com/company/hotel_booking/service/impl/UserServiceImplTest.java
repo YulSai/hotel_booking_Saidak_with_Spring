@@ -40,6 +40,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,8 +84,10 @@ class UserServiceImplTest {
         UserDto actual = userService.findById(TestConstants.USER_ID);
 
         assertEquals(userDto, actual);
+
         verify(userRepository, times(1)).findById(TestConstants.USER_ID);
         verify(mapper, times(1)).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -92,7 +95,9 @@ class UserServiceImplTest {
         when(userRepository.findById(TestConstants.USER_ID)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.findById(TestConstants.USER_ID));
+
         verify(mapper, never()).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -106,7 +111,9 @@ class UserServiceImplTest {
 
         Page<UserDto> actual = userService.findAllPages(pageable);
         assertNotNull(actual);
+
         verify(userRepository, times(1)).findAll(pageable);
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -119,9 +126,11 @@ class UserServiceImplTest {
         UserDto actual = userService.create(userDto);
 
         assertEquals(userDto, actual);
+
         verify(userRepository, times(1)).save(any(User.class));
         verify(mapper, times(1)).toEntity(any(UserDto.class));
         verify(mapper, times(1)).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -129,7 +138,9 @@ class UserServiceImplTest {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
 
         assertThrows(UserAlreadyExistsException.class, () -> userService.create(userDto));
+
         verify(userRepository, never()).save(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -149,9 +160,11 @@ class UserServiceImplTest {
 
         UserDto actual = userService.update(userDto);
         assertEquals(userDto, actual);
+
         verify(userRepository, times(1)).save(any(User.class));
         verify(mapper, times(1)).toEntity(any(UserDto.class));
         verify(mapper, times(1)).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -164,7 +177,9 @@ class UserServiceImplTest {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(existing));
 
         assertThrows(UserAlreadyExistsException.class, () -> userService.update(userDto));
+
         verify(userRepository, never()).save(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -177,8 +192,11 @@ class UserServiceImplTest {
         mockMapperToEntity();
 
         userService.delete(userDto);
+
+        verify(userRepository, times(1)).findById(user.getId());
         verify(userRepository, times(1)).delete(user);
         verify(mapper, times(1)).toEntity(any(UserDto.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -192,7 +210,10 @@ class UserServiceImplTest {
 
         when(reservationRepository.findByUserId(userDto.getId())).thenReturn(data);
         userService.delete(userDto);
+
         verify(userRepository, times(1)).block(user.getId());
+        verify(userRepository, times(1)).checkBlock(user.getId());
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -202,7 +223,9 @@ class UserServiceImplTest {
 
         when(userRepository.findById(user.getId())).thenReturn(Optional.ofNullable(user));
         assertThrows(UserDeleteException.class, () -> userService.delete(userDto));
+
         verify(userRepository, never()).delete(user);
+        verify(userRepository, times(1)).findById(user.getId());
     }
 
     @Test
@@ -219,6 +242,8 @@ class UserServiceImplTest {
         when(userRepository.checkBlock(userDto.getId())).thenReturn(Optional.ofNullable(user));
 
         assertThrows(UserDeleteException.class, () -> userService.delete(userDto));
+
+        verifyNoMoreInteractions(userRepository);
     }
 
 
@@ -230,8 +255,10 @@ class UserServiceImplTest {
         UserDto actual = userService.findByUsername(TestConstants.USER_USERNAME);
 
         assertEquals(userDto, actual);
+
         verify(userRepository, times(1)).findByUsername(TestConstants.USER_USERNAME);
         verify(mapper, times(1)).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -239,7 +266,9 @@ class UserServiceImplTest {
         when(userRepository.findByUsername(TestConstants.USER_USERNAME)).thenReturn(Optional.empty());
 
         assertThrows(LoginException.class, () -> userService.findByUsername(TestConstants.USER_USERNAME));
+
         verify(mapper, never()).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -257,9 +286,11 @@ class UserServiceImplTest {
 
         UserDto actual = userService.changePassword(userDto);
         assertEquals(userDto, actual);
+
         verify(userRepository, times(1)).save(any(User.class));
         verify(mapper, times(1)).toEntity(any(UserDto.class));
         verify(mapper, times(1)).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -273,7 +304,9 @@ class UserServiceImplTest {
         userDto.setPassword("Updated");
 
         assertThrows(UserAlreadyExistsException.class, () -> userService.changePassword(userDto));
+
         verify(userRepository, never()).save(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -289,9 +322,12 @@ class UserServiceImplTest {
         UserDto created = userService.processCreateUser(this.userDto, avatarFile);
 
         assertEquals(userDto, created);
+
         verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).findByUsername(userDto.getUsername());
         verify(mapper, times(1)).toEntity(any(UserDto.class));
         verify(mapper, times(1)).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -307,8 +343,11 @@ class UserServiceImplTest {
         UserDto updated = userService.processUserUpdates(this.userDto, avatarFile);
 
         assertEquals(userDto, updated);
+
         verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).findByUsername(userDto.getUsername());
         verify(mapper, times(1)).toEntity(any(UserDto.class));
         verify(mapper, times(1)).toDto(any(User.class));
+        verifyNoMoreInteractions(userRepository);
     }
 }
