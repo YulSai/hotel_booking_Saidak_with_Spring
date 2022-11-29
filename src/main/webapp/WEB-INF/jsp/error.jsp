@@ -13,8 +13,7 @@
 <h1><spring:message code="msg.main.error"/></h1>
 <h4><c:out value="${message}"/></h4>
 <c:if test="${message == null}">
-    <h4><spring:message code="msg.status"/>: <c:out value="${status}"/></h4>
-    <h4><spring:message code="msg.main.error"/>: <c:out value="${error}"/></h4>
+    <h4><spring:message code="msg.main.no.such.page"/></h4>
 </c:if>
 </body>
 </html>

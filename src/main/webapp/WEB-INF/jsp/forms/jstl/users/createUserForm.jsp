@@ -46,6 +46,7 @@
     <input id="avatar_input" name="avatarFile" type="file" accept="image/*"/>
     <br/>
     <form:button class="btn"><spring:message code="msg.user.register"/></form:button>
+    <button class="btn" type="button"><a href="/}"><spring:message code="msg.cancel"/></a></button>
 </form:form>
 </body>
 </html>

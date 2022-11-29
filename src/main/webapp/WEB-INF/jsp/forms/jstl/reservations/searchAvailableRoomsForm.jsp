@@ -41,6 +41,7 @@
     </select>
     <br/>
     <input class="btn" type="submit" value="<spring:message code="msg.search.search"/>"/>
+    <button class="btn" type="button"><a href="/"><spring:message code="msg.cancel"/></a></button>
 </form>
 </body>
 </html>

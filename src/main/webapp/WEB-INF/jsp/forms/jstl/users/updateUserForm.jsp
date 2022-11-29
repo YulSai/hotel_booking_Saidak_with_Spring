@@ -46,9 +46,11 @@
         <input id="avatar_input" name="avatar" type="hidden" value="${requestScope.user.avatar}"/>
         <input id="avatar_input" name="avatarFile" type="file" accept="image/*"/>
         <br/>
-        <input id="role-input-admin" name="role" type="hidden" value="${user.role}"/>
+        <input id="role-input" name="role" type="hidden" value="${user.role}"/>
     </sec:authorize>
     <input type="submit" class="btn" value="<spring:message code="msg.update.user.save"/>"/>
+    <button class="btn" type="button"><a href="/users/${requestScope.user.id}">
+        <spring:message code="msg.cancel"/></a></button>
 </form:form>
 </body>
 </html>

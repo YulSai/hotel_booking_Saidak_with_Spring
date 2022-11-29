@@ -27,6 +27,8 @@
         <form:label path="password" for="password-input"><spring:message code="msg.create.user.password"/></form:label>
         <form:input id="password-input" path="password" type="password" min="6"/>
     <input class="btn" type="submit" value="<spring:message code="msg.update.user.save"/>"/>
+    <button class="btn" type="button"><a href="/users/${requestScope.user.id}">
+        <spring:message code="msg.cancel"/></a></button>
 </form:form>
 </body>
 </html>

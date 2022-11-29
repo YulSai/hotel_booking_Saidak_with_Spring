@@ -23,6 +23,8 @@
     </select>
     <br/>
     <input class="btn" type="submit" value="<spring:message code="msg.update.status"/>"/>
+    <button class="btn" type="button"><a href="/reservations/${requestScope.reservation.id}">
+        <spring:message code="msg.cancel"/></a></button>
 </form>
 </body>
 </html>

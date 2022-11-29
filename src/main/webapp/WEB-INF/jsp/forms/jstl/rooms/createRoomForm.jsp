@@ -49,6 +49,8 @@
     <form:input id="price-input" path="price" type="text"/>
     <br/>
     <form:button class="btn"><spring:message code="msg.create.new.room.register"/></form:button>
+    <button class="btn" type="button"><a href="/"><spring:message code="msg.cancel"/></a></button>
+
 </form:form>
 </body>
 </html>
