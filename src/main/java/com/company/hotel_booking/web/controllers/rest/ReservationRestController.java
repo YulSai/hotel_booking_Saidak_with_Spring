@@ -45,20 +45,15 @@ public class ReservationRestController {
 
     @LogInvocation
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<ReservationDto> getAllReservations(HttpServletRequest req, HttpSession session) {
         Pageable pageable = pagingUtil.getPagingRest(req, "id");
-        Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
-        UserDto user = (UserDto) session.getAttribute("user");
-        if ("CLIENT".equals(user.getRole().toString())) {
-            reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, user.getId());
-        }
-        return reservationsDtoPage;
+        return reservationService.findAllPages(pageable);
     }
 
     @LogInvocation
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ReservationDto getReservationById(@PathVariable Long id) {
         return reservationService.findById(id);
     }

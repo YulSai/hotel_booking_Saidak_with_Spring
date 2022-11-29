@@ -32,6 +32,8 @@
         <label for="role-input-client"><spring:message code="msg.update.user.client"/></label>
         <br/>
     <input class="btn" type="submit" value="<spring:message code="msg.update.user.save"/>"/>
+    <button class="btn" type="button"><a href="/users/${requestScope.user.id}">
+        <spring:message code="msg.cancel"/></a></button>
 </form:form>
 </body>
 </html>

@@ -51,7 +51,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleServiceException(ServiceException e, Model model) {
         model.addAttribute("message", e.getMessage());
-        return PagesConstants.PAGE_ERROR_HANDLER;
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
@@ -59,7 +59,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNotFoundException(NotFoundException e, Model model) {
         model.addAttribute("message", e.getMessage());
-        return PagesConstants.PAGE_ERROR_HANDLER;
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
@@ -76,7 +76,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleImageUploadingException(ImageUploadingException e, Model model) {
         model.addAttribute("message", e.getMessage());
-        return PagesConstants.PAGE_ERROR_HANDLER;
+        return PagesConstants.PAGE_ERROR;
     }
 
     @ExceptionHandler
@@ -84,7 +84,7 @@ public class ErrorHandler {
     public String handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.incorrect.format.url", null, LocaleContextHolder.getLocale()));
-        return PagesConstants.PAGE_ERROR_HANDLER;
+        return PagesConstants.PAGE_ERROR;
     }
 
     @ExceptionHandler
@@ -92,7 +92,7 @@ public class ErrorHandler {
     public String handleNumberFormatException(NumberFormatException e, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.incorrect.format.url", null, LocaleContextHolder.getLocale()));
-        return PagesConstants.PAGE_ERROR_HANDLER;
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
@@ -101,13 +101,13 @@ public class ErrorHandler {
     public String handleRuntimeException(RuntimeException e, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.data.error", null, LocaleContextHolder.getLocale()));
-        return PagesConstants.PAGE_ERROR_HANDLER;
+        return PagesConstants.PAGE_ERROR;
     }
 
     @LogInvocation
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String handleAccessDeniedException(AccessDeniedException e, Model model) {
+    public String handleAccessDeniedException(AccessDeniedException e) {
         return PagesConstants.PAGE_ERROR_ACCESS;
     }
 }

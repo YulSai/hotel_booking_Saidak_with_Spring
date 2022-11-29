@@ -56,15 +56,15 @@
 </table>
 <ul>
     <sec:authorize access="hasRole('ROLE_CLIENT')">
-        <li><a class="btn" href="/users/update/${requestScope.user.id}">
+        <li><a class="btn" href="/users/update/${user.id}">
             <spring:message code="msg.user.update"/></a></li>
         <li><a class="btn" href="/users/change_password/${user.id}"> <spring:message
                 code="msg.user.change.password"/></a></li>
     </sec:authorize>
     <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <li><a class="btn" href="/users/update_role/${requestScope.user.id}">
+        <li><a class="btn" href="/users/update_role/${user.id}">
             <spring:message code="msg.user.update.role"/></a></li>
-        <li><a class="btn" href="/users/delete/${requestScope.user.id}"> <spring:message code="msg.user.delete"/></a></li>
+        <li><a class="btn" href="/users/delete/${user.id}"> <spring:message code="msg.user.delete"/></a></li>
     </sec:authorize>
 </ul>
 </body>

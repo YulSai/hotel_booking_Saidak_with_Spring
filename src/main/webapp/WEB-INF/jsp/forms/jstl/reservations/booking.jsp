@@ -8,6 +8,7 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <meta name="_csrf_token" content="${_csrf.token}"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/tables.css">
     <title><spring:message code="msg.booking.title"/></title>
 </head>
 <body>
@@ -17,7 +18,7 @@
     <h2><spring:message code="msg.booking.no.booking"/></h2>
 </c:if>
 <c:if test="${requestScope.booking != null}">
-    <table>
+    <table class="first">
         <tr>
             <th><spring:message code="msg.items"/></th>
             <th><spring:message code="msg.price"/>USD</th>
@@ -40,10 +41,11 @@
         <tr>
             <td colspan="3"><spring:message code="msg.cost"/>${requestScope.booking.totalCost} USD</td>
         </tr>
-
     </table>
-    <a href="/reservations/create"><input type="submit" class="btn" value="<spring:message code="msg.booking.reserve"/>"></a>
-    <a href="/reservations/clean_booking"><input type="submit" class="btn" value="<spring:message code="msg.booking.clean"/>"></a>
+    <a href="/reservations/create"><input type="submit" class="btn"
+                                          value="<spring:message code="msg.booking.reserve"/>"></a>
+    <a href="/reservations/clean_booking"><input type="submit" class="btn"
+                                                 value="<spring:message code="msg.booking.clean"/>"></a>
 </c:if>
 </body>
 </html>

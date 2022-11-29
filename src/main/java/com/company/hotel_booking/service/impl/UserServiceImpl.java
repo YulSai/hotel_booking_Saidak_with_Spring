@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService {
     @LogInvocationServer
     @NotFoundEx
     public UserDto findById(Long id) {
-        return mapper.toDto(userRepository.findById(id)
-                .orElseThrow(() ->
+        return mapper.toDto(userRepository.findById(id).orElseThrow(() ->
                 new UserNotFoundException(messageSource.getMessage("msg.user.error.find.by.id", null,
                         LocaleContextHolder.getLocale()))));
     }

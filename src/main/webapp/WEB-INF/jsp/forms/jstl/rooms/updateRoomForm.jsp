@@ -48,6 +48,8 @@
     <form:input id="price-input" path="price" type="text" value="${requestScope.room.price}"/>
     <br/>
     <input class="btn" type="submit" value="<spring:message code="msg.update"/>"/>
+    <button class="btn" type="button"><a href="/rooms/${requestScope.room.id}">
+        <spring:message code="msg.cancel"/></a></button>
 </form:form>
 </body>
 </html>

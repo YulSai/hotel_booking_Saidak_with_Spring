@@ -31,7 +31,6 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final RoomMapper mapper;
-
     private final MessageSource messageSource;
 
     @Override

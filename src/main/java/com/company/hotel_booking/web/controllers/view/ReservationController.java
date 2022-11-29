@@ -44,30 +44,16 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
-    public String getAllReservations(HttpServletRequest req, Model model) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getAllReservationsByAdmin(HttpServletRequest req, Model model) {
         Pageable pageable = pagingUtil.getPaging(req, "id");
         Page<ReservationDto> reservationsDtoPage = reservationService.findAllPages(pageable);
         List<ReservationDto> reservations = reservationsDtoPage.toList();
-        if (reservations.isEmpty()) {
-            model.addAttribute("message", messageSource.getMessage("msg.reservations.no", null,
-                    LocaleContextHolder.getLocale()));
-            return PagesConstants.PAGE_RESERVATIONS;
-        }
-
-        UserDto user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
-                .getName());
-        if ("ROLE_CLIENT".equals(user.getRole().toString())) {
-            reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, user.getId());
-            reservations = reservationsDtoPage.toList();
-        }
-
         if (reservations.isEmpty()) {
             model.addAttribute("message",
                     messageSource.getMessage("msg.empty", null, LocaleContextHolder.getLocale()));
             return PagesConstants.PAGE_RESERVATIONS;
         }
-
         pagingUtil.setTotalPages(req, reservationsDtoPage, "reservations/all");
         model.addAttribute("reservations", reservations);
         return PagesConstants.PAGE_RESERVATIONS;
@@ -75,7 +61,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','CLIENT')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getReservationById(@PathVariable Long id, Model model) {
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
@@ -88,11 +74,12 @@ public class ReservationController {
     public String createReservation(HttpSession session) {
         UserDto user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
                 .getName());
-        LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
-        LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
+        String check_in = (String) session.getAttribute("check_in");
+        String check_out = (String) session.getAttribute("check_out");
         @SuppressWarnings("unchecked")
         Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
-        ReservationDto created = reservationService.processReservationCreation(booking, user, checkIn, checkOut);
+        ReservationDto created = reservationService.processReservationCreation(booking, user, LocalDate.parse(check_in),
+                LocalDate.parse(check_out));
         session.removeAttribute("booking");
         session.setAttribute("message", messageSource
                 .getMessage("msg.reservation.created", null, LocaleContextHolder.getLocale()));
@@ -101,7 +88,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateReservationForm(@PathVariable Long id, Model model) {
         ReservationDto reservation = reservationService.findById(id);
         model.addAttribute("reservation", reservation);
@@ -110,7 +97,7 @@ public class ReservationController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateReservation(@PathVariable Long id, @RequestParam String status, HttpSession session) {
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.valueOf(status.toUpperCase()));
@@ -123,7 +110,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteReservation(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
@@ -132,7 +119,7 @@ public class ReservationController {
 
     @LogInvocation
     @GetMapping("/cancel_reservation/{id}")
-    @PreAuthorize("hasAuthority('CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public String cancelReservation(@PathVariable Long id, HttpSession session) {
         ReservationDto reservation = reservationService.findById(id);
         reservation.setStatus(ReservationDto.StatusDto.REJECTED);
@@ -170,8 +157,10 @@ public class ReservationController {
         if (booking == null) {
             return PagesConstants.PAGE_BOOKING;
         } else {
-            LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
-            LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
+            String check_in = (String) session.getAttribute("check_in");
+            String check_out = (String) session.getAttribute("check_out");
+            LocalDate checkIn = LocalDate.parse(check_in);
+            LocalDate checkOut = LocalDate.parse(check_out);
             ReservationDto processed = reservationService.processBooking(booking, null, checkIn, checkOut);
             model.addAttribute("booking", processed);
             return PagesConstants.PAGE_BOOKING;
@@ -188,8 +177,10 @@ public class ReservationController {
     @LogInvocation
     @GetMapping("/delete_booking/{id}")
     public String deleteBooking(HttpSession session, @PathVariable Long id) {
-        LocalDate checkIn = (LocalDate) session.getAttribute("check_in");
-        LocalDate checkOut = (LocalDate) session.getAttribute("check_out");
+        String check_in = (String) session.getAttribute("check_in");
+        String check_out = (String) session.getAttribute("check_out");
+        LocalDate checkIn = LocalDate.parse(check_in);
+        LocalDate checkOut = LocalDate.parse(check_out);
 
         @SuppressWarnings("unchecked")
         Map<Long, Long> booking = (Map<Long, Long>) session.getAttribute("booking");
@@ -204,23 +195,18 @@ public class ReservationController {
     @GetMapping("/user_reservations/{id}")
     @PreAuthorize("hasRole('CLIENT')")
     public String getAllReservationsByUser(@PathVariable Long id, HttpServletRequest req, Model model) {
+        UserDto user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
+                .getName());
         Pageable pageable = pagingUtil.getPaging(req, "id");
-        Page<ReservationDto> reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, id);
+        Page<ReservationDto> reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, user.getId());
         List<ReservationDto> reservations = reservationsDtoPage.toList();
         if (reservations.isEmpty()) {
             model.addAttribute("message", messageSource
                     .getMessage("msg.reservations.no", null, LocaleContextHolder.getLocale()));
             return PagesConstants.PAGE_RESERVATIONS;
-        } else {
-            UserDto user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication()
-                    .getName());
-            if ("ROLE_CLIENT".equals(user.getRole().toString())) {
-                reservationsDtoPage = reservationService.findAllPagesByUsers(pageable, user.getId());
-                reservations = reservationsDtoPage.toList();
-            }
-            pagingUtil.setTotalPages(req, reservationsDtoPage, "reservations/user_reservations");
-            model.addAttribute("reservations", reservations);
-            return PagesConstants.PAGE_RESERVATIONS;
         }
+        pagingUtil.setTotalPages(req, reservationsDtoPage, "reservations/user_reservations");
+        model.addAttribute("reservations", reservations);
+        return PagesConstants.PAGE_RESERVATIONS;
     }
 }

@@ -40,7 +40,7 @@ public class User {
     private String username;
 
     @Column(name = "password")
-   // @ToString.Exclude
+    @ToString.Exclude
     private String password;
 
     @Column(name = "first_name")
