@@ -73,14 +73,14 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/create")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createRoomForm() {
         return PagesConstants.PAGE_CREATE_ROOM;
     }
 
     @LogInvocation
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, HttpSession session) {
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CREATE_ROOM;
@@ -93,7 +93,7 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateRoomForm(@PathVariable Long id, Model model) {
         RoomDto room = roomService.findById(id);
         model.addAttribute("room", room);
@@ -102,7 +102,7 @@ public class RoomController {
 
     @LogInvocation
     @PostMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateRoom(@ModelAttribute @Valid RoomDto roomDto, Errors errors, Model model, HttpSession session) {
         if (errors.hasErrors()) {
             model.addAttribute("room", roomDto);
@@ -116,7 +116,7 @@ public class RoomController {
 
     @LogInvocation
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteRoom(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageSource
                 .getMessage("msg.delete.not.available", null, LocaleContextHolder.getLocale()));
@@ -151,19 +151,19 @@ public class RoomController {
             session.setAttribute("rooms_available", roomsAvailable);
             session.setAttribute("check_in", checkIn);
             session.setAttribute("check_out", checkOut);
-            return PagesConstants.PAGE_ROOMS_AVAILABLE;
+            return "redirect:/rooms/rooms_available";
         }
     }
 
     @LogInvocation
     @GetMapping("/rooms_available")
-    public String getAvailableRoomR() {
+    public String getAvailableRoom() {
         return PagesConstants.PAGE_ROOMS_AVAILABLE;
     }
 
     @LogInvocation
     @PostMapping("/rooms_available")
-    public String getAvailableRoom() {
-        return PagesConstants.PAGE_ROOMS_AVAILABLE;
+    public String receiveAvailableRoom() {
+        return "redirect:/rooms/rooms_available";
     }
 }
