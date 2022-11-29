@@ -12,7 +12,8 @@ public class TestConstants {
     public static final String USER_LASTNAME = "Test";
     public static final String USER_EMAIL = "maxim_test@test.com";
     public static final String USER_PHONE_NUMBER = "+48511906624";
-    public static final String USER_ROLE = "ADMIN";
+    public static final String USER_ROLE_ADMIN = "ADMIN";
+    public static final String USER_ROLE_CLIENT = "CLIENT";
     public static final String USER_AVATAR = "avatar_test.png";
     public static final boolean USER_BLOCK = false;
 

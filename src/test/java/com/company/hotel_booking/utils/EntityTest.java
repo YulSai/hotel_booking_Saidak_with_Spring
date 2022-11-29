@@ -5,6 +5,9 @@ import com.company.hotel_booking.data.entity.ReservationInfo;
 import com.company.hotel_booking.data.entity.Room;
 import com.company.hotel_booking.data.entity.User;
 
+/**
+ * Class with test values Entity entities
+ */
 public class EntityTest {
 
     public static User getExpectedUserWithoutId() {
@@ -15,7 +18,7 @@ public class EntityTest {
         user.setLastName(TestConstants.USER_LASTNAME);
         user.setEmail(TestConstants.USER_EMAIL);
         user.setPhoneNumber(TestConstants.USER_PHONE_NUMBER);
-        user.setRole(User.Role.valueOf(TestConstants.USER_ROLE));
+        user.setRole(User.Role.valueOf(TestConstants.USER_ROLE_ADMIN));
         user.setAvatar(TestConstants.USER_AVATAR);
         user.setBlock(TestConstants.USER_BLOCK);
         return user;

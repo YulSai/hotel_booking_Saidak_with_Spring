@@ -33,7 +33,7 @@ public class PagesConstants {
     public static final String PAGE_USERS = "forms/jstl/users/users";
     public static final String PAGE_USER = "forms/jstl/users/userInfo";
     public static final String PAGE_CREATE_USER = "forms/jstl/users/createUserForm";
-    public static final String PAGE_UPDATE_USERS = "forms/jstl/users/updateUserForm";
+    public static final String PAGE_UPDATE_USER = "forms/jstl/users/updateUserForm";
     public static final String PAGE_UPDATE_USERS_ROLE = "forms/jstl/users/updateUserRoleForm";
     public static final String PAGE_DELETE_USER = "forms/jstl/users/deleteUser";
     public static final String PAGE_CHANGE_PASSWORD = "forms/jstl/users/changePasswordForm";
