@@ -44,6 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+/**
+ * Class with tests for RoomController
+ */
 @WebMvcTest(controllers = RoomController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @ExtendWith(MockitoExtension.class)
 class RoomControllerTest {
@@ -88,7 +91,7 @@ class RoomControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         model().attribute("message", messageSource.getMessage("msg.rooms.no.rooms", null,
-                                        LocaleContextHolder.getLocale())),
+                                LocaleContextHolder.getLocale())),
                         view().name(PagesConstants.PAGE_ROOMS),
                         forwardedUrl("/WEB-INF/jsp/forms/jstl/rooms/rooms.jsp"));
 

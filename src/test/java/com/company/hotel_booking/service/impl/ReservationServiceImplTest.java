@@ -44,6 +44,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Class with tests for ReservationServiceImpl
+ */
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceImplTest {
     private ReservationService reservationService;
@@ -78,7 +81,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void getReservationPositive() {
+    void whenFindExitingReservationById_thenReturnReservation() {
         when(reservationRepository.findById(TestConstants.RESERVATION_ID)).thenReturn(Optional.of(reservation));
         mockMapperToDto();
 
@@ -90,7 +93,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void getReservationNotFound() {
+    void whenFindNonExitingReservationById_thenThrowException() {
         when(reservationRepository.findById(TestConstants.RESERVATION_ID)).thenReturn(Optional.empty());
 
         assertThrows(ReservationNotFoundException.class,
@@ -99,7 +102,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void getAllReservationPositive() {
+    void whenFindAllReservations_thenReturnReservations() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Reservation> pageReservation = new PageImpl<>(new ArrayList<>());
         Page<ReservationDto> pageReservationDto = new PageImpl<>(new ArrayList<>());
@@ -113,7 +116,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void createReservationPositive() {
+    void whenCreateNewReservation_thenReturnCreatedReservation() {
         mockMapperToEntity();
         when(reservationRepository.save(reservation)).thenReturn(reservation);
         mockMapperToDto();
@@ -127,7 +130,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void createReservationReservationServiceException() {
+    void whenCreateReservationError_thenThrowException() {
         mockMapperToEntity();
         when(reservationRepository.save(reservation)).thenReturn(null);
         when(mapper.toDto(null)).thenReturn(null);
@@ -138,7 +141,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void updateReservationPositive() {
+    void whenUpdateReservation_thenReturnUpdatedReservation() {
         reservation = EntityTest.getExpectedReservationWithId();
         reservationDto = DtoTest.getExpectedReservationWithId();
         mockMapperToEntity();
@@ -157,7 +160,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void updateReservationReservationServiceException() {
+    void whenUpdateReservationError_thenThrowException() {
         mockMapperToEntity();
         when(reservationRepository.save(reservation)).thenReturn(null);
         when(mapper.toDto(null)).thenReturn(null);
@@ -171,7 +174,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void deleteReservationPositive() {
+    void whenDeleteReservation_thenReservationIsDeleted() {
         reservation = EntityTest.getExpectedReservationWithId();
         reservationDto = DtoTest.getExpectedReservationWithId();
 
@@ -184,7 +187,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void deleteReservationReservationDeleteException() {
+    void whenDeleteReservation_thenThrowException() {
         reservation = EntityTest.getExpectedReservationWithId();
         reservationDto = DtoTest.getExpectedReservationWithId();
 
@@ -194,7 +197,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void getAllReservationByUserPositive() {
+    void whenFindAllReservationsByUser_thenReturnReservationsByUserWithPageable() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Reservation> pageReservation = new PageImpl<>(new ArrayList<>());
         Page<ReservationDto> pageReservationDto = new PageImpl<>(new ArrayList<>());
@@ -209,7 +212,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void getAllByUserPositive() {
+    void whenFindReservationsByUser_thenReturnReservationsByUser() {
         List<Reservation> pageReservation = new ArrayList<>();
         List<ReservationDto> pageReservationDto = new ArrayList<>();
 
@@ -223,7 +226,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void processReservationCreationPositive() {
+    void whenProcessReservationCreation_thenReturnCreatedReservation() {
         UserDto userDto = DtoTest.getExpectedUserWithId();
         Room room = reservation.getDetails().get(0).getRoom();
         RoomDto roomDto = reservationDto.getDetails().get(0).getRoom();

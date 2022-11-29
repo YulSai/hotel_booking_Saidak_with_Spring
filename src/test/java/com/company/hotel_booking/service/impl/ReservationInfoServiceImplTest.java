@@ -36,6 +36,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Class with tests for ReservationInfoServiceImpl
+ */
 @ExtendWith(MockitoExtension.class)
 class ReservationInfoServiceImplTest {
     private ReservationInfoService reservationInfoService;
@@ -65,7 +68,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void getReservationInfoPositive() {
+    void whenFindReservationInfoById_thenReturnReservationInfo() {
         when(reservationInfoRepository.findById(TestConstants.RESERVATION_INFO_ID)).thenReturn(Optional.of(info));
         mockMapperToDto();
 
@@ -77,7 +80,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void getReservationInfoNotFound() {
+    void whenFindNonExitingReservationInfoById_thenThrowException() {
         when(reservationInfoRepository.findById(TestConstants.RESERVATION_INFO_ID)).thenReturn(Optional.empty());
 
         assertThrows(ReservationInfoNotFoundException.class,
@@ -86,7 +89,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void getAllReservationInfoPositive() {
+    void whenFindAllReservationInfos_thenReturnReservationsInfos() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<ReservationInfo> pageRoom = new PageImpl<>(new ArrayList<>());
         Page<ReservationInfoDto> pageRoomDto = new PageImpl<>(new ArrayList<>());
@@ -100,7 +103,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void createReservationInfoPositive() {
+    void whenCreateNewReservationInfo_thenReturnCreatedReservationInfo() {
         mockMapperToEntity();
         when(reservationInfoRepository.save(info)).thenReturn(info);
         mockMapperToDto();
@@ -114,7 +117,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void createReservationInfoReservationInfoServiceException() {
+    void whenCreateReservationInfoError_thenThrowException() {
         mockMapperToEntity();
         when(reservationInfoRepository.save(info)).thenReturn(null);
         when(mapper.toDto(null)).thenReturn(null);
@@ -125,7 +128,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void updateReservationInfoPositive() {
+    void whenUpdateReservationInfo_thenReturnUpdatedReservationInfo() {
         info = EntityTest.getExpectedReservationInfoWithId();
         infoDto = DtoTest.getExpectedReservationInfoWithId();
         mockMapperToEntity();
@@ -146,7 +149,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void updateReservationInfoReservationInfoServiceException() {
+    void whenUpdateReservationInfoError_thenThrowException() {
         mockMapperToEntity();
         when(reservationInfoRepository.save(info)).thenReturn(null);
         when(mapper.toDto(null)).thenReturn(null);
@@ -162,7 +165,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void deleteReservationInfoPositive() {
+    void whenDeleteReservationInfo_thenReservationInfoIsDeleted() {
         info = EntityTest.getExpectedReservationInfoWithId();
         infoDto = DtoTest.getExpectedReservationInfoWithId();
 
@@ -175,7 +178,7 @@ class ReservationInfoServiceImplTest {
     }
 
     @Test
-    void deleteReservationInfoReservationInfoDeleteException() {
+    void whenDeleteReservationInfo_thenThrowException() {
         info = EntityTest.getExpectedReservationInfoWithId();
         infoDto = DtoTest.getExpectedReservationInfoWithId();
 

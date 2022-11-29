@@ -43,6 +43,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+/**
+ * Class with tests for UserServiceImpl
+ */
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
     private UserService userService;
@@ -77,7 +80,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserPositive() {
+    void whenFindExitingUserById_thenReturnUser() {
         when(userRepository.findById(TestConstants.USER_ID)).thenReturn(Optional.of(user));
         mockMapperToDto();
 
@@ -91,7 +94,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserNotFound() {
+    void whenFindNonExitingUserById_thenThrowException() {
         when(userRepository.findById(TestConstants.USER_ID)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.findById(TestConstants.USER_ID));
@@ -101,7 +104,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getAllUserPositive() {
+    void whenFindAllUsers_thenReturnUsers() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<User> pageUser = new PageImpl<>(new ArrayList<>());
         Page<UserDto> pageUserDto = new PageImpl<>(new ArrayList<>());
@@ -117,7 +120,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void createUserPositive() {
+    void whenCreateNewUser_thenReturnCreatedUser() {
         mockMapperToEntity();
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
@@ -134,7 +137,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void createUserAlreadyExists() {
+    void whenCreateUserWithExistingUsername_thenThrowException() {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
 
         assertThrows(UserAlreadyExistsException.class, () -> userService.create(userDto));
@@ -144,7 +147,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUserPositive() {
+    void whenUpdateUser_thenReturnUpdatedUser() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
         mockMapperToEntity();
@@ -168,7 +171,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUserAlreadyExistsDifferentId() {
+    void whenUpdateUserWithSameUsernameButAnotherId_thenThrowException() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
         User existing = user;
@@ -183,7 +186,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUserPositive() {
+    void whenDeleteUser_thenUserIsDeleted() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
         List<Reservation> data = new ArrayList<>();
@@ -200,7 +203,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void blockUserPositive() {
+    void whenBlockUser_thenUserIsBlocked() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
         List<Reservation> data = new ArrayList<>();
@@ -217,7 +220,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUserUserDeleteException() {
+    void whenDeleteUser_thenThrowException() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
 
@@ -229,7 +232,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void blockUserUserDeleteException() {
+    void whenBlockUser_thenThrowException() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
         List<Reservation> data = new ArrayList<>();
@@ -248,7 +251,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void findByUsernamePositive() {
+    void whenFindExitingUserByUserName_thenReturnUser() {
         when(userRepository.findByUsername(TestConstants.USER_USERNAME)).thenReturn(Optional.of(user));
         mockMapperToDto();
 
@@ -262,7 +265,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void findByUsernameNotFound() {
+    void whenFindNonExitingUserByUserName_thenThrowException() {
         when(userRepository.findByUsername(TestConstants.USER_USERNAME)).thenReturn(Optional.empty());
 
         assertThrows(LoginException.class, () -> userService.findByUsername(TestConstants.USER_USERNAME));
@@ -272,7 +275,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void changePasswordPositive() {
+    void whenChangePasswordUser_thenReturnUpdatedUser() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
         mockMapperToEntity();
@@ -294,7 +297,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void changePasswordAlreadyExists() {
+    void whenChangePasswordUserWithSamePassword_thenThrowException() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
 
@@ -310,7 +313,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void processUserCreatePositive() {
+    void whenProcessCreateNewUser_thenReturnNewUser() {
         user = EntityTest.getExpectedUserWithoutId();
         userDto = DtoTest.getExpectedUserWithoutId();
         MultipartFile avatarFile = mock(MultipartFile.class);
@@ -331,7 +334,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void processUserUpdatesPositive() {
+    void whenProcessUpdateUser_thenReturnUpdatedUser() {
         user = EntityTest.getExpectedUserWithId();
         userDto = DtoTest.getExpectedUserWithId();
         MultipartFile avatarFile = mock(MultipartFile.class);

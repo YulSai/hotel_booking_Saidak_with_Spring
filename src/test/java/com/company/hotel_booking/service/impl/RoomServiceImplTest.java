@@ -38,6 +38,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Class with tests for RoomServiceImpl
+ */
 @ExtendWith(MockitoExtension.class)
 class RoomServiceImplTest {
     private RoomService roomService;
@@ -67,7 +70,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getRoomPositive() {
+    void whenFindExitingRoomById_thenReturnRoom() {
         when(roomRepository.findById(TestConstants.ROOM_ID)).thenReturn(Optional.of(room));
         mockMapperToDto();
 
@@ -79,7 +82,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getRoomNotFound() {
+    void whenFindNonExitingRoomById_thenThrowException() {
         when(roomRepository.findById(TestConstants.ROOM_ID)).thenReturn(Optional.empty());
 
         assertThrows(RoomNotFoundException.class, () -> roomService.findById(TestConstants.ROOM_ID));
@@ -87,7 +90,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getAllRoomPositive() {
+    void whenFindAllRooms_thenReturnRooms() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Room> pageRoom = new PageImpl<>(new ArrayList<>());
         Page<RoomDto> pageRoomDto = new PageImpl<>(new ArrayList<>());
@@ -101,7 +104,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void createRoomPositive() {
+    void whenCreateNewRoom_thenReturnCreatedRoom() {
         mockMapperToEntity();
         when(roomRepository.findByNumber(room.getNumber())).thenReturn(Optional.empty());
         when(roomRepository.save(room)).thenReturn(room);
@@ -116,7 +119,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void createRoomAlreadyExists() {
+    void whenCreateRoomWithExistingRoomNumber_thenThrowException() {
         when(roomRepository.findByNumber(room.getNumber())).thenReturn(Optional.ofNullable(room));
 
         assertThrows(RoomAlreadyExistsException.class, () -> roomService.create(roomDto));
@@ -124,7 +127,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void updateRoomPositive() {
+    void whenUpdateRoom_thenReturnUpdatedRoom() {
         room = EntityTest.getExpectedRoomWithId();
         roomDto = DtoTest.getExpectedRoomWithId();
         mockMapperToEntity();
@@ -146,7 +149,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void updateRoomAlreadyExistsDifferentId() {
+    void whenUpdateRoomWithSameId_thenThrowException() {
         room = EntityTest.getExpectedRoomWithId();
         roomDto = DtoTest.getExpectedRoomWithId();
         Room existing = room;
@@ -159,7 +162,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void deleteRoomPositive() {
+    void whenDeleteRoom_thenRoomIsDeleted() {
         room = EntityTest.getExpectedRoomWithId();
         roomDto = DtoTest.getExpectedRoomWithId();
 
@@ -172,7 +175,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void deleteRoomRoomDeleteException() {
+    void whenDeleteRoom_thenThrowException() {
         room = EntityTest.getExpectedRoomWithId();
         roomDto = DtoTest.getExpectedRoomWithId();
 
@@ -182,7 +185,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void findAvailableRoomsPositive() {
+    void whenFindAvailableRooms_thenReturnAvailableRooms() {
         List<Room> rooms = new ArrayList<>();
         List<RoomDto> roomDto = new ArrayList<>();
 
@@ -201,6 +204,4 @@ class RoomServiceImplTest {
         verify(roomRepository, times(1)).findAvailableRooms(typeId, capacityId, check_in, check_out, check_in,
                 check_out);
     }
-
-
 }
