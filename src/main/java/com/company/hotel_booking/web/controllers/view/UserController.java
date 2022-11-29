@@ -87,8 +87,8 @@ public class UserController {
 
     @LogInvocation
     @PostMapping("/create")
-    public String createUser(@ModelAttribute @Valid UserDto userDto, Errors errors, HttpSession session,
-                             MultipartFile avatarFile) {
+    public String createUser(@ModelAttribute @Valid UserDto userDto, Errors errors, MultipartFile avatarFile,
+                             HttpSession session) {
         if (errors.hasErrors()) {
             return PagesConstants.PAGE_CREATE_USER;
         }
@@ -100,11 +100,11 @@ public class UserController {
 
     @LogInvocation
     @GetMapping("/update/{id}")
-    @PreAuthorize("hasRole('СLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public String updateUserForm(@PathVariable Long id, Model model) {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
-        return PagesConstants.PAGE_UPDATE_USERS;
+        return PagesConstants.PAGE_UPDATE_USER;
     }
 
     @LogInvocation
@@ -114,7 +114,7 @@ public class UserController {
                              HttpSession session, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("user", userDto);
-            return PagesConstants.PAGE_UPDATE_USERS;
+            return PagesConstants.PAGE_UPDATE_USER;
         }
         UserDto updated = userService.processUserUpdates(userDto, avatarFile);
         session.setAttribute("message",
@@ -125,16 +125,16 @@ public class UserController {
     @LogInvocation
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deleteUser(@PathVariable Long id, Model model, HttpServletRequest req) {
+    public String deleteUser(@PathVariable Long id, HttpSession session) {
         List<ReservationDto> reservations = reservationService.findAllByUsers(id);
         for (ReservationDto reservation : reservations) {
             reservation.setStatus(ReservationDto.StatusDto.DELETED);
             reservationService.update(reservation);
         }
         userService.delete(userService.findById(id));
-        model.addAttribute("message",
+        session.setAttribute("message",
                 messageSource.getMessage("msg.user.deleted", null, LocaleContextHolder.getLocale()));
-        return "redirect:" + req.getHeader("referer");
+        return "redirect:/users/all";
     }
 
     @LogInvocation
@@ -149,11 +149,12 @@ public class UserController {
     @LogInvocation
     @PostMapping("/change_password/{id}")
     @PreAuthorize("hasRole('CLIENT')")
-    public String changePassword(@ModelAttribute @Valid UserDto userdto, Errors errors, HttpSession session) {
+    public String changePassword(@ModelAttribute @Valid UserDto userDto, Errors errors, Model model,HttpSession session) {
         if (errors.hasErrors()) {
+            model.addAttribute("user", userDto);
             return PagesConstants.PAGE_CHANGE_PASSWORD;
         }
-        UserDto updated = userService.changePassword(userdto);
+        UserDto updated = userService.changePassword(userDto);
         session.setAttribute("message",
                 messageSource.getMessage("msg.user.password.change", null, LocaleContextHolder.getLocale()));
         return "redirect:/users/" + updated.getId();
